@@ -1,5 +1,8 @@
 package com.example.stackoverflowclone.vote.entity;
 
+import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.member.entity.Member;
+import com.example.stackoverflowclone.question.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +15,21 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionVote {
+public class QuestionVote extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "question_vote_id", nullable = true, updatable = true, unique = false)
+    @Column(name = "question_vote_id")
     private Long questionVoteId;
+
+
+    @Column(name = "status")
+    private boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "QUESTION_ID")
+    private Question question;
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 }
