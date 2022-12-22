@@ -7,8 +7,9 @@ import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import useStore from "../../store";
+import { useLeftNavStore, useSearchPopUpStore } from "../../store";
 import SearchPopUp from "./SearchPopUp";
+import MobileLeftNav from "./MobileLeftNav";
 
 const BREAKPOINTMOBILE = 767;
 const BREAKPOINTTABLET = 1023;
@@ -210,15 +211,22 @@ const ProfileButtonAria = styled.div`
   }
 `;
 
-const Header = () => {
-  const { handlePopUp } = useStore((state) => state);
+const TestAria = styled.div`
+  position: sticky;
+  width: 100px;
+  height: 100px;
+  background-color: aquamarine;
+`;
 
+const Header = () => {
+  const { handlePopUp } = useSearchPopUpStore((state) => state);
+  const { handleLeftNav } = useLeftNavStore((state) => state);
   return (
     <>
       <HeaderComponent>
         <HeaderContainer>
           <MobileLeftButtonContainer>
-            <MobileMenuButton>
+            <MobileMenuButton onClick={handleLeftNav}>
               <img src={MobileMenuIcon} />
             </MobileMenuButton>
             <MobileHomeButton>
@@ -267,6 +275,7 @@ const Header = () => {
         </HeaderContainer>
       </HeaderComponent>
       <SearchPopUp />
+      <MobileLeftNav />
       <ScrollTestAria>왜 안 보임..</ScrollTestAria>
     </>
   );

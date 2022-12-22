@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components/macro";
-import useStore from "../../store";
+import { useSearchPopUpStore } from "../../store";
 
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
@@ -22,10 +22,10 @@ const SearchPopUpView = styled.div`
 `;
 
 const SearchPopUp = () => {
-  const { popUp, handlePopUp } = useStore((state) => state);
+  const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   return (
     <>
-      {popUp === true ? (
+      {showPopUp === true ? (
         <SearchPopUpBackdrop onClick={handlePopUp}>
           <SearchPopUpView onClick={(e) => e.stopPropagation()}>
             <span>user:1234</span> <span>search by author</span>{" "}

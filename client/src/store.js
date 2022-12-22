@@ -1,8 +1,13 @@
 import create from "zustand";
 
-const useStore = create((set) => ({
-  popUp: false,
-  handlePopUp: () => set((state) => ({ popUp: !state.popUp })),
+const useSearchPopUpStore = create((set) => ({
+  showPopUp: false,
+  handlePopUp: () => set((state) => ({ showPopUp: !state.showPopUp })),
 }));
 
-export default useStore;
+const useLeftNavStore = create((set) => ({
+  showLeftNav: false,
+  handleLeftNav: () => set((state) => ({ showLeftNav: !state.showLeftNav })),
+}));
+
+export { useSearchPopUpStore, useLeftNavStore };
