@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import BREAKPOINT from "../../breakpoint"
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -9,12 +10,18 @@ const QuestionContainer = styled.div`
   border: 1px solid #c5c5c5;
   border-width: ${props => props.isLast? '1px 0 1px 0' : '1px 0 0 0'};
   padding: 16px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+   flex-direction: column;
+  }
 `
 
 const QuestionRightSideContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+   width: 95%;
+  }
 `
 
 const QuestionLeftSideContainer = styled.div`
@@ -23,12 +30,21 @@ const QuestionLeftSideContainer = styled.div`
   align-items: end;
   width: 15%;
   margin-right: 20px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+   width: 95%;
+   flex-direction: row;
+  }
 `
 const QuestionInfo = styled.p`
   font-size: 15px;
   margin: 0;
   margin-bottom: 8px;
   color: ${props => props.isVote ? `black` : `gray`};
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    margin-right: 10px;
+    margin-bottom: 3px;
+    font-size: small;
+  }
 `
 
 const QuestionTitle = styled.a`
@@ -39,18 +55,24 @@ const QuestionTitle = styled.a`
     color: #49a5f0;
     cursor: pointer;
   }
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: medium;
+  }
 `
 const QuestionPreview = styled.div`
   display: flex;
   font-size: 15px;
   margin-top: 10px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: small;
+  }
 `
 
 const QuestionFooter = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 7px;
 `
 
 const Tag = styled.div`
@@ -72,8 +94,8 @@ const Profile = styled.div`
 
 const ProfileImg = styled.div`
   display: flex;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   padding-bottom: 5px;
   margin-right: 5px;
 `
