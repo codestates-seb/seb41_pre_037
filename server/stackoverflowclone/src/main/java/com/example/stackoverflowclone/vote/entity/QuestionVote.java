@@ -21,15 +21,14 @@ public class QuestionVote extends Auditable {
     @Column(name = "question_vote_id")
     private Long questionVoteId;
 
-
     @Column(name = "status")
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "QUESTION_ID")
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member member;
 }

@@ -22,11 +22,11 @@ public class QuestionTag extends Auditable {
     private Long questionTagId;
 
     @ManyToOne
-    @JoinColumn(name = "QUESTION_ID")
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "TAG_ID")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
 }

@@ -1,10 +1,16 @@
 package com.example.stackoverflowclone.member.entity;
 
+import com.example.stackoverflowclone.answer.entity.Answer;
 import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.question.entity.Question;
+import com.example.stackoverflowclone.vote.entity.AnswerVote;
+import com.example.stackoverflowclone.vote.entity.QuestionVote;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -53,6 +59,16 @@ public class Member extends Auditable {
     @Column(name = "fullname")
     private String fullname;
 
+    @OneToMany(mappedBy = "member")
+    private List<Question> questionList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<QuestionVote> questionVoteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Answer> answersList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<AnswerVote> answerVoteList = new ArrayList<>();
 
 }

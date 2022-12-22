@@ -24,15 +24,18 @@ public class Answer extends Auditable {
     @Column(name = "answer_id")
     private Long answerId;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "answer_content")
+    private String answerContent;
+
+    @Column(name = "answer_vote_count")
+    private long answerVoteCount;
 
     @ManyToOne
-    @JoinColumn(name = "QUESTION_ID")
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member member;
 
 }

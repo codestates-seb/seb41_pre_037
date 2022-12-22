@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -22,6 +23,7 @@ public class Question extends Auditable {
     private Long questionId;
 
     @Column(name = "question_title")
+    @NotNull
     private String questionTitle = "No Title";
 
     @Column(name = "question_problem_body")
@@ -30,14 +32,14 @@ public class Question extends Auditable {
     @Column(name = "question_try_or_expecting_body")
     private String questionTryOrExpectingBody = "";
 
-    @Column(name = "question_view")
-    private Long questionView;
+    @Column(name = "question_view_count")
+    private long questionViewCount;
 
     @Column(name = "question_vote_count")
-    private Long questionVoteCount;
+    private long questionVoteCount;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member member;
 
 }

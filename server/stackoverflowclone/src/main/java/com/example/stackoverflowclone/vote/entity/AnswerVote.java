@@ -25,11 +25,11 @@ public class AnswerVote extends Auditable {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "ANSWER_ID")
+    @JoinColumn(name = "answer_id")
     private Answer answer;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member member;
 
 }
