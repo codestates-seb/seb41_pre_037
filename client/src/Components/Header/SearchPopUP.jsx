@@ -1,74 +1,38 @@
 import { useState } from "react";
 import styled from "styled-components/macro";
+import useStore from "../../store";
 
-const ModalBackdrop = styled.div`
+const SearchPopUpBackdrop = styled.div`
   position: fixed;
-  z-index: 999;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: grid;
-  place-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
-const ModalContainer = styled.div`
-  height: 15rem;
-  text-align: center;
-  margin: 120px auto;
-`;
-
-const ModalBtn = styled.button`
-  background-color: #4000c7;
-  text-decoration: none;
-  border: none;
-  padding: 20px;
-  color: white;
-  border-radius: 30px;
-  cursor: grab;
-`;
-
-const ModalView = styled.div.attrs((props) => ({
-  // attrs 메소드를 이용해서 아래와 같이 div 엘리먼트에 속성을 추가할 수 있습니다.
-  role: "dialog",
-}))`
-  border-radius: 10px;
+const SearchPopUpView = styled.div`
+  border-radius: 3px;
   background-color: #ffffff;
-  width: 300px;
+  width: 40%;
   height: 100px;
-  > span.close-btn {
-    margin-top: 5px;
-    cursor: pointer;
-  }
-  > div.desc {
-    margin-top: 25px;
-    color: #4000c7;
-  }
+  margin-top: 55px;
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `;
 
 const SearchPopUp = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const openModalHandler = () => {
-    setIsOpen(!isOpen);
-  };
+  const { popUp, handlePopUp } = useStore((state) => state);
   return (
     <>
-      <ModalContainer>
-        <ModalBtn onClick={openModalHandler}>
-          {isOpen === false ? "Open Modal" : "Opened!"}
-        </ModalBtn>
-        {isOpen === true ? (
-          <ModalBackdrop onClick={openModalHandler}>
-            <ModalView onClick={(e) => e.stopPropagation()}>
-              <span onClick={openModalHandler} className="close-btn">
-                &times;
-              </span>
-              <div className="desc">HELLO CODESTATES!</div>
-            </ModalView>
-          </ModalBackdrop>
-        ) : null}
-      </ModalContainer>
+      {popUp === true ? (
+        <SearchPopUpBackdrop onClick={handlePopUp}>
+          <SearchPopUpView onClick={(e) => e.stopPropagation()}>
+            <span>user:1234</span> <span>search by author</span>{" "}
+            <span> answers:0</span> <span>unanswered questions</span>
+          </SearchPopUpView>
+        </SearchPopUpBackdrop>
+      ) : null}
     </>
   );
 };

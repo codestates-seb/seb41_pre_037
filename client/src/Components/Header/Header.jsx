@@ -7,21 +7,11 @@ import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import useStore from "../../store";
+import SearchPopUp from "./SearchPopUp";
 
 const BREAKPOINTMOBILE = 767;
 const BREAKPOINTTABLET = 1023;
-
-const AllContainer = styled.div`
-  height: 30vh;
-  width: 100vw;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  left: 0;
-  top: 0;
-  background-color: coral;
-`;
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -30,15 +20,13 @@ const HeaderComponent = styled.header`
   position: fixed;
   align-items: center;
   box-sizing: border-box;
-  left: 0;
-  top: 0;
   background-color: rgb(248, 249, 249);
   border-top: 3px solid rgb(230, 135, 62);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05),
     0 2px 8px rgba(0, 0, 0, 0.05);
 
   @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
-    padding-right: 5%;
+    padding-right: 1%;
   }
 `;
 
@@ -144,14 +132,6 @@ const SearchBarInput = styled.input`
   font-size: 14px;
 `;
 
-const SearchPopUp = styled.div`
-  width: 40%;
-  height: 200px;
-  margin-top: 55px;
-  position: fixed;
-  background-color: blueviolet;
-`;
-
 const ScrollTestAria = styled.div`
   width: 100%;
   height: 5000px;
@@ -231,12 +211,7 @@ const ProfileButtonAria = styled.div`
 `;
 
 const Header = () => {
-  const [popUp, setPopUp] = useState(false);
-
-  const handleSearchPopUp = () => {
-    setPopUp(!popUp);
-    console.log(popUp);
-  };
+  const { handlePopUp } = useStore((state) => state);
 
   return (
     <>
@@ -257,10 +232,7 @@ const Header = () => {
           </ButtonArea>
           <SearchBar>
             <img src={SearchBarIcon} />
-            <SearchBarInput
-              placeholder="Search..."
-              onFocus={handleSearchPopUp}
-            />
+            <SearchBarInput placeholder="Search..." onFocus={handlePopUp} />
           </SearchBar>
           <ButtonArea>
             {/* <LoggedOutButtonContainer>
@@ -294,7 +266,7 @@ const Header = () => {
           </ButtonArea>
         </HeaderContainer>
       </HeaderComponent>
-      <SearchPopUp>심란..</SearchPopUp>
+      <SearchPopUp />
       <ScrollTestAria>왜 안 보임..</ScrollTestAria>
     </>
   );
