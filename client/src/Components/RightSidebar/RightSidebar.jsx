@@ -3,11 +3,16 @@ import PencilIcon from '../../icons/Pencil.svg'
 import LogoGraysm from '../../icons/LogoGraysm.svg'
 import Comment from '../../icons/Comment.svg'
 
+import BREAKPOINT from "../../breakpoint"
+
 const Container = styled.div`
   width: max-content;
   height: max-content;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    display: none;
+  }
 `
 const BlogContainer = styled.ul`
   padding: 0px;
