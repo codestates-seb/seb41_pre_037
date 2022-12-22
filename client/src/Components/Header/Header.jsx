@@ -122,6 +122,10 @@ const SearchBar = styled.div`
   padding-left: 1%;
   box-sizing: border-box;
 
+  &.input-actived {
+    box-shadow: 0 0 5px 4px rgba(95, 180, 255, 0.4);
+  }
+
   @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
     display: none;
   }
@@ -219,7 +223,7 @@ const TestAria = styled.div`
 `;
 
 const Header = () => {
-  const { handlePopUp } = useSearchPopUpStore((state) => state);
+  const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
   return (
     <>
@@ -238,7 +242,7 @@ const Header = () => {
               <img src={Logo} />
             </HomeButton>
           </ButtonArea>
-          <SearchBar>
+          <SearchBar className={showPopUp ? "input-actived" : null}>
             <img src={SearchBarIcon} />
             <SearchBarInput placeholder="Search..." onFocus={handlePopUp} />
           </SearchBar>
