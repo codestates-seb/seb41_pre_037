@@ -1,6 +1,7 @@
 import RightSidebar from "../Components/RightSidebar/RightSidebar"
 import styled from "styled-components/macro"
 import Question from "../Components/Main/Question"
+import BREAKPOINT from "../breakpoint"
 
 const Container = styled.div`
   display: flex;
@@ -9,12 +10,33 @@ const Container = styled.div`
   height: max-content;
 `
 
+const Title = styled.h1`
+  font-weight: 400; 
+  margin-left: 10px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: x-large;
+  }
+`
+
+const QuestionCount = styled.h2`
+  font-size: 18px; 
+  font-weight: 500; 
+  margin-left: 15px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: medium;
+  }
+`
+
 const MainbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 45%;
   min-width: 500px;
   max-width: 800px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    width: 90%;
+    min-width: 0;
+  }
 `
 const MainbarTopHeader = styled.div`
   display: flex;
@@ -60,6 +82,14 @@ const AskQuestionButton = styled.button`
   border: 1px solid #0a95ff;
   border-radius: 4px;
   box-shadow: inset 0 1px 0 0 #6fc0ff;
+
+  &:hover {
+    background-color: #306fa0;
+    color: #aeaeae;
+    border: 1px solid #306fa0;
+    box-shadow: inset 0 1px 0 0 #65869e;
+    cursor: pointer;
+  }
 `
 
 const RightSidebarContainer = styled.div`
@@ -68,6 +98,9 @@ const RightSidebarContainer = styled.div`
   width: 30%;
   margin-left: 50px;
   min-width: 400px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    display: none;
+  }
 `
 
 export default function Main() {
@@ -75,11 +108,11 @@ export default function Main() {
     <Container>
       <MainbarContainer>
         <MainbarTopHeader>
-        <h1 css={`font-weight: 400; margin-left: 10px;`}>All Questions</h1>
+        <Title>All Questions</Title>
         <AskQuestionButton>Ask Questions</AskQuestionButton>
         </MainbarTopHeader>
         <MainbarBottomHeader>
-        <h2 css={`font-size: 18px; font-weight: 500; margin-left: 15px;`}>2,400,239 questions</h2>
+        <QuestionCount>2,400,239 questions</QuestionCount>
         <MainbarSortButtonContainer>
           <SortButton isLeft={true}>Latest</SortButton>
           <SortButton isLeft={false}>Unanswered</SortButton>
