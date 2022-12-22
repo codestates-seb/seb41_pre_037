@@ -1,6 +1,7 @@
 import RightSidebar from "../Components/RightSidebar/RightSidebar"
 import styled from "styled-components/macro"
 import Question from "../Components/Main/Question"
+import BREAKPOINT from "../breakpoint"
 
 const Container = styled.div`
   display: flex;
