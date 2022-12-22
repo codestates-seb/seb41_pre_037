@@ -1,7 +1,9 @@
-import React from 'react'
+import RightSidebar from "../Components/RightSidebar/RightSidebar"
 
 export default function Main() {
   return (
-    <div>Main</div>
+    <div>Main
+      <RightSidebar/>
+    </div>
   )
 }
