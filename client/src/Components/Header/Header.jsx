@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import SearchBarIconSVG from "../../icons/Search.svg";
 import Logo from "../../icons/Logo.svg";
+import MobileLogo from "../../icons/LogoGlyphXSm.svg";
+import MobileMenuIcon from "../../icons/Hamburger.svg";
+import { Link } from "react-router-dom";
+
+const BREAKPOINTMOBILE = 767;
+const BREAKPOINTTABLET = 1023;
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -31,6 +37,28 @@ const HomeButton = styled.button`
   height: 100%;
   padding: 8px;
   box-sizing: border-box;
+  &:hover {
+    background-color: rgb(228, 230, 232);
+  }
+  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+    display: none;
+  }
+`;
+
+const MobileHomeButton = styled.button`
+  all: unset;
+
+  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+    display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  all: unset;
+
+  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+    display: none;
+  }
 `;
 
 const SearchBar = styled.div`
@@ -43,6 +71,10 @@ const SearchBar = styled.div`
   height: 33px;
   padding-left: 1%;
   margin: 0 5% 0 5%;
+
+  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+    display: none;
+  }
 `;
 
 const SearchBarInput = styled.input`
@@ -66,30 +98,47 @@ const LoginOutButton = styled.button`
   font-weight: 400;
   text-align: center;
   margin-right: 4px;
+
+  &:hover {
+    background-color: rgb(185, 210, 232);
+  }
 `;
 
 const SignUPButton = styled(LoginOutButton)`
   background-color: rgb(10, 149, 255);
   width: 65px;
   color: rgb(255, 255, 255);
+
+  &:hover {
+    background-color: rgb(49, 114, 198);
+  }
 `;
-//얘만 파랑
 
 const Header = () => {
   return (
     <>
       <HeaderComponent>
         <HeaderContainer>
+          <MobileMenuButton>
+            <img src={MobileMenuIcon} />
+          </MobileMenuButton>
           <HomeButton>
             <img src={Logo} />
           </HomeButton>
+          <MobileHomeButton>
+            <img src={MobileLogo} />
+          </MobileHomeButton>
           <SearchBar>
             <img src={SearchBarIconSVG} />
             <SearchBarInput placeholder="Search..." />
           </SearchBar>
           <ButtonContainer>
-            <LoginOutButton>Log in</LoginOutButton>
-            <SignUPButton>Sign up</SignUPButton>
+            <Link to="/login">
+              <LoginOutButton>Log in</LoginOutButton>
+            </Link>
+            <Link to="/signup">
+              <SignUPButton>Sign up</SignUPButton>
+            </Link>
           </ButtonContainer>
         </HeaderContainer>
       </HeaderComponent>
