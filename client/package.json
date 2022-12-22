@@ -10,6 +10,7 @@
     "axios": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.5.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
@@ -42,5 +43,8 @@
   },
   "resolutions": {
     "styled-components": "^5"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.0.7"
   }
 }
