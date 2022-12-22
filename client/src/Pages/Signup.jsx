@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components/macro"
 
 const Background = styled.div`
   background-color: #f3f3f3;
@@ -168,7 +168,7 @@ export default function Signup() {
             <SignupButton>Sign up</SignupButton>
             <SignupAgreeInfo>By clicking “Sign up”, you agree to our <Link>terms of service</Link>, <Link>privacy policy</Link> and <Link>cookie policy</Link></SignupAgreeInfo>
           </SignupForm>
-          <p css={`font-size : 8px;`}>Already have a account? <Link>Log in</Link></p>
+          <p css={`font-size: small;`}>Already have a account? <Link>Log in</Link></p>
         </SignupFormContainer>
       </Container>
     </Background>
