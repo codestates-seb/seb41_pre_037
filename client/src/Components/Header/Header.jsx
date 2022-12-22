@@ -6,15 +6,28 @@ import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const BREAKPOINTMOBILE = 767;
 const BREAKPOINTTABLET = 1023;
 
+const AllContainer = styled.div`
+  height: 30vh;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  left: 0;
+  top: 0;
+  background-color: coral;
+`;
+
 const HeaderComponent = styled.header`
   height: 50px;
   width: 100%;
-  position: fixed;
   display: flex;
+  position: fixed;
   align-items: center;
   box-sizing: border-box;
   left: 0;
@@ -23,6 +36,10 @@ const HeaderComponent = styled.header`
   border-top: 3px solid rgb(230, 135, 62);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05),
     0 2px 8px rgba(0, 0, 0, 0.05);
+
+  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+    padding-right: 5%;
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -37,13 +54,20 @@ const HeaderContainer = styled.div`
   }
 `;
 
+const ButtonArea = styled.div`
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const HomeButton = styled.button`
   all: unset;
   width: 166px;
   height: 100%;
   padding: 8px;
   box-sizing: border-box;
-  /* margin-left: 5%; */
 
   &:hover {
     background-color: rgb(228, 230, 232);
@@ -104,10 +128,10 @@ const SearchBar = styled.div`
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(187, 191, 195);
   border-radius: 3px;
-  width: 45%;
+  width: 40%;
   height: 32px;
   padding-left: 1%;
-  /* margin: 0 5% 0 5%; */
+  box-sizing: border-box;
 
   @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
     display: none;
@@ -120,8 +144,21 @@ const SearchBarInput = styled.input`
   font-size: 14px;
 `;
 
+const SearchPopUp = styled.div`
+  width: 40%;
+  height: 200px;
+  margin-top: 55px;
+  position: fixed;
+  background-color: blueviolet;
+`;
+
+const ScrollTestAria = styled.div`
+  width: 100%;
+  height: 5000px;
+  background-color: #909cca;
+`;
+
 const MobileSearchBarIconArea = styled.div`
-  /* margin-right: 10px; */
   display: flex;
   align-items: center;
 
@@ -135,11 +172,9 @@ const LoggedOutButtonContainer = styled.div`
   align-items: center;
   justify-content: space-around;
 
-  /* margin-right: 1%; */
   padding: 10px;
 
   @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
-    /* margin-right: 5%; */
   }
 `;
 
@@ -155,7 +190,6 @@ const LoginOutButton = styled.button`
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  /* margin-right: 4px; */
 
   &:hover {
     background-color: rgb(185, 210, 232);
@@ -177,11 +211,9 @@ const LoggedInButtonContainer = styled.div`
   align-items: center;
   justify-content: space-around;
 
-  /* margin-right: 1%; */
   padding: 10px;
 
   @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
-    /* margin-right: 5%; */
   }
 `;
 
@@ -199,6 +231,13 @@ const ProfileButtonAria = styled.div`
 `;
 
 const Header = () => {
+  const [popUp, setPopUp] = useState(false);
+
+  const handleSearchPopUp = () => {
+    setPopUp(!popUp);
+    console.log(popUp);
+  };
+
   return (
     <>
       <HeaderComponent>
@@ -211,14 +250,20 @@ const Header = () => {
               <img src={MobileLogo} />
             </MobileHomeButton>
           </MobileLeftButtonContainer>
-          <HomeButton>
-            <img src={Logo} />
-          </HomeButton>
+          <ButtonArea>
+            <HomeButton>
+              <img src={Logo} />
+            </HomeButton>
+          </ButtonArea>
           <SearchBar>
             <img src={SearchBarIcon} />
-            <SearchBarInput placeholder="Search..." />
+            <SearchBarInput
+              placeholder="Search..."
+              onFocus={handleSearchPopUp}
+            />
           </SearchBar>
-          {/* <LoggedOutButtonContainer>
+          <ButtonArea>
+            {/* <LoggedOutButtonContainer>
             <MobileSearchBarIconArea>
               <img src={MobileSearchBarIcon} />
             </MobileSearchBarIconArea>
@@ -229,25 +274,28 @@ const Header = () => {
               <SignUPButton>Sign up</SignUPButton>
             </Link>
           </LoggedOutButtonContainer> */}
-          <LoggedInButtonContainer>
-            <MobileSearchBarIconArea>
-              <img src={MobileSearchBarIcon} />
-            </MobileSearchBarIconArea>
-            <ProfileButtonAria>
-              <button
-                css={`
-                  all: unset;
-                  width: 24px;
-                  height: 24px;
-                `}
-              >
-                <img src={DummyProfileIcon} />
-              </button>
-            </ProfileButtonAria>
-            <LoginOutButton>Log out</LoginOutButton>
-          </LoggedInButtonContainer>
+            <LoggedInButtonContainer>
+              <MobileSearchBarIconArea>
+                <img src={MobileSearchBarIcon} />
+              </MobileSearchBarIconArea>
+              <ProfileButtonAria>
+                <button
+                  css={`
+                    all: unset;
+                    width: 24px;
+                    height: 24px;
+                  `}
+                >
+                  <img src={DummyProfileIcon} />
+                </button>
+              </ProfileButtonAria>
+              <LoginOutButton>Log out</LoginOutButton>
+            </LoggedInButtonContainer>
+          </ButtonArea>
         </HeaderContainer>
       </HeaderComponent>
+      <SearchPopUp>심란..</SearchPopUp>
+      <ScrollTestAria>왜 안 보임..</ScrollTestAria>
     </>
   );
 };
