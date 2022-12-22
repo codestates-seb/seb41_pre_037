@@ -9,3 +9,5 @@
 2) 디펜던시 설정 (React Router Dom, Axios, Zustand, Styled Components, Tanstack Query)
 3) App.js, App.css, index.css 초기화 및 logo.svg 삭제
 4) Components, Pages 디렉토리 추가
+5) React Router 로 클라이언트 라우팅
+6) Quill 에디터 설치 및 styled components를 위한 바벨 플러그인 설치
