@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import BREAKPOINT from "../breakpoint"
 
 const Background = styled.div`
   background-color: #f3f3f3;
@@ -15,6 +16,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: auto auto;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 400px;
+    flex-direction: column;
+    align-items: center;
+    height: max-content;
+  }
 `
 
 
@@ -23,11 +30,31 @@ const SignupDetailContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100%;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    height: 60px;
+  }
 `
 
-const SignupDetailHead = styled.h1`
+const SignupDetailHead = styled.div`
   font-weight: 500;
   font-size: 28px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: none;
+  }
+`
+
+const SignupDetailHeadMobile = styled.div`
+  font-weight: 500;
+  font-size: x-large;
+  display: none;
+  text-align: center;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: flex;
+    font-size: 21px;
+    height: 50px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
 `
 
 const SignupDetail = styled.p`
@@ -35,6 +62,10 @@ const SignupDetail = styled.p`
 `
 const SignupDetailContent = styled.div`
   display: flex;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: none;
+  }
 `
 
 const SignupIcon = styled.div`
@@ -117,6 +148,7 @@ export default function Signup() {
       <Container>
         <SignupDetailContainer>
           <SignupDetailHead>Join the Stack Overflow Community</SignupDetailHead>
+          <SignupDetailHeadMobile>Create your Stack Overflow account. It’s free and only takes a minute.</SignupDetailHeadMobile>
           <SignupDetailContent>
             <SignupIcon>
               <svg width="26" height="26" fill="#0a95ff"><path opacity=".5" d="M4.2 4H22a2 2 0 012 2v11.8a3 3 0 002-2.8V5a3 3 0 00-3-3H7a3 3 0 00-2.8 2z"></path><path d="M1 7c0-1.1.9-2 2-2h18a2 2 0 012 2v12a2 2 0 01-2 2h-2v5l-5-5H3a2 2 0 01-2-2V7zm10.6 11.3c.7 0 1.2-.5 1.2-1.2s-.5-1.2-1.2-1.2c-.6 0-1.2.4-1.2 1.2 0 .7.5 1.1 1.2 1.2zm2.2-5.4l1-.9c.3-.4.4-.9.4-1.4 0-1-.3-1.7-1-2.2-.6-.5-1.4-.7-2.4-.7-.8 0-1.4.2-2 .5-.7.5-1 1.4-1 2.8h1.9v-.1c0-.4 0-.7.2-1 .2-.4.5-.6 1-.6s.8.1 1 .4a1.3 1.3 0 010 1.8l-.4.3-1.4 1.3c-.3.4-.4 1-.4 1.6 0 0 0 .2.2.2h1.5c.2 0 .2-.1.2-.2l.1-.7.5-.7.6-.4z"></path></svg>
