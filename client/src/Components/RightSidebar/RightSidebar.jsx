@@ -3,11 +3,16 @@ import PencilIcon from '../../icons/Pencil.svg'
 import LogoGraysm from '../../icons/LogoGraysm.svg'
 import Comment from '../../icons/Comment.svg'
 
+import BREAKPOINT from "../../breakpoint"
+
 const Container = styled.div`
   width: max-content;
-  height: screen;
+  height: max-content;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    display: none;
+  }
 `
 const BlogContainer = styled.ul`
   padding: 0px;
@@ -82,7 +87,7 @@ const TagContainer = styled.div`
 const Tag = styled.div`
   width: max-content;
   padding: 5px 8px;
-  height: 20px;
+  height: 15px;
   border: 1px #E1ECf4;
   border-radius: 5px;
   background-color: #E1ECF4;
@@ -182,6 +187,22 @@ export default function RightSidebar() {
           <TagContainer>
             <Tag>javascript</Tag>
             <TagCount>x 246153</TagCount>
+          </TagContainer>
+          <TagContainer>
+            <Tag>java</Tag>
+            <TagCount>x 3000643</TagCount>
+          </TagContainer>
+          <TagContainer>
+            <Tag>java</Tag>
+            <TagCount>x 3000643</TagCount>
+          </TagContainer>
+          <TagContainer>
+            <Tag>java</Tag>
+            <TagCount>x 3000643</TagCount>
+          </TagContainer>
+          <TagContainer>
+            <Tag>java</Tag>
+            <TagCount>x 3000643</TagCount>
           </TagContainer>
           <TagContainer>
             <Tag>java</Tag>
