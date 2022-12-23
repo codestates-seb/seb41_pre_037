@@ -19,3 +19,8 @@ insert into tag (created_at, modified_at, tag_name, tag_body, tag_url) VALUES
 ('2022-12-22 22:07:27.542712', '2022-12-22 22:07:27.542712', 'c', 'C is a general-purpose programming language used for system programming (OS and embedded), libraries, games and cross-platform. This tag should be used with general questions concerning the C language, as defined in the ISO 9899 standard (the latest version, 9899:2018, unless otherwise specified — also tag version-specific requests with c89, c99, c11, etc). C is distinct from C++ and it should not be combined with the C++ tag without a specific reason.', ''),
 ('2022-12-22 22:07:27.542712', '2022-12-22 22:07:27.542712', 'asp.net', 'ASP.NET is a Microsoft web application development framework that allows programmers to build dynamic web sites, web applications and web services. It is useful to use this tag in conjunction with the project type tag e.g. [asp.net-mvc], [asp.net-webforms], or [asp.net-web-api]. Do NOT use this tag for questions about ASP.NET Core - use [asp.net-core] instead.', ''),
 ('2022-12-22 22:07:27.542712', '2022-12-22 22:07:27.542712', 'json', 'JSON (JavaScript Object Notation) is a serializable data interchange format that is a machine and human readable. Do not use this tag for native JavaScript objects or JavaScript object literals. Before you ask a question, validate your JSON using a JSON validator such as JSONLint (https://jsonlint.com).', '');
+
+
+INSERT INTO MEMBER (MEMBER_ID, CREATED_AT, MODIFIED_AT, EMAIL, PASSWORD, USERNAME) VALUES
+('1','2022-12-22 22:07:27.542712','2022-12-22 22:07:27.542712','dhfif718@naver.com', '1234', '이재혁'),
+('2','2022-12-22 22:07:27.542712','2022-12-22 22:07:27.542712','tmdghwlq@naver.com', '1234', '염승호');

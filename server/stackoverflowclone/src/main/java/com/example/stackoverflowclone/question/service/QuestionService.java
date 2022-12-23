@@ -2,12 +2,16 @@ package com.example.stackoverflowclone.question.service;
 
 import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.question.repository.QuestionRepository;
+import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
+import com.example.stackoverflowclone.tag.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional

@@ -26,13 +26,12 @@ public class TagController {
     private final TagService tagService;
     private final TagMapper mapper;
 
-
     @GetMapping
-    public ResponseEntity getTags(@Positive @RequestParam int page) {
+    public ResponseEntity findTags(@Positive @RequestParam int page) {
 
         Page<Tag> pageTags = tagService.findTags(page - 1, 30);
         List<Tag> tags = pageTags.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagsToTagResponseDtos(tags), pageTags),
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),
                 HttpStatus.OK);
     }
 }

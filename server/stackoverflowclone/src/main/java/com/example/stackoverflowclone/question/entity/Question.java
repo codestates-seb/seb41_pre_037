@@ -58,4 +58,9 @@ public class Question extends Auditable {
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
+
+    public void addQuestionTagList(QuestionTag questionTag) {
+        questionTagList.add(questionTag);
+        questionTag.setQuestion(this);
+    }
 }
