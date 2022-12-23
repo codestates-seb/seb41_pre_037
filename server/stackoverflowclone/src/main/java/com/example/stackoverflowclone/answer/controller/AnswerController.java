@@ -24,7 +24,6 @@ public class AnswerController {
     public ResponseEntity<DataResponseDto> createAnswer(@PathVariable("question-id") Long questionId,
                                                         @RequestBody AnswerPostDto answerPostDto){
 
-        System.out.println("in");
         Question question = questionService.findQuestion(questionId);
         Answer answer = answerMapper.answerPostDtoToAnswer(answerPostDto, question);
         Answer saveAnswer = answerService.postAnswer(answer);
