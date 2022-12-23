@@ -12,10 +12,11 @@ import MobileLeftNav from "./MobileLeftNav";
 
 const HeaderComponent = styled.header`
   height: 50px;
-  width: 100%;
+  width: 100vw;
   display: flex;
   position: sticky;
   top: 0;
+  left: 0;
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(248, 249, 249);
@@ -46,6 +47,10 @@ const ButtonArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: auto;
+  }
 `;
 
 const HomeButton = styled.button`
@@ -195,8 +200,6 @@ const LoggedInButtonContainer = styled.div`
   align-items: center;
   justify-content: space-around;
 
-  padding: 10px;
-
   @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
   }
 `;
@@ -212,6 +215,12 @@ const ProfileButtonAria = styled.div`
   &:hover {
     background-color: rgb(228, 230, 232);
   }
+`;
+
+const TestAria = styled.div`
+  width: 100vw;
+  height: 5000px;
+  background-color: blueviolet;
 `;
 
 const Header = () => {
@@ -234,22 +243,23 @@ const Header = () => {
               <img src={Logo} />
             </HomeButton>
           </ButtonArea>
-          <SearchBar className={showPopUp ? "input-actived" : null}>
+          <SearchBar
+            className={`${showPopUp ? "input-actived" : ""} ${
+              showPopUp ? "input-actived" : ""
+            }`}
+          >
             <img src={SearchBarIcon} />
             <SearchBarInput placeholder="Search..." onFocus={handlePopUp} />
           </SearchBar>
+          <SearchPopUp />
           <ButtonArea>
             {/* <LoggedOutButtonContainer>
-            <MobileSearchBarIconArea>
-              <img src={MobileSearchBarIcon} />
-            </MobileSearchBarIconArea>
-            <Link to="/login">
+              <MobileSearchBarButton>
+                <img src={MobileSearchBarIcon} />
+              </MobileSearchBarButton>
               <LoginOutButton>Log in</LoginOutButton>
-            </Link>
-            <Link to="/signup">
               <SignUPButton>Sign up</SignUPButton>
-            </Link>
-          </LoggedOutButtonContainer> */}
+            </LoggedOutButtonContainer> */}
             <LoggedInButtonContainer>
               <MobileSearchBarButton>
                 <img src={MobileSearchBarIcon} />
@@ -270,7 +280,6 @@ const Header = () => {
           </ButtonArea>
         </HeaderContainer>
       </HeaderComponent>
-      <SearchPopUp />
       <MobileLeftNav />
     </>
   );
