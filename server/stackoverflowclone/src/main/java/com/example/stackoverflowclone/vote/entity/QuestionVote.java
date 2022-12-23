@@ -3,10 +3,7 @@ package com.example.stackoverflowclone.vote.entity;
 import com.example.stackoverflowclone.audit.Auditable;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.question.entity.Question;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class QuestionVote extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
