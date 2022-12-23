@@ -28,6 +28,7 @@ const HeaderComponent = styled.header`
   border-top: 3px solid rgb(230, 135, 62);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05),
     0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 30;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     padding-right: 4%;

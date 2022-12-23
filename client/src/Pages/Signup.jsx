@@ -2,7 +2,7 @@ import styled from "styled-components/macro"
 import BREAKPOINT from "../breakpoint"
 
 const Background = styled.div`
-  background-color: #f3f3f3;
+  background-color: #f6f6f6;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -138,7 +138,7 @@ const SignupAgreeInfo = styled.p`
   margin-bottom: 50px;
 `
 
-const Link = styled.a`
+const Linker = styled.a`
   color: #0a95ff;
 `
 
@@ -198,9 +198,9 @@ export default function Signup() {
             </SignupInputContainer>
             <PasswordValidation>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</PasswordValidation>
             <SignupButton>Sign up</SignupButton>
-            <SignupAgreeInfo>By clicking “Sign up”, you agree to our <Link>terms of service</Link>, <Link>privacy policy</Link> and <Link>cookie policy</Link></SignupAgreeInfo>
+            <SignupAgreeInfo>By clicking “Sign up”, you agree to our <Linker>terms of service</Linker>, <Linker>privacy policy</Linker> and <Linker>cookie policy</Linker></SignupAgreeInfo>
           </SignupForm>
-          <p css={`font-size: small;`}>Already have a account? <Link>Log in</Link></p>
+          <p css={`font-size: small;`}>Already have a account? <Linker>Log in</Linker></p>
         </SignupFormContainer>
       </Container>
     </Background>
