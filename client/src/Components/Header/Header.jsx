@@ -5,10 +5,15 @@ import MobileLogo from "../../icons/LogoGlyphXSm.svg";
 import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
-import { useLeftNavStore, useSearchPopUpStore } from "../../store/store";
+import {
+  useLeftNavStore,
+  useSearchPopUpStore,
+  useMobileSearchPopUpStore,
+} from "../../store/store";
 import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
+import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -226,6 +231,10 @@ const TestAria = styled.div`
 const Header = () => {
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
+  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore(
+    (state) => state
+  );
+
   return (
     <>
       <HeaderComponent>
@@ -243,11 +252,7 @@ const Header = () => {
               <img src={Logo} />
             </HomeButton>
           </ButtonArea>
-          <SearchBar
-            className={`${showPopUp ? "input-actived" : ""} ${
-              showPopUp ? "input-actived" : ""
-            }`}
-          >
+          <SearchBar className={showPopUp ? "input-actived" : null}>
             <img src={SearchBarIcon} />
             <SearchBarInput placeholder="Search..." onFocus={handlePopUp} />
           </SearchBar>
@@ -261,7 +266,7 @@ const Header = () => {
               <SignUPButton>Sign up</SignUPButton>
             </LoggedOutButtonContainer> */}
             <LoggedInButtonContainer>
-              <MobileSearchBarButton>
+              <MobileSearchBarButton onClick={handleMobilePopUp}>
                 <img src={MobileSearchBarIcon} />
               </MobileSearchBarButton>
               <ProfileButtonAria>
@@ -281,6 +286,7 @@ const Header = () => {
         </HeaderContainer>
       </HeaderComponent>
       <MobileLeftNav />
+      <MobileSearchPopUp />
     </>
   );
 };

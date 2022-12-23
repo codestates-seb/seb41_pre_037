@@ -15,7 +15,7 @@ const SearchPopUpBackdrop = styled.div`
 const SearchPopUpView = styled.div`
   border-radius: 3px;
   background-color: #ffffff;
-  width: 40%;
+  width: 40vw;
   height: 100px;
   margin-top: 55px;
   box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
