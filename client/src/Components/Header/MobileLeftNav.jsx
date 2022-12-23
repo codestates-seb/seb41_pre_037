@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components/macro";
 import { useLeftNavStore } from "../../store/store";
+import NavComponent from "../LeftNav/NavComponent";
 
 const MobileLeftNavBackdrop = styled.div`
   position: fixed;
@@ -12,9 +13,7 @@ const MobileLeftNavBackdrop = styled.div`
 `;
 
 const MobileLeftNavView = styled.div`
-  background-color: #ffffff;
-  width: 240px;
-  height: 160px; //padding-top: 24px, 각 메뉴당 34px * 4
+  height: 134px; //padding-top: 24px, 각 메뉴당 34px * 4
   left: 0;
   margin-top: 50px;
   box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
@@ -27,7 +26,7 @@ const MobileLeftNav = () => {
       {showLeftNav === true ? (
         <MobileLeftNavBackdrop onClick={handleLeftNav}>
           <MobileLeftNavView onClick={(e) => e.stopPropagation()}>
-            <p>Left Nav 영역입니다</p>
+            <NavComponent />
           </MobileLeftNavView>
         </MobileLeftNavBackdrop>
       ) : null}
