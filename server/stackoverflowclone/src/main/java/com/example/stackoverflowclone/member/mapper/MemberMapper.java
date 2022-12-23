@@ -1,8 +1,13 @@
 package com.example.stackoverflowclone.member.mapper;
 
+import com.example.stackoverflowclone.answer.entity.Answer;
+import com.example.stackoverflowclone.audit.Auditable;
 import com.example.stackoverflowclone.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.member.dto.MemberPostResponseDto;
+import com.example.stackoverflowclone.member.dto.MemberProfilePatchDto;
+import com.example.stackoverflowclone.member.dto.MemberProfileResponseDto;
 import com.example.stackoverflowclone.member.entity.Member;
+import com.example.stackoverflowclone.vote.entity.AnswerVote;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,12 +28,31 @@ public class MemberMapper {
               .title("")
               .aboutMe("")
               .image("")
+              .websiteLink("")
               .twitterLink("")
               .githubLink("")
               .fullname("")
               .build();
     }
-//    Member memberPatchToMember(MemberPatchDto requestBody);
+//    public Member memberPatchToMember(MemberProfilePatchDto memberProfilePatchDto){
+//
+//        return Member.builder()
+//                .memberId(memberProfilePatchDto.getMemberId())
+//                .profileCreatedAt(memberProfilePatchDto.getCreatedAt()) //
+//                .username(memberProfilePatchDto.getUsername())
+//                .email(memberProfilePatchDto.getEmail())
+//                .location(memberProfilePatchDto.getLocation())
+//                .title(memberProfilePatchDto.getTitle())
+//                .aboutMe(memberProfilePatchDto.getAboutMe())
+//                .image(memberProfilePatchDto.getImage())
+//                .websiteLink(memberProfilePatchDto.getWebsiteLink())
+//                .twitterLink(memberProfilePatchDto.getTwitterLink())
+//                .githubLink(memberProfilePatchDto.getGithubLink())
+//                .fullname(memberProfilePatchDto.getFullname())
+////                .answers(member.getAnswerVoteList()) //
+////                .question(member.getMemberId().getQuestionVoteCount()) //
+//                .build();
+//    }
     public MemberPostResponseDto memberToMemberResponse(Member member){
         if (member == null){
             return null;
@@ -38,6 +62,26 @@ public class MemberMapper {
                 .memberId(member.getMemberId())
                 .username(member.getUsername())
                 .email(member.getEmail())
+                .build();
+    }
+    public MemberProfileResponseDto memberTomemberProfileResponse(Member member){
+        Answer answer = new Answer();
+        answer.getAnswerVoteCount();
+        member.
+
+        return MemberProfileResponseDto.builder()
+                .memberId(member.getMemberId())
+                .profileCreatedAt(member.getCreatedAt()) //
+                .username(member.getUsername())
+                .email(member.getEmail())
+                .location(member.getLocation())
+                .title(member.getTitle())
+                .aboutMe(member.getAboutMe())
+                .image(member.getImage())
+                .websiteLink(member.getWebsiteLink())
+                .twitterLink(member.getTwitterLink())
+                .githubLink(member.getGithubLink())
+                .fullname(member.getFullname())
                 .build();
     }
 

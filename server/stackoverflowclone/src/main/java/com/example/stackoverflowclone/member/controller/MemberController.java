@@ -31,19 +31,26 @@ public class MemberController {
                 new DataResponseDto<>(mapper.memberToMemberResponse(createMember)), HttpStatus.CREATED);
     }
 
-//    @PatchMapping("/")
-//    public ResponseEntity postMember(@PathVariable("/") @Positive long memberId, @RequestBody MemberPostDto memberPostDto){
+//    @PatchMapping("/edit/{member-id}")
+//    public ResponseEntity patchMember(
+//            @PathVariable("{member-id}") long memberId,
+//                @RequestBody MemberPostDto memberPostDto){
 //
 //        return new ResponseEntity<>(
-//            new dataResponseDto<>(), HttpStatus.OK);
+//            new DataResponseDto<>(mapper.memberToMember().OK);
 //    }
 
-//
-//    @GetMapping("member-id")
-//    public ResponseEntity getMember(){
-//        return  null;
-//    }
-//
+
+    @GetMapping("/{member-id}/{username}")
+    public ResponseEntity getMember(@PathVariable("member-id")
+                                    long memberId){
+        Member member = memberService.findByMember(memberId);
+
+        return new ResponseEntity<>(
+                new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
+                        HttpStatus.OK );
+    }
+
 //    @GetMapping("member-id")
 //    public ResponseEntity getMembers(){
 //        return  null;
