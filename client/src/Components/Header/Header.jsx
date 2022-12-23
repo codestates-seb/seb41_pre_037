@@ -11,7 +11,7 @@ import {
   useMobileSearchPopUpStore,
 } from "../../store/store";
 import BREAKPOINT from "../../breakpoint";
-import SearchPopUp from "./SearchPopUP";
+import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
 
