@@ -28,7 +28,7 @@ const SearchPopUp = () => {
       {showPopUp === true ? (
         <SearchPopUpBackdrop onClick={handlePopUp}>
           <SearchPopUpView onClick={(e) => e.stopPropagation()}>
-            <span>user:1234</span> <span>search by author</span>{" "}
+            <span>user:1234</span> <span>search by author...</span>{" "}
             <span> answers:0</span> <span>unanswered questions</span>
           </SearchPopUpView>
         </SearchPopUpBackdrop>
@@ -38,5 +38,3 @@ const SearchPopUp = () => {
 };
 
 export default SearchPopUp;
-
-// 파일명 수정 (SearchPopUP => SearchPopUp)
