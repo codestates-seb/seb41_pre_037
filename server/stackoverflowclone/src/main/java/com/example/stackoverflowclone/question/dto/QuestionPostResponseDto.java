@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Builder
-public class QuestionPostDto {
-    private String email;
+public class QuestionPostResponseDto {
+    private Long questionId;
     private String questionTitle;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
