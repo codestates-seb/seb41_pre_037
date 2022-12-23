@@ -3,10 +3,10 @@ import BREAKPOINT from "../../breakpoint"
 
 const QuestionContainer = styled.div`
   display: flex;
-  width: 100%;
-  max-width: 800px;
-  min-width: 400px;
-  height: 120px;
+  max-width: 900px;
+  float: right;
+  /* min-width: 300px; */
+  height: max-content;
   border: 1px solid #c5c5c5;
   border-width: ${props => props.isLast? '1px 0 1px 0' : '1px 0 0 0'};
   padding: 16px;
@@ -36,7 +36,7 @@ const QuestionLeftSideContainer = styled.div`
   }
 `
 const QuestionInfo = styled.p`
-  font-size: 15px;
+  font-size: 13px;
   margin: 0;
   margin-bottom: 8px;
   color: ${props => props.isVote ? `black` : `gray`};
@@ -63,6 +63,8 @@ const QuestionPreview = styled.div`
   display: flex;
   font-size: 15px;
   margin-top: 10px;
+  min-width: 420px;
+  text-overflow: ellipsis;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: small;
   }
@@ -71,6 +73,7 @@ const QuestionPreview = styled.div`
 const QuestionFooter = styled.div`
   display: flex;
   width: 100%;
+  justify-items: stretch;
   justify-content: space-between;
   margin-top: 7px;
 `
@@ -88,8 +91,8 @@ const Tag = styled.div`
 
 const Profile = styled.div`
   display: flex;
-  width: max-content;
   height: max-content;
+  margin-left: auto;
 `
 
 const ProfileImg = styled.div`
@@ -100,11 +103,11 @@ const ProfileImg = styled.div`
   margin-right: 5px;
 `
 const ProfileName = styled.a`
-    padding-top: 2px;
-    font-size: small;
-    color: #39739D;
-    text-decoration: none;
-    margin-right: 5px;
+  padding-top: 2px;
+  font-size: small;
+  color: #39739D;
+  text-decoration: none;
+  margin-right: 5px;
 `
 const ProfileLog = styled.p`
   font-size: small;

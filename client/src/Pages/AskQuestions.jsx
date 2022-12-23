@@ -27,6 +27,10 @@ const Container = styled.div`
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTABLET}px) {
     width: 100%;
   }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+  }
 `
 
 const QuestionsHeaderContainer = styled.div`
@@ -69,7 +73,9 @@ const QuestionRuleContainer = styled.div`
 
   @media screen and (max-width: 1100px) {
     width: 100%;
+    min-width: 0;
   }
+
 `
 
 const QuestionRuleHeader = styled.h2`
@@ -117,6 +123,7 @@ const QuestionContainer = styled.div`
 
   @media screen and (max-width: 1100px) {
     width: 100%;
+    min-width: 0;
   }
 `
 const QuestionLabel = styled.label`
@@ -142,7 +149,7 @@ const QuestionEditorContainer = styled.div`
 
 const QuestionButtonContainer = styled.div`
   display: flex;
-  width: 70%;
+  width: max-content;
   height: max-content;
   box-sizing: border-box;
 `
