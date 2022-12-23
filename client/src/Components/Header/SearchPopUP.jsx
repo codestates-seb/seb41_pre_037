@@ -38,3 +38,5 @@ const SearchPopUp = () => {
 };
 
 export default SearchPopUp;
+
+// 파일명 수정 (SearchPopUP => SearchPopUp)
