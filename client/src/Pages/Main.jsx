@@ -3,6 +3,8 @@ import styled from "styled-components/macro";
 import Question from "../Components/Main/Question";
 import BREAKPOINT from "../breakpoint";
 import Header from "../Components/Header/Header";
+import Footer from "../Components/Footer/Footer";
+import LeftNav from "../Components/LeftNav/LeftNav";
 
 const Container = styled.div`
   display: flex;
@@ -109,6 +111,7 @@ export default function Main() {
     <>
       <Header />
       <Container>
+        <LeftNav />
         <MainbarContainer>
           <MainbarTopHeader>
             <Title>All Questions</Title>
@@ -135,6 +138,7 @@ export default function Main() {
           <RightSidebar />
         </RightSidebarContainer>
       </Container>
+      <Footer />
     </>
   );
 }
