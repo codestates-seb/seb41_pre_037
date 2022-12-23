@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Blob;
 
 @Data
-@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +25,7 @@ public class Tag extends Auditable {
     private String tagName;
 
     @Column(name = "tag_body")
+    @Lob
     private String tagBody;
 
     @Column(name = "tag_url")

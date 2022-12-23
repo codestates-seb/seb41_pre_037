@@ -5,6 +5,11 @@ spring:
       path: /h2
   datasource:
     url: jdbc:h2:mem:test
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:db/h2/data.sql
+
   jpa:
     hibernate:
       ddl-auto: create  # If deploy server, have to change please
@@ -12,3 +17,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
+
