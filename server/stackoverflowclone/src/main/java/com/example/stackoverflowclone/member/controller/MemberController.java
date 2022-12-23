@@ -20,13 +20,10 @@ import javax.validation.constraints.Positive;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
     private final MemberMapper mapper;
 
-
-
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity postMember(@RequestBody MemberPostDto memberPostDto){
         Member member = mapper.memberPostToMember(memberPostDto);
         Member createMember = memberService.createMember(member);
