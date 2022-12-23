@@ -4,13 +4,13 @@ import com.example.stackoverflowclone.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.member.service.MemberService;
+import com.example.stackoverflowclone.response.DataResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.example.stackoverflowclone.response.dataResponseDto;
 
 import javax.validation.constraints.Positive;
 
@@ -31,7 +31,7 @@ public class MemberController {
         Member member = mapper.memberPostToMember(memberPostDto);
         Member createMember = memberService.createMember(member);
         return new ResponseEntity<>(
-                new dataResponseDto<>(mapper.memberToMemberResponse(createMember)), HttpStatus.CREATED);
+                new DataResponseDto<>(mapper.memberToMemberResponse(createMember)), HttpStatus.CREATED);
     }
 
 //    @PatchMapping("/")
