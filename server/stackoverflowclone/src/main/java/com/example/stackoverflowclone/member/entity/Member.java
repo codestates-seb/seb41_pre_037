@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,15 +60,19 @@ public class Member extends Auditable {
     @Column(name = "fullname")
     private String fullname;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Question> questionList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<QuestionVote> questionVoteList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Answer> answersList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<AnswerVote> answerVoteList = new ArrayList<>();
 
