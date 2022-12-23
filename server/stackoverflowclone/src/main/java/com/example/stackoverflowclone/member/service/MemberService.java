@@ -1,15 +1,16 @@
 package com.example.stackoverflowclone.member.service;
 
-import com.example.stackoverflowclone.exception.BusinessLogicException;
-import com.example.stackoverflowclone.exception.ExceptionCode;
+import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
 import com.example.stackoverflowclone.member.entity.Member;
 
 import com.example.stackoverflowclone.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,9 +18,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final CustomAuthorityUtils authorityUtils;
+    private final PasswordEncoder passwordEncoder;
 
     public Member createMember(Member member){
-//        findMemberEmail(member.getEmail());
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         Member savedMember = memberRepository.save(member);
 
         return savedMember;

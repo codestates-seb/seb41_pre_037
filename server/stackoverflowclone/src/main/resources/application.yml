@@ -18,4 +18,7 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
-
+jwt:
+  secret-key: ${JWT_SECRET_KEY}  # 환경 변수로 설정했음
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
