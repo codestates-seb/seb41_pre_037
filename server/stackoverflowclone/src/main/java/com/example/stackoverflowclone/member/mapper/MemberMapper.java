@@ -65,10 +65,6 @@ public class MemberMapper {
                 .build();
     }
     public MemberProfileResponseDto memberTomemberProfileResponse(Member member){
-        Answer answer = new Answer();
-        answer.getAnswerVoteCount();
-        member.
-
         return MemberProfileResponseDto.builder()
                 .memberId(member.getMemberId())
                 .profileCreatedAt(member.getCreatedAt()) //
