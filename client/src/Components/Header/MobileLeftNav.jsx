@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components/macro";
-import { useLeftNavStore } from "../../store";
+import { useLeftNavStore } from "../../store/store";
 
 const MobileLeftNavBackdrop = styled.div`
   position: fixed;

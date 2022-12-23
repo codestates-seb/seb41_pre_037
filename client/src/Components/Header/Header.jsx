@@ -5,13 +5,10 @@ import MobileLogo from "../../icons/LogoGlyphXSm.svg";
 import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
-import { useLeftNavStore, useSearchPopUpStore } from "../../store";
+import { useLeftNavStore, useSearchPopUpStore } from "../../store/store";
+import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
-
-const BREAKPOINTMOBILE = 767;
-const BREAKPOINTTABLET = 1023;
-//이따 breakpoint import해서 수정하기
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -26,7 +23,7 @@ const HeaderComponent = styled.header`
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05),
     0 2px 8px rgba(0, 0, 0, 0.05);
 
-  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     padding-right: 4%;
   }
 `;
@@ -38,7 +35,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
-  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     justify-content: space-between;
   }
 `;
@@ -61,7 +58,7 @@ const HomeButton = styled.button`
   &:hover {
     background-color: rgb(228, 230, 232);
   }
-  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -72,7 +69,7 @@ const MobileLeftButtonContainer = styled.div`
   justify-content: space-between;
   height: 100%;
 
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -89,7 +86,7 @@ const MobileHomeButton = styled.button`
   &:hover {
     background-color: rgb(228, 230, 232);
   }
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -106,7 +103,7 @@ const MobileMenuButton = styled.button`
   &:hover {
     background-color: rgb(228, 230, 232);
   }
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -126,7 +123,7 @@ const SearchBar = styled.div`
     box-shadow: 0 0 5px 4px rgba(95, 180, 255, 0.4);
   }
 
-  @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -149,7 +146,7 @@ const MobileSearchBarButton = styled.button`
   &:hover {
     background-color: rgb(228, 230, 232);
   }
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
   }
 `;
@@ -161,7 +158,7 @@ const LoggedOutButtonContainer = styled.div`
 
   padding: 10px;
 
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
   }
 `;
 
@@ -200,7 +197,7 @@ const LoggedInButtonContainer = styled.div`
 
   padding: 10px;
 
-  @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
+  @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
   }
 `;
 

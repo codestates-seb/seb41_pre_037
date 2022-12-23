@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components/macro";
-import { useSearchPopUpStore } from "../../store";
+import { useSearchPopUpStore } from "../../store/store";
 
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
