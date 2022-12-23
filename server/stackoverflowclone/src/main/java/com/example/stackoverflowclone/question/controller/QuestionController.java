@@ -48,6 +48,7 @@ public class QuestionController {
     public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
                                                         @PathVariable("question-title") String questionTitle){
 
+
         Question question = questionService.findQuestion(questionId);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
