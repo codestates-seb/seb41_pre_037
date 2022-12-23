@@ -11,6 +11,7 @@ import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,13 +54,12 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer()) // 커스터마이징한 필터를 추가할 수 있음
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                                .anyRequest().permitAll()
 //                        .antMatchers(HttpMethod.POST, "/*/users").permitAll()
 //                        .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/questions/**").hasRole("USER")
 //                        .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER", "ADMIN")
 //                        .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER")
-//                        .anyRequest().permitAll()
+                        .anyRequest().permitAll()
                 );
         return http.build();
     }

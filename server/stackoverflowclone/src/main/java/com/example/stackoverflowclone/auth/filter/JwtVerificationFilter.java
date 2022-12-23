@@ -68,8 +68,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String jws = request.getHeader("Authorization").replace("Bearer ","");
         log.info("-----------> 토큰정보 : "+ jws);
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        Map<String ,Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-        return claims;
+        return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
     }
 
     /*

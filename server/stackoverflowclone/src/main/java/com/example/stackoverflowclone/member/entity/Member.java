@@ -76,7 +76,8 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<AnswerVote> answerVoteList = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
 }
