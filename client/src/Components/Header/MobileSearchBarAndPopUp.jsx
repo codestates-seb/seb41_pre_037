@@ -20,7 +20,7 @@ const SearchBar = styled.div`
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(187, 191, 195);
   border-radius: 3px;
-  width: 95vw;
+  width: 90vw;
   height: 32px;
   margin-top: 60px;
   padding-left: 1%;
@@ -40,7 +40,7 @@ const SearchBarInput = styled.input`
 const SearchPopUpView = styled.div`
   border-radius: 3px;
   background-color: #ffffff;
-  width: 95vw;
+  width: 90vw;
   height: 100px;
   margin-top: 10px;
   box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
