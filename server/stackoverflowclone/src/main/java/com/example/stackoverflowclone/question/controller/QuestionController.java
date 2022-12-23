@@ -33,15 +33,12 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
 
-    private final QuestionTagService questionTagService;
-
-    private final AnswerService answerService;
 
     @PostMapping("/ask/post")
-    public ResponseEntity<DataResponseDto> postQuestion(@RequestBody QuestionPostDto questionPostDto){
+    public ResponseEntity<DataResponseDto> createQuestion(@RequestBody QuestionPostDto questionPostDto){
 
         List<Tag> tagList = tagService.findTags(questionPostDto);
-        Member member = memberService.findMemberEmail(questionPostDto.getEmail());
+        Member member = memberService.findMemberEmail(questionPostDto.getEmail()); // 리펙토리 포인트 (시큐리티 연결시)
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question,tagList)),HttpStatus.CREATED);

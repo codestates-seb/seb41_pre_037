@@ -23,6 +23,7 @@ public class Answer extends Auditable {
     @Column(name = "answer_id")
     private Long answerId;
 
+    @Lob
     @Column(name = "answer_content")
     private String answerContent;
 
