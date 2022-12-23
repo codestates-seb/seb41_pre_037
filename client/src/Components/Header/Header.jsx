@@ -5,20 +5,20 @@ import MobileLogo from "../../icons/LogoGlyphXSm.svg";
 import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
-import { Link } from "react-router-dom";
-import { useState } from "react";
 import { useLeftNavStore, useSearchPopUpStore } from "../../store";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 
 const BREAKPOINTMOBILE = 767;
 const BREAKPOINTTABLET = 1023;
+//이따 breakpoint import해서 수정하기
 
 const HeaderComponent = styled.header`
   height: 50px;
   width: 100%;
   display: flex;
-  position: fixed;
+  position: sticky;
+  top: 0;
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(248, 249, 249);
@@ -27,7 +27,7 @@ const HeaderComponent = styled.header`
     0 2px 8px rgba(0, 0, 0, 0.05);
 
   @media screen and (max-width: ${BREAKPOINTMOBILE}px) {
-    padding-right: 1%;
+    padding-right: 4%;
   }
 `;
 
@@ -137,16 +137,18 @@ const SearchBarInput = styled.input`
   font-size: 14px;
 `;
 
-const ScrollTestAria = styled.div`
-  width: 100%;
-  height: 5000px;
-  background-color: #909cca;
-`;
+const MobileSearchBarButton = styled.button`
+  all: unset;
+  height: 47px;
+  width: 47px;
 
-const MobileSearchBarIconArea = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 
+  &:hover {
+    background-color: rgb(228, 230, 232);
+  }
   @media screen and (min-width: ${BREAKPOINTMOBILE}px) {
     display: none;
   }
@@ -215,13 +217,6 @@ const ProfileButtonAria = styled.div`
   }
 `;
 
-const TestAria = styled.div`
-  position: sticky;
-  width: 100px;
-  height: 100px;
-  background-color: aquamarine;
-`;
-
 const Header = () => {
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
@@ -259,9 +254,9 @@ const Header = () => {
             </Link>
           </LoggedOutButtonContainer> */}
             <LoggedInButtonContainer>
-              <MobileSearchBarIconArea>
+              <MobileSearchBarButton>
                 <img src={MobileSearchBarIcon} />
-              </MobileSearchBarIconArea>
+              </MobileSearchBarButton>
               <ProfileButtonAria>
                 <button
                   css={`
@@ -280,7 +275,6 @@ const Header = () => {
       </HeaderComponent>
       <SearchPopUp />
       <MobileLeftNav />
-      <ScrollTestAria>왜 안 보임..</ScrollTestAria>
     </>
   );
 };
