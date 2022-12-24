@@ -9,16 +9,16 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /*
- * WebConfig에서 addArgumentResolvers(); 메서드에 추가할 것
- * */
-public class LoginMemberIdResolver implements HandlerMethodArgumentResolver {
+* WebConfig에서 addArgumentResolvers(); 메서드에 추가할 것
+* */
+public class LoginMemberEmailResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
 
-        boolean hasLoginMemberIdAnnotation = parameter.hasParameterAnnotation(LoginMemberId.class);
-        boolean hasLongType = Long.class.isAssignableFrom(parameter.getParameterType());
-        return hasLoginMemberIdAnnotation && hasLongType;
+        boolean hasLoginMemberEmailAnnotation = parameter.hasParameterAnnotation(LoginMemberEmail.class);
+        boolean hasLongType = String.class.isAssignableFrom(parameter.getParameterType());
+        return hasLoginMemberEmailAnnotation && hasLongType;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class LoginMemberIdResolver implements HandlerMethodArgumentResolver {
 
         TokenPrincipalDto castedPrincipal = (TokenPrincipalDto) principal;
 
-        return castedPrincipal.getId();
+        return castedPrincipal.getEmail();
     }
 }

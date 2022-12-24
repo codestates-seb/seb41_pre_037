@@ -40,6 +40,8 @@ public class QuestionController {
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody QuestionPostDto questionPostDto){
+
+        log.info("memberId = {}", memberId);
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
@@ -55,7 +57,7 @@ public class QuestionController {
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
-        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.AnswersToQuestionFindAnswerDto(answers);
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers);
         Member member = question.getMember();
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto)), HttpStatus.OK);

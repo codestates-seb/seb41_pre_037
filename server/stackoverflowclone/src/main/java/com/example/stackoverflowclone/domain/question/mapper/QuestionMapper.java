@@ -88,7 +88,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public List<QuestionFindAnswerDto> AnswersToQuestionFindAnswerDto(List<Answer> answers){
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers){
 
         if(answers == null){
             return null;
