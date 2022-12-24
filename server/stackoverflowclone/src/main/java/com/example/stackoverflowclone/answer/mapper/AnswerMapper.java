@@ -10,15 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AnswerMapper {
 
-    public Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto, Question question){
-        Member member = new Member(); // 테스트 용도 시큐리티 완료후 삭제 예정
-        member.setMemberId(1L); // 테스트 용도 시큐리티 완료후 삭제 예정
+    public Answer answerPostDtoToAnswer(AnswerPostDto answerPostDto, Question question, Member member){
 
         return Answer.builder()
                 .answerContent(answerPostDto.getAnswerContent())
                 .answerVoteCount(0)
                 .question(question)
-                .member(member) // 리펙토리 포인트 (시큐리티 연결시)
+                .member(member)
                 .build();
     }
 

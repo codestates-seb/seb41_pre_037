@@ -39,8 +39,8 @@ public class QuestionController {
 
         log.info("login MemberId = {}", memberId);
         List<Tag> tagList = tagService.findTags(questionPostDto);
-        Member member = memberService.findMemberEmail(questionPostDto.getEmail()); // 리펙토리 포인트 (시큐리티 연결시)
-        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
+        Member member = memberService.findByMember(memberId);
+        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
@@ -60,6 +60,7 @@ public class QuestionController {
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
     }
+<<<<<<< HEAD
 
 //    @GetMapping("/test")
 //    public ResponseEntity findQuestion() {
@@ -74,5 +75,7 @@ public class QuestionController {
 //        return new ResponseEntity(q, HttpStatus.OK);
 //
 //        // JPA
+=======
+>>>>>>> 85f5001 ([feat] Question, Answer 로그인된 사용자만 연결하도록 설정 완료)
 }
 
