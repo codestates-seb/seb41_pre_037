@@ -2,6 +2,8 @@ import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import { useMobileSearchPopUpStore } from "../../store/store";
 import SearchBarIcon from "../../icons/Search.svg";
+import SearchPopUp from "./SearchPopUp";
+import SearchPopUpComponent from "./SearchPopUpComponent";
 
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
@@ -46,28 +48,23 @@ const SearchPopUpView = styled.div`
   box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `;
 
+const MobileSearchPopUpView = styled(SearchPopUpComponent)``;
+
 const MobileSearchPopUp = () => {
-  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore(
-    (state) => state
-  );
+  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   return (
     <>
       {showMobilePopUp === true ? (
         <SearchPopUpBackdrop onClick={handleMobilePopUp}>
-          <SearchBar
-            className={showMobilePopUp ? "input-actived" : null}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <SearchBar className={showMobilePopUp ? "input-actived" : null} onClick={(e) => e.stopPropagation()}>
             <img src={SearchBarIcon} />
-            <SearchBarInput
-              placeholder="Search..."
-              onClick={(e) => e.stopPropagation()}
-            />
+            <SearchBarInput placeholder="Search..." onClick={(e) => e.stopPropagation()} />
           </SearchBar>
-          <SearchPopUpView onClick={(e) => e.stopPropagation()}>
-            <span>user:1234</span> <span>search by author</span>{" "}
-            <span> answers:0</span> <span>unanswered questions</span>
-          </SearchPopUpView>
+          <MobileSearchPopUpView onClick={(e) => e.stopPropagation()} />
+          {/* <SearchPopUpView onClick={(e) => e.stopPropagation()}>
+            <span>user:1234</span> <span>search by author</span> <span> answers:0</span>{" "}
+            <span>unanswered questions</span>
+          </SearchPopUpView> */}
         </SearchPopUpBackdrop>
       ) : null}
     </>
