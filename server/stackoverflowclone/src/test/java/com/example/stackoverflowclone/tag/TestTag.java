@@ -9,12 +9,5 @@ import org.junit.jupiter.api.Test;
 
 public class TestTag {
 
-    public void shouldMapTagToDto() {
-        // given
-        Tag tag = new Tag(1L, "C", "Clang", "");
-
-        TagResponseDto tagResponseDto = TagMapper.INSTANCE.tagToTagResponseDto(tag);
-
-    }
 
 }

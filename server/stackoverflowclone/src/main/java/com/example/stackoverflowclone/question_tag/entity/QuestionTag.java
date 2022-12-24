@@ -20,6 +20,8 @@ public class QuestionTag extends Auditable {
     @Column(name = "question_tag_id")
     private Long questionTagId;
 
+    private int questionCountWithOneTag;
+
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

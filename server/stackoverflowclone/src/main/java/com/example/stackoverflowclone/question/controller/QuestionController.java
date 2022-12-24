@@ -35,18 +35,18 @@ public class QuestionController {
 
 
     @PostMapping("/ask/post")
-    public ResponseEntity<DataResponseDto> createQuestion(@RequestBody QuestionPostDto questionPostDto){
+    public ResponseEntity<DataResponseDto> createQuestion(@RequestBody QuestionPostDto questionPostDto) {
 
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findMemberEmail(questionPostDto.getEmail()); // 리펙토리 포인트 (시큐리티 연결시)
-        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
+        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
 
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question,tagList)),HttpStatus.CREATED);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 
     @GetMapping("/{question-id}/{question-title}")
     public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle){
+                                                        @PathVariable("question-title") String questionTitle) {
 
 
         Question question = questionService.findQuestion(questionId);
@@ -55,8 +55,21 @@ public class QuestionController {
         List<Answer> answers = question.getAnswers();
         Member member = question.getMember();
 
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question,member,tagList,answers)),HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
     }
 
-
+//    @GetMapping("/test")
+//    public ResponseEntity findQuestion() {
+//        Member member = new Member();
+//        member.setPassword("1234");
+//        member.setUsername("haha");
+//        member.setEmail("esatm@naver.com");
+//        member.setMemberId(1L);
+//        Question q = questionService.findAllQuestionswithOneMember(member);
+//        log.info("questionId = {}", q.getQuestionId());
+//        log.info("Title = {}", q.getQuestionTitle());
+//        return new ResponseEntity(q, HttpStatus.OK);
+//
+//        // JPA
 }
+

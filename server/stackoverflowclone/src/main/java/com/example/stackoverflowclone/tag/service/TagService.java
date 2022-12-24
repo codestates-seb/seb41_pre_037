@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.tag.service;
 
+import com.example.stackoverflowclone.question.service.QuestionService;
 import com.example.stackoverflowclone.tag.entity.Tag;
 import com.example.stackoverflowclone.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,12 @@ import java.util.stream.Collectors;
 public class TagService {
     private final TagRepository tagRepository;
 
+
     public Page<Tag> findTags(int page, int size) {
         return tagRepository.findAll(PageRequest.of(page, size, Sort.by("tagId").descending()));
     }
+
+
     public List<Tag> findTags(QuestionPostDto questionPostDto){
         return questionPostDto.getTag().stream()
                 .map(tag -> {

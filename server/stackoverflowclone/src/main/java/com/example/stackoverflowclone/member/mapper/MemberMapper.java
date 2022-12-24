@@ -1,16 +1,15 @@
 package com.example.stackoverflowclone.member.mapper;
-
-import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.audit.Auditable;
 import com.example.stackoverflowclone.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.member.dto.MemberPostResponseDto;
-import com.example.stackoverflowclone.member.dto.MemberProfilePatchDto;
 import com.example.stackoverflowclone.member.dto.MemberProfileResponseDto;
+import com.example.stackoverflowclone.member.dto.MemberToUserPageResponseDto;
 import com.example.stackoverflowclone.member.entity.Member;
-import com.example.stackoverflowclone.vote.entity.AnswerVote;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -82,4 +81,21 @@ public class MemberMapper {
     }
 
 //    List<MemberResponseDto> membersToMemberResponses(List<Member> members);
+
+    public List<MemberToUserPageResponseDto> memberUserToResponseDto(List<Member> members) {
+        if (members == null) {
+            return null;
+        }
+
+        return members.stream()
+                .map(member -> {
+                    return MemberToUserPageResponseDto.builder()
+                            .memberId(member.getMemberId())
+                            .username(member.getUsername())
+                            .image(member.getImage())
+                            .location(member.getLocation())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }
