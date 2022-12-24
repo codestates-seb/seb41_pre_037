@@ -22,5 +22,5 @@ public class QuestionFindResponseDto {
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
     private List<Tag> tag;
-    private List<Answer> answers;
+    private List<QuestionFindAnswerDto> answers;
 }

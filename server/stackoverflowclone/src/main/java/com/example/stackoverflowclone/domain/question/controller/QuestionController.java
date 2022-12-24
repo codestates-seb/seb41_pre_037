@@ -4,6 +4,7 @@ package com.example.stackoverflowclone.domain.question.controller;
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
@@ -39,7 +40,6 @@ public class QuestionController {
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody QuestionPostDto questionPostDto){
-
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
@@ -55,9 +55,10 @@ public class QuestionController {
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.AnswersToQuestionFindAnswerDto(answers);
         Member member = question.getMember();
 
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto)), HttpStatus.OK);
     }
 
     @PostMapping("/{question-id}/vote/2")

@@ -2,6 +2,7 @@ package com.example.stackoverflowclone.domain.question.mapper;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionFindResponseDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
@@ -64,7 +65,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<Answer> answers){
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers){
 
         if(question == null || member == null || tagList == null || answers == null){
             return null;
@@ -85,6 +86,27 @@ public class QuestionMapper {
                 .tag(tagList)
                 .answers(answers)
                 .build();
+    }
+
+    public List<QuestionFindAnswerDto> AnswersToQuestionFindAnswerDto(List<Answer> answers){
+
+        if(answers == null){
+            return null;
+        }
+
+        return answers.stream()
+                .map(answer -> {
+                    return QuestionFindAnswerDto.builder()
+                            .answerId(answer.getAnswerId())
+                            .answerCreatedAt("1 min ago")
+                            .answerContent(answer.getAnswerContent())
+                            .answerVoteCount(answer.getAnswerVoteCount())
+                            .memberId(answer.getMember().getMemberId())
+                            .username(answer.getMember().getUsername())
+                            .image(answer.getMember().getImage())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
     public QuestionVote questionMemberInfoToQuestionVote(Member member,Question question){
