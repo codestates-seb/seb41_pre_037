@@ -30,7 +30,7 @@ public class TagController {
 
     @GetMapping
     public ResponseEntity findTags(@Positive @RequestParam int page) {
-        Page<Tag> pageTags = tagService.findTags(page - 1, 30);
+        Page<Tag> pageTags = tagService.findTags(page - 1, 15);
         List<Tag> tags = pageTags.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),
                 HttpStatus.OK);
