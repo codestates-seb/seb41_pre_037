@@ -2,8 +2,11 @@ package com.example.stackoverflowclone.global.security.auth.filter;
 
 import com.example.stackoverflowclone.global.security.auth.dto.LoginDto;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
+import com.example.stackoverflowclone.member.dto.MemberLoginResponseDto;
 import com.example.stackoverflowclone.member.entity.Member;
+import com.example.stackoverflowclone.response.DataResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,8 +60,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization",headerValue);
         response.setHeader("Refresh",refreshToken);
 
-        log.info("확인하고싶은 accessToken = {}",headerValue);
-        log.info("확인하고싶은 accessToken = {}",refreshToken);
+        log.info("accessToken = {}",headerValue);
+        log.info("refreshToken = {}",refreshToken);
+
+        MemberLoginResponseDto loginResponseDto = MemberLoginResponseDto.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .image(member.getImage())
+                .build();
+
+        String body = new Gson().toJson(new DataResponseDto<>(loginResponseDto));
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(body);
+
 
         this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult);
     }

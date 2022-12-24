@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.global.config;
+package com.example.stackoverflowclone.global.security.config;
 
 import com.example.stackoverflowclone.global.security.auth.filter.JwtAuthenticationFilter;
 import com.example.stackoverflowclone.global.security.auth.filter.JwtVerificationFilter;
