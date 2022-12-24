@@ -1,10 +1,10 @@
 package com.example.stackoverflowclone.controoler;
 
 
-import com.example.stackoverflowclone.member.dto.MemberPostDto;
-import com.example.stackoverflowclone.member.entity.Member;
-import com.example.stackoverflowclone.member.mapper.MemberMapper;
-import com.example.stackoverflowclone.member.service.MemberService;
+import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
+import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
+import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

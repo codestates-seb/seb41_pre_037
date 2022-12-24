@@ -2,9 +2,9 @@ package com.example.stackoverflowclone.global.security.auth.filter;
 
 import com.example.stackoverflowclone.global.security.auth.dto.LoginDto;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
-import com.example.stackoverflowclone.member.dto.MemberLoginResponseDto;
-import com.example.stackoverflowclone.member.entity.Member;
-import com.example.stackoverflowclone.response.DataResponseDto;
+import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
+import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;

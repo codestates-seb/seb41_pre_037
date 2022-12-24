@@ -1,6 +1,6 @@
 package com.example.stackoverflowclone.global.security.auth.utils;
 
-import com.example.stackoverflowclone.response.ErrorResponse;
+import com.example.stackoverflowclone.global.response.ErrorResponse;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,7 +1,7 @@
 package com.example.stackoverflowclone.global.advice;
 
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
-import com.example.stackoverflowclone.response.ErrorResponse;
+import com.example.stackoverflowclone.global.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
