@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 const BlogContainer = styled.ul`
   padding: 0px;
-  width: 300px;
+  width: 270px;
   height: fit-content;
   border-radius: 5%;
   list-style: none;
@@ -69,10 +69,11 @@ const ListIcon = styled.div`
 `;
 
 const RelatedTagsContainer = styled.div`
-  width: 400px;
+  width: max-content;
   height: fit-content;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 `;
 const RelateTagsHead = styled.h2`
   font-weight: 500;
