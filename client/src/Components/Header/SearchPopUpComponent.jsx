@@ -3,8 +3,8 @@ import styled from "styled-components/macro";
 const SearchPopUpView = styled.div`
   border-radius: 3px;
   background-color: #ffffff;
-  width: 40vw;
   height: 100px;
+  width: 40vw;
   margin-top: 55px;
   display: flex;
   flex-direction: column;
