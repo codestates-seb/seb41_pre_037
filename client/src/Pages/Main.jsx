@@ -8,36 +8,42 @@ import LeftNav from "../Components/LeftNav/LeftNav";
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
-  width: 100vw;
+  width: 100%;
   height: max-content;
+  max-width: 1260px;
+  margin: 0 auto;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    justify-content: flex-start;
+  }
 `;
 
 const Title = styled.h1`
   font-weight: 400;
-  margin-left: 10px;
+  margin-left: 20px;
+  font-size: 28px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: x-large;
+    margin-left: 15px;
   }
 `;
 
 const QuestionCount = styled.h2`
   font-size: 18px;
   font-weight: 500;
-  margin-left: 15px;
+  margin-left: 20px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: medium;
+    margin-left: 15px;
   }
 `;
 
 const MainbarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 70%;
   min-width: 500px;
-  max-width: 800px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
-    width: 90%;
+    width: 100%;
     min-width: 0;
   }
 `;
@@ -45,6 +51,7 @@ const MainbarTopHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 10px;
 `;
 
 const MainbarBottomHeader = styled.div`
@@ -59,6 +66,10 @@ const MainbarSortButtonContainer = styled.div`
   width: 200px;
   height: max-content;
   padding-bottom: 15px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    margin-right: 10px;
+  }
 `;
 
 const SortButton = styled.button`
@@ -93,14 +104,18 @@ const AskQuestionButton = styled.button`
     box-shadow: inset 0 1px 0 0 #65869e;
     cursor: pointer;
   }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    margin-right: 10px;
+  }
 `;
 
 const RightSidebarContainer = styled.div`
   display: flex;
-  justify-content: center;
-  width: 30%;
-  margin-left: 50px;
-  min-width: 400px;
+  justify-content: flex-end;
+  margin-right: 20px;
+  width: 20%;
+  min-width: 300px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     display: none;
   }

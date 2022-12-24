@@ -53,7 +53,7 @@ const SignupDetailHeadMobile = styled.div`
     font-size: 21px;
     height: 50px;
     text-align: center;
-    margin-bottom: 30px;
+    margin: 0 10px 30px  10px;
   }
 `
 
@@ -93,6 +93,10 @@ const SignupForm = styled.div`
   box-shadow: 0 0 5px 5px #e4e4e4;
   margin-left: 25px;
   padding-top: 40px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    margin-left: 0;
+  }
 `
 const SignupInputContainer = styled.div`
   margin: 0 auto;
