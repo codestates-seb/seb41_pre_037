@@ -67,16 +67,14 @@ public class QuestionController {
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @PathVariable("question-id") Long questionId){
 
-        log.info("login MemberId = {}", memberId);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.findQuestion(questionId);
 
-//        questionVoteService.getStatus(member, question);
-
-        QuestionVote questionVote = questionMapper.questionMemberInfoToQuestionVote(member, question);
+        String status = questionVoteService.getStatus(member, question);
+//        QuestionVote questionVote = questionMapper.questionMemberInfoToQuestionVote(member, question);
 //        questionVoteService.increaseVote(questionVote);
 
-        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(status),HttpStatus.OK);
     }
 
     @PostMapping("/{question-id}/vote/3")
@@ -84,7 +82,6 @@ public class QuestionController {
                                                             @PathVariable("question-id") Long questionId){
 
         log.info("login MemberId = {}", memberId);
-
 
         return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
     }

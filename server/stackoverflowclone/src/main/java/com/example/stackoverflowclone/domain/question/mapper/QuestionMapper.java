@@ -10,6 +10,7 @@ import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDt
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
+import com.example.stackoverflowclone.global.enums.VoteStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -112,7 +113,7 @@ public class QuestionMapper {
     public QuestionVote questionMemberInfoToQuestionVote(Member member,Question question){
 
         return QuestionVote.builder()
-                .status(true)
+                .status(VoteStatus.UP)
                 .member(member)
                 .question(question)
                 .build();
