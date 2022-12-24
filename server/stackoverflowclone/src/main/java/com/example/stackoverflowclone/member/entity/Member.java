@@ -1,7 +1,7 @@
 package com.example.stackoverflowclone.member.entity;
 
 import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.vote.entity.AnswerVote;
 import com.example.stackoverflowclone.vote.entity.QuestionVote;

@@ -1,6 +1,6 @@
 package com.example.stackoverflowclone.question_tag.entity;
 
-import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.tag.entity.Tag;
 import lombok.*;

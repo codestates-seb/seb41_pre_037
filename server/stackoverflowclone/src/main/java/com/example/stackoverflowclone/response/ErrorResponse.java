@@ -1,6 +1,6 @@
 package com.example.stackoverflowclone.response;
 
-import com.example.stackoverflowclone.exception.ExceptionCode;
+import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

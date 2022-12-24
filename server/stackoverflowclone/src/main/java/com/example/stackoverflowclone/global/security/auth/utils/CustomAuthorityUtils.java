@@ -1,6 +1,5 @@
-package com.example.stackoverflowclone.auth.utils;
+package com.example.stackoverflowclone.global.security.auth.utils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

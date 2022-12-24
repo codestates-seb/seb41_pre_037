@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.auth.dto;
+package com.example.stackoverflowclone.global.security.auth.dto;
 
 import lombok.Getter;
 

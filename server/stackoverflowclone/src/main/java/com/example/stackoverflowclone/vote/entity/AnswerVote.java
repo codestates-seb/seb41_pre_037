@@ -1,7 +1,7 @@
 package com.example.stackoverflowclone.vote.entity;
 
 import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.member.entity.Member;
 import lombok.*;
 

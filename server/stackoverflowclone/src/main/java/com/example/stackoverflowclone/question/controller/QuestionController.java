@@ -2,7 +2,7 @@ package com.example.stackoverflowclone.question.controller;
 
 
 import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.answer.service.AnswerService;
+import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.member.service.MemberService;
 import com.example.stackoverflowclone.question.dto.QuestionPostDto;
@@ -10,10 +10,11 @@ import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.question.service.QuestionService;
 import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
-import com.example.stackoverflowclone.question_tag.service.QuestionTagService;
 import com.example.stackoverflowclone.response.DataResponseDto;
 import com.example.stackoverflowclone.tag.entity.Tag;
 import com.example.stackoverflowclone.tag.service.TagService;
+import com.example.stackoverflowclone.vote.entity.QuestionVote;
+import com.example.stackoverflowclone.vote.service.QuestionVoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,22 +33,23 @@ public class QuestionController {
     private final TagService tagService;
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final QuestionVoteService questionVoteService;
 
 
     @PostMapping("/ask/post")
-    public ResponseEntity<DataResponseDto> createQuestion(@RequestBody QuestionPostDto questionPostDto) {
+    public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
+                                                          @RequestBody QuestionPostDto questionPostDto){
 
         List<Tag> tagList = tagService.findTags(questionPostDto);
-        Member member = memberService.findMemberEmail(questionPostDto.getEmail()); // 리펙토리 포인트 (시큐리티 연결시)
-        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
+        Member member = memberService.findByMember(memberId);
+        Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{question-id}/{question-title}")
-    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle) {
-
+    public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
+                                                        @PathVariable("question-id") Long questionId,
+                                                        @PathVariable("question-title") String questionTitle){
 
         Question question = questionService.findQuestion(questionId);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
@@ -58,18 +60,30 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
     }
 
-//    @GetMapping("/test")
-//    public ResponseEntity findQuestion() {
-//        Member member = new Member();
-//        member.setPassword("1234");
-//        member.setUsername("haha");
-//        member.setEmail("esatm@naver.com");
-//        member.setMemberId(1L);
-//        Question q = questionService.findAllQuestionswithOneMember(member);
-//        log.info("questionId = {}", q.getQuestionId());
-//        log.info("Title = {}", q.getQuestionTitle());
-//        return new ResponseEntity(q, HttpStatus.OK);
-//
-//        // JPA
+    @PostMapping("/questions/{question-id}/vote/2")
+    public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
+                                                          @PathVariable("question-id") Long questionId){
+
+        log.info("login MemberId = {}", memberId);
+        Member member = memberService.findByMember(memberId);
+        Question question = questionService.findQuestion(questionId);
+
+//        questionVoteService.getStatus(member, question);
+
+        QuestionVote questionVote = questionMapper.questionMemberInfoToQuestionVote(member, question);
+//        questionVoteService.increaseVote(questionVote);
+
+        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+    }
+
+    @PostMapping("/questions/{question-id}/vote/3")
+    public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
+                                                            @PathVariable("question-id") Long questionId){
+
+        log.info("login MemberId = {}", memberId);
+
+
+        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+    }
 }
 

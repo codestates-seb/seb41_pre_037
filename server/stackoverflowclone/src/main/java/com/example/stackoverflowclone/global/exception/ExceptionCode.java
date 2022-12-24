@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.exception;
+package com.example.stackoverflowclone.global.exception;
 
 import lombok.Getter;
 

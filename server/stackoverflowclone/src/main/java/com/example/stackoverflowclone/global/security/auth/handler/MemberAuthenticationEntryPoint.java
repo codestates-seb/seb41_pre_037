@@ -1,6 +1,6 @@
-package com.example.stackoverflowclone.auth.handler;
+package com.example.stackoverflowclone.global.security.auth.handler;
 
-import com.example.stackoverflowclone.auth.utils.ErrorResponder;
+import com.example.stackoverflowclone.global.security.auth.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

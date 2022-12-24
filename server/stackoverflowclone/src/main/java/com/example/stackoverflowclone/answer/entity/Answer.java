@@ -1,14 +1,12 @@
 package com.example.stackoverflowclone.answer.entity;
 
-import com.example.stackoverflowclone.audit.Auditable;
+import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.question.entity.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Builder

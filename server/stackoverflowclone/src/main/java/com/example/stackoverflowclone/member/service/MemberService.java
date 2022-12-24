@@ -1,6 +1,6 @@
 package com.example.stackoverflowclone.member.service;
 
-import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
+import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
 import com.example.stackoverflowclone.member.entity.Member;
 
 import com.example.stackoverflowclone.member.repository.MemberRepository;

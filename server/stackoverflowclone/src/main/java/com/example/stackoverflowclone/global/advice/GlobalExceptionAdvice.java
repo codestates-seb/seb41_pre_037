@@ -1,6 +1,6 @@
-package com.example.stackoverflowclone.advice;
+package com.example.stackoverflowclone.global.advice;
 
-import com.example.stackoverflowclone.exception.BusinessLogicException;
+import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
