@@ -76,9 +76,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * SecurityContext에 저장하는 부분
      * */
     private void setAuthenticationToContext(Map<String, Object> claims){
-//        String username = (String) claims.get("username");
-        String email = (String) claims.get("email");
+
+        String email = (String) claims.get("sub");
         Long id = Long.valueOf((Integer) claims.get("memberId"));
+
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
 
         for(GrantedAuthority s : authorities){
