@@ -101,9 +101,9 @@ insert into tag (created_at, modified_at, tag_name, tag_body, tag_url) VALUES
 ('2022-12-22 22:07:27.542712', '2022-12-22 22:07:27.542712', 'apache-spark', 'Apache Spark is an open source distributed data processing engine written in Scala providing a unified API and distributed data sets to users for both batch and streaming processing. Use cases for Apache Spark often are related to machine/deep learning and graph processing.', '');
 
 INSERT INTO MEMBER (MEMBER_ID, CREATED_AT, MODIFIED_AT, EMAIL, PASSWORD, USERNAME) VALUES
-('1','2022/12/24 17:00:00','2022/12/24 17:00:00','SKING@naver.com','1234','Steven King'),
-('2','2022/12/25 17:00:00','2022/12/25 17:00:00','NKOCHHAR@naver.com','1234','Neena Kochhar'),
-('3','2022/12/26 17:00:00','2022/12/26 17:00:00','LDEHAAN@naver.com','1234','Lex De Haan'),
+('1','2022/12/24 17:00:00','2022/12/24 17:00:00','dhfif718@naver.com','1234','이재혁'),
+('2','2022/12/26 17:00:00','2022/12/26 17:00:00','tmdghwlq@naver.com','1234','염승호'),
+('3','2022/12/24 17:00:00','2022/12/24 17:00:00','STEVE@naver.com','1234','Steven King'),
 ('4','2022/12/27 17:00:00','2022/12/27 17:00:00','AHUNOLD@naver.com','1234','Alexander Hunold'),
 ('5','2022/12/28 17:00:00','2022/12/28 17:00:00','BERNST@naver.com','1234','Bruce Ernst'),
 ('6','2022/12/29 17:00:00','2022/12/29 17:00:00','DAUSTIN@naver.com','1234','David Austin'),
