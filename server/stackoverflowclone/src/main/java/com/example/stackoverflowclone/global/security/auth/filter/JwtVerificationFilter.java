@@ -1,7 +1,8 @@
-package com.example.stackoverflowclone.auth.filter;
+package com.example.stackoverflowclone.global.security.auth.filter;
 
-import com.example.stackoverflowclone.auth.jwt.JwtTokenizer;
-import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
+import com.example.stackoverflowclone.global.security.auth.dto.TokenPrincipalDto;
+import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
+import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +67,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * */
     private Map<String,Object> verifyJws(HttpServletRequest request){
         String jws = request.getHeader("Authorization").replace("Bearer ","");
-        log.info("-----------> 토큰정보 : "+ jws);
+        log.info("토큰정보 : "+ jws);
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
     }
@@ -75,16 +76,17 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * SecurityContext에 저장하는 부분
      * */
     private void setAuthenticationToContext(Map<String, Object> claims){
-        String username = (String) claims.get("username");
-
+//        String username = (String) claims.get("username");
+        String email = (String) claims.get("email");
+        Long id = Long.valueOf((Integer) claims.get("memberId"));
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
 
         for(GrantedAuthority s : authorities){
-            System.out.println("-----------> 유저 권한정보 : " +s.getAuthority());
+            log.info("유저 권한정보 : {}", s.getAuthority());
         }
 
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(new TokenPrincipalDto(id, email), null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

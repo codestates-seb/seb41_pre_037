@@ -1,7 +1,7 @@
-package com.example.stackoverflowclone.auth.filter;
+package com.example.stackoverflowclone.global.security.auth.filter;
 
-import com.example.stackoverflowclone.auth.dto.LoginDto;
-import com.example.stackoverflowclone.auth.jwt.JwtTokenizer;
+import com.example.stackoverflowclone.global.security.auth.dto.LoginDto;
+import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -67,6 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String,Object> claims = new HashMap<>();
         claims.put("username",member.getEmail());
         claims.put("roles",member.getRoles());
+        claims.put("memberId",member.getMemberId());
 
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());

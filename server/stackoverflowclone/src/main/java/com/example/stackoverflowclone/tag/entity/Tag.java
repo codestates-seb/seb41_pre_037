@@ -1,8 +1,9 @@
 package com.example.stackoverflowclone.tag.entity;
 
-import com.example.stackoverflowclone.audit.Auditable;
+
 import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.stackoverflowclone.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;

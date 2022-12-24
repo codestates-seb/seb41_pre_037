@@ -1,15 +1,10 @@
 package com.example.stackoverflowclone.member.dto;
 
-import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.audit.Auditable;
-import com.example.stackoverflowclone.question.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Queue;
 
 @Data
 @Builder

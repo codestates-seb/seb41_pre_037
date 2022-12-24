@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.audit;
+package com.example.stackoverflowclone.global.audit;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

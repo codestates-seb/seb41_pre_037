@@ -1,8 +1,8 @@
-package com.example.stackoverflowclone.auth.userdetails;
+package com.example.stackoverflowclone.global.security.auth.userdetails;
 
-import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
-import com.example.stackoverflowclone.exception.BusinessLogicException;
-import com.example.stackoverflowclone.exception.ExceptionCode;
+import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
+import com.example.stackoverflowclone.global.exception.BusinessLogicException;
+import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

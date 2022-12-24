@@ -1,13 +1,13 @@
-package com.example.stackoverflowclone.config;
+package com.example.stackoverflowclone.global.config;
 
-import com.example.stackoverflowclone.auth.filter.JwtAuthenticationFilter;
-import com.example.stackoverflowclone.auth.filter.JwtVerificationFilter;
-import com.example.stackoverflowclone.auth.handler.MemberAccessDeniedHandler;
-import com.example.stackoverflowclone.auth.handler.MemberAuthenticationEntryPoint;
-import com.example.stackoverflowclone.auth.handler.MemberAuthenticationFailureHandler;
-import com.example.stackoverflowclone.auth.handler.MemberAuthenticationSuccessHandler;
-import com.example.stackoverflowclone.auth.jwt.JwtTokenizer;
-import com.example.stackoverflowclone.auth.utils.CustomAuthorityUtils;
+import com.example.stackoverflowclone.global.security.auth.filter.JwtAuthenticationFilter;
+import com.example.stackoverflowclone.global.security.auth.filter.JwtVerificationFilter;
+import com.example.stackoverflowclone.global.security.auth.handler.MemberAccessDeniedHandler;
+import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationEntryPoint;
+import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationFailureHandler;
+import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationSuccessHandler;
+import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
+import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,11 +54,22 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer()) // 커스터마이징한 필터를 추가할 수 있음
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.POST, "/*/users").permitAll()
-//                        .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET, "/questions/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER", "ADMIN")
-//                        .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/users/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/questions/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/tags/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/tags/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/tags/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/tags/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/answers/**").hasAnyRole("USER")
+                        .antMatchers(HttpMethod.GET, "/answers/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER")
                         .anyRequest().permitAll()
                 );
         return http.build();

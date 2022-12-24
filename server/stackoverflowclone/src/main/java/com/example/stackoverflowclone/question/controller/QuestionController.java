@@ -2,7 +2,7 @@ package com.example.stackoverflowclone.question.controller;
 
 
 import com.example.stackoverflowclone.answer.entity.Answer;
-import com.example.stackoverflowclone.answer.service.AnswerService;
+import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.member.entity.Member;
 import com.example.stackoverflowclone.member.service.MemberService;
 import com.example.stackoverflowclone.question.dto.QuestionPostDto;
@@ -10,7 +10,6 @@ import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.question.service.QuestionService;
 import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
-import com.example.stackoverflowclone.question_tag.service.QuestionTagService;
 import com.example.stackoverflowclone.response.DataResponseDto;
 import com.example.stackoverflowclone.tag.entity.Tag;
 import com.example.stackoverflowclone.tag.service.TagService;
@@ -35,8 +34,10 @@ public class QuestionController {
 
 
     @PostMapping("/ask/post")
-    public ResponseEntity<DataResponseDto> createQuestion(@RequestBody QuestionPostDto questionPostDto) {
+    public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
+                                                          @RequestBody QuestionPostDto questionPostDto){
 
+        log.info("login MemberId = {}", memberId);
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findMemberEmail(questionPostDto.getEmail()); // 리펙토리 포인트 (시큐리티 연결시)
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
@@ -45,10 +46,12 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}/{question-title}")
-    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle) {
 
+    public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
+                                                        @PathVariable("question-id") Long questionId,
+                                                        @PathVariable("question-title") String questionTitle){
 
+        log.info("login MemberId = {}", memberId);
         Question question = questionService.findQuestion(questionId);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);

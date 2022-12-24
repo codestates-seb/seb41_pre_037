@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.auth.handler;
+package com.example.stackoverflowclone.global.security.auth.handler;
 
 import com.example.stackoverflowclone.response.ErrorResponse;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.example.stackoverflowclone.auth.jwt;
+package com.example.stackoverflowclone.global.security.auth.jwt;
 
 
 import io.jsonwebtoken.Claims;
