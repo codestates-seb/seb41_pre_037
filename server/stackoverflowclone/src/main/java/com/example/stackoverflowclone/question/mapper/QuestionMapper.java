@@ -8,6 +8,7 @@ import com.example.stackoverflowclone.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.question.entity.Question;
 import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.tag.entity.Tag;
+import com.example.stackoverflowclone.vote.entity.QuestionVote;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -86,4 +87,12 @@ public class QuestionMapper {
                 .build();
     }
 
+    public QuestionVote questionMemberInfoToQuestionVote(Member member,Question question){
+
+        return QuestionVote.builder()
+                .status(true)
+                .member(member)
+                .question(question)
+                .build();
+    }
 }

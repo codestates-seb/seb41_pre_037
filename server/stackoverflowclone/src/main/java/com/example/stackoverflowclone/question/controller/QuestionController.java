@@ -13,6 +13,8 @@ import com.example.stackoverflowclone.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.response.DataResponseDto;
 import com.example.stackoverflowclone.tag.entity.Tag;
 import com.example.stackoverflowclone.tag.service.TagService;
+import com.example.stackoverflowclone.vote.entity.QuestionVote;
+import com.example.stackoverflowclone.vote.service.QuestionVoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,7 @@ public class QuestionController {
     private final TagService tagService;
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final QuestionVoteService questionVoteService;
 
 
     @PostMapping("/ask/post")
@@ -63,6 +66,12 @@ public class QuestionController {
 
         log.info("login MemberId = {}", memberId);
         Member member = memberService.findByMember(memberId);
+        Question question = questionService.findQuestion(questionId);
+
+//        questionVoteService.getStatus(member, question);
+
+        QuestionVote questionVote = questionMapper.questionMemberInfoToQuestionVote(member, question);
+//        questionVoteService.increaseVote(questionVote);
 
         return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
     }
