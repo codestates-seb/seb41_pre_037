@@ -47,6 +47,7 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{question-id}/{question-title}")
     public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
                                                         @PathVariable("question-title") String questionTitle){
@@ -60,7 +61,7 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
     }
 
-    @PostMapping("/questions/{question-id}/vote/2")
+    @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @PathVariable("question-id") Long questionId){
 
@@ -76,7 +77,7 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
     }
 
-    @PostMapping("/questions/{question-id}/vote/3")
+    @PostMapping("/{question-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
                                                             @PathVariable("question-id") Long questionId){
 

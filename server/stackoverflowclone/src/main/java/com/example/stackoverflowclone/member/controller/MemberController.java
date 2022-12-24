@@ -6,8 +6,6 @@ import com.example.stackoverflowclone.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.member.service.MemberService;
 import com.example.stackoverflowclone.response.DataResponseDto;
 import com.example.stackoverflowclone.response.MultiResponseDto;
-import com.example.stackoverflowclone.response.PageInfo;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -70,7 +68,7 @@ public class MemberController {
 //        return null;
 //    }
 
-    @GetMapping
+    @GetMapping("/main")
     public ResponseEntity findUsers() {
         Page<Member> pageUsers = memberService.findMembers(0, 15);
         List<Member> users = pageUsers.getContent();
