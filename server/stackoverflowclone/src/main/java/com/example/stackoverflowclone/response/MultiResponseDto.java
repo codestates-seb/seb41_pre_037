@@ -6,8 +6,8 @@ import java.util.List;
 
 @Getter
 public class MultiResponseDto<T> {
-    private List<T> data;
 
+    private List<T> data;
     // data
     private PageInfo pageInfo;
 

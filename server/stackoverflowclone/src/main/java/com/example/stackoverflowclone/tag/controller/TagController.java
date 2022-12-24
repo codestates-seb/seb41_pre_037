@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.tag.controller;
 
+import com.example.stackoverflowclone.audit.Auditable;
 import com.example.stackoverflowclone.response.DataResponseDto;
 import com.example.stackoverflowclone.response.MultiResponseDto;
 import com.example.stackoverflowclone.tag.entity.Tag;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.event.AuthenticationFailureDisabledEvent;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
@@ -28,7 +30,6 @@ public class TagController {
 
     @GetMapping
     public ResponseEntity findTags(@Positive @RequestParam int page) {
-
         Page<Tag> pageTags = tagService.findTags(page - 1, 30);
         List<Tag> tags = pageTags.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),
