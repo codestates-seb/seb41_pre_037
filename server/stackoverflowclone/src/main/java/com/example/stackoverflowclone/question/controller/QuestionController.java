@@ -37,7 +37,6 @@ public class QuestionController {
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody QuestionPostDto questionPostDto){
 
-        log.info("login MemberId = {}", memberId);
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
@@ -45,13 +44,10 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{question-id}/{question-title}")
-
     public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
                                                         @PathVariable("question-title") String questionTitle){
 
-        log.info("login MemberId = {}", memberId);
         Question question = questionService.findQuestion(questionId);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
@@ -60,22 +56,25 @@ public class QuestionController {
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, answers)), HttpStatus.OK);
     }
-<<<<<<< HEAD
 
-//    @GetMapping("/test")
-//    public ResponseEntity findQuestion() {
-//        Member member = new Member();
-//        member.setPassword("1234");
-//        member.setUsername("haha");
-//        member.setEmail("esatm@naver.com");
-//        member.setMemberId(1L);
-//        Question q = questionService.findAllQuestionswithOneMember(member);
-//        log.info("questionId = {}", q.getQuestionId());
-//        log.info("Title = {}", q.getQuestionTitle());
-//        return new ResponseEntity(q, HttpStatus.OK);
-//
-//        // JPA
-=======
->>>>>>> 85f5001 ([feat] Question, Answer 로그인된 사용자만 연결하도록 설정 완료)
+    @PostMapping("/questions/{question-id}/vote/2")
+    public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
+                                                          @PathVariable("question-id") Long questionId){
+
+        log.info("login MemberId = {}", memberId);
+        Member member = memberService.findByMember(memberId);
+
+        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+    }
+
+    @PostMapping("/questions/{question-id}/vote/3")
+    public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
+                                                            @PathVariable("question-id") Long questionId){
+
+        log.info("login MemberId = {}", memberId);
+
+
+        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+    }
 }
 

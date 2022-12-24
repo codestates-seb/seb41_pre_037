@@ -23,7 +23,7 @@ public class QuestionMapper {
 
     public Question postQuestionDtoToQuestion(QuestionPostDto questionPostDto, List<Tag> tagList, Member member){
 
-        if(questionPostDto == null){
+        if(questionPostDto == null || tagList == null || member == null) {
             return null;
         }
 
@@ -65,7 +65,7 @@ public class QuestionMapper {
 
     public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<Answer> answers){
 
-        if(question == null){
+        if(question == null || member == null || tagList == null || answers == null){
             return null;
         }
 
@@ -75,8 +75,8 @@ public class QuestionMapper {
                 .username(member.getUsername())
                 .image(member.getImage())
                 .questionTitle(question.getQuestionTitle())
-                .questionCreatedAt("1days")
-                .questionModifiedAt("1days")
+                .questionCreatedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                .questionModifiedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
                 .questionVoteCount(question.getQuestionVoteCount())
                 .questionViewCount(question.getQuestionViewCount())
                 .questionProblemBody(question.getQuestionProblemBody())
