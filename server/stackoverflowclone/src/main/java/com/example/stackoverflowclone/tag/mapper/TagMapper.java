@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 public class TagMapper {
 
     public List<TagResponseDto> tagToResponseDto(List<Tag> tags) {
+        if (tags == null) {
+            return null;
+        }
+
         return tags.stream()
                 .map(tag -> {
                     return TagResponseDto.builder()
