@@ -53,12 +53,12 @@ public class Question extends Auditable {
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "question",cascade = CascadeType.PERSIST) // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
     private List<QuestionTag> questionTagList = new ArrayList<>();
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question") // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
     private List<Answer> answers = new ArrayList<>();
 
 
