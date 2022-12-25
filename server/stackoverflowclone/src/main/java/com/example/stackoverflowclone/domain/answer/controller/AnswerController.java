@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/answers")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class AnswerController {
     @PostMapping("/{question-id}")
     public ResponseEntity<DataResponseDto> createAnswer(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
-                                                        @RequestBody AnswerPostDto answerPostDto){
+                                                        @RequestBody @Valid AnswerPostDto answerPostDto){
 
         Member member = memberService.findByMember(memberId);
         Question question = questionService.findQuestion(questionId);
