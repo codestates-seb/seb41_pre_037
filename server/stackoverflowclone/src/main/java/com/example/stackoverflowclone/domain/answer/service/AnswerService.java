@@ -2,7 +2,6 @@ package com.example.stackoverflowclone.domain.answer.service;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.answer.repository.AnswerRepository;
-import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;

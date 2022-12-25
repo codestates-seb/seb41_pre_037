@@ -1,7 +1,6 @@
 package com.example.stackoverflowclone.domain.vote.service;
 
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
 import com.example.stackoverflowclone.domain.vote.repository.QuestionVoteRepository;

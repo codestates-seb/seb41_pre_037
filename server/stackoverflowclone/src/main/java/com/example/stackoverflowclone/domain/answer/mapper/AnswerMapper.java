@@ -5,7 +5,6 @@ import com.example.stackoverflowclone.domain.answer.dto.AnswerResponseDto;
 import com.example.stackoverflowclone.domain.answer.dto.AnswerVoteResponseDto;
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.question.dto.QuestionVoteResponseDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import org.springframework.stereotype.Component;
 
