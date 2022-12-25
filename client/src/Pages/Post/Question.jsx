@@ -3,6 +3,10 @@ import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import ArrowUpIcon from "../../icons/ArrowUpLg.svg";
 import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
+import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -18,7 +22,6 @@ const PostTopInnerContainer = styled.div`
 const VotingComponentConatiner = styled.div`
   display: flex;
   height: 100%;
-  background-color: beige;
   margin-right: 16px;
 `;
 
@@ -27,7 +30,6 @@ const VotingComponent = styled.div`
   flex-direction: column;
   align-items: center;
   height: max-content;
-  background-color: darksalmon;
 `;
 
 const VotingButton = styled.button`
@@ -99,8 +101,7 @@ const TagsContainer = styled.div`
   align-items: center;
   width: max-content;
   height: max-content;
-  padding: 20px 5px 20px 10px;
-  background-color: darkorange;
+  padding: 20px 5px 20px 0;
 `;
 
 const Tag = styled.div`
@@ -113,6 +114,26 @@ const Tag = styled.div`
   color: #39739d;
   font-size: small;
   margin-right: 5px;
+`;
+
+const markdown = `<script>
+export let audio;
+
+let isPaused = true;
+
+const onClick = () => {
+    if (!audio) return;
+
+    isPaused = !isPaused;
+    if (isPaused) {
+        audio.pause();
+    } else {
+        audio.play();
+    }
+};
+</script>
+
+<button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
 `;
 
 export default function Question() {
@@ -130,7 +151,11 @@ export default function Question() {
         </VotingComponent>
       </VotingComponentConatiner>
       <PostTopInnerContainer>
-        <QuestionTopContainer></QuestionTopContainer>
+        <QuestionTopContainer>
+          <SyntaxHighlighter language="javascript" style={defaultStyle}>
+            {markdown}
+          </SyntaxHighlighter>
+        </QuestionTopContainer>
         <TagsContainer>
           <Tag>javascript</Tag>
           <Tag>fetch-api</Tag>

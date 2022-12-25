@@ -92,7 +92,14 @@ const PostContentContainer = styled.div`
   width: calc(100% - 300px);
   padding-top: 16px;
   box-sizing: border-box;
-  background-color: powderblue;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTABLET}px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+  }
 `;
 
 const RightSidebarContainer = styled.div`
