@@ -12,6 +12,7 @@ const Container = styled.div`
   height: max-content;
   max-width: 1260px;
   margin: 0 auto;
+  padding: 24px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     justify-content: flex-start;
   }
