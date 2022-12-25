@@ -11,6 +11,8 @@ import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 const PostTopContainer = styled.div`
   display: flex;
   width: 100%;
+  border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 16px;
 `;
 
 const PostTopInnerContainer = styled.div`
