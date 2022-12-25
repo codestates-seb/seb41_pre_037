@@ -10,6 +10,7 @@ import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
+import com.example.stackoverflowclone.global.enums.VoteStatus;
 import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
@@ -66,24 +67,21 @@ public class QuestionController {
     @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @PathVariable("question-id") Long questionId){
-
         Member member = memberService.findByMember(memberId);
         Question question = questionService.findQuestion(questionId);
+        questionVoteService.increaseVote(member, question);
 
-        String status = questionVoteService.getStatus(member, question);
-//        QuestionVote questionVote = questionMapper.questionMemberInfoToQuestionVote(member, question);
-//        questionVoteService.increaseVote(questionVote);
-
-        return new ResponseEntity<>(new DataResponseDto(status),HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionToQuestionVoteResponseDto(question)),HttpStatus.OK);
     }
 
     @PostMapping("/{question-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
                                                             @PathVariable("question-id") Long questionId){
+        Member member = memberService.findByMember(memberId);
+        Question question = questionService.findQuestion(questionId);
+        questionVoteService.decreaseVote(member, question);
 
-        log.info("login MemberId = {}", memberId);
-
-        return new ResponseEntity<>(new DataResponseDto("test"),HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionToQuestionVoteResponseDto(question)),HttpStatus.OK);
     }
 }
 

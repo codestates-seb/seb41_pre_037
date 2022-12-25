@@ -21,7 +21,6 @@ public class QuestionService {
     public Question postQuestion(Question question){
         return questionRepository.save(question);
     }
-
     public Question findQuestion(Long questionId){
         Optional<Question> findQuestion = questionRepository.findById(questionId);
         return findQuestion.orElseThrow(() ->

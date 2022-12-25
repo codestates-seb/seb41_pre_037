@@ -2,11 +2,8 @@ package com.example.stackoverflowclone.domain.question.mapper;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionFindResponseDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
+import com.example.stackoverflowclone.domain.question.dto.*;
 import com.example.stackoverflowclone.domain.question.entity.Question;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
@@ -99,7 +96,7 @@ public class QuestionMapper {
                 .map(answer -> {
                     return QuestionFindAnswerDto.builder()
                             .answerId(answer.getAnswerId())
-                            .answerCreatedAt("1 min ago")
+                            .answerCreatedAt("1 min ago") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
                             .answerContent(answer.getAnswerContent())
                             .answerVoteCount(answer.getAnswerVoteCount())
                             .memberId(answer.getMember().getMemberId())
@@ -110,12 +107,11 @@ public class QuestionMapper {
                 .collect(Collectors.toList());
     }
 
-    public QuestionVote questionMemberInfoToQuestionVote(Member member,Question question){
+    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question){
 
-        return QuestionVote.builder()
-                .status(VoteStatus.UP)
-                .member(member)
-                .question(question)
+        return QuestionVoteResponseDto.builder()
+                .questionId(question.getQuestionId())
+                .questionVoteCount(question.getQuestionVoteCount())
                 .build();
     }
 }
