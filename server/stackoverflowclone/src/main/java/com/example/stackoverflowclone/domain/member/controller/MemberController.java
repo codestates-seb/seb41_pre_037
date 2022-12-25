@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.domain.member.controller;
 
+import com.example.stackoverflowclone.domain.member.dto.MemberEditDto;
 import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -27,46 +29,50 @@ public class MemberController {
     private final MemberMapper mapper;
 
     @PostMapping("/signup")
-    public ResponseEntity postMember(@RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto){
         Member member = mapper.memberPostToMember(memberPostDto);
         Member createMember = memberService.createMember(member);
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberToMemberResponse(createMember)), HttpStatus.CREATED);
     }
-
-//    @PatchMapping("/edit/{member-id}")
-//    public ResponseEntity patchMember(
-//            @PathVariable("{member-id}") long memberId,
-//                @RequestBody MemberPostDto memberPostDto){
-//
-//        return new ResponseEntity<>(
-//            new DataResponseDto<>(mapper.memberToMember().OK);
-//    }
-
-
     @GetMapping("/{member-id}/{username}")
-    public ResponseEntity getMember(@PathVariable("member-id")
-                                    long memberId){
+    public ResponseEntity getMemberProfile(@PathVariable("member-id") @Valid Long memberId){
         Member member = memberService.findByMember(memberId);
-
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
-                        HttpStatus.OK );
+                HttpStatus.OK );
+    }
+    @GetMapping("/edit/{member-id}")
+    public ResponseEntity getMemberEdit(@PathVariable("member-id")
+                                        @Valid Long memberId){
+        Member member = memberService.findByMember(memberId);
+        return new ResponseEntity<>(
+                new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
+                HttpStatus.OK );
     }
 
-//    @GetMapping("member-id")
-//    public ResponseEntity getMembers(){
-//        return  null;
-//    }
-//
-//    @DeleteMapping("member-id")
-//    public ResponseEntity deleteMember(){
-//        return null;
-//    }
-//    @DeleteMapping("member-id")
-//    public ResponseEntity deleteMembers(){
-//        return null;
-//    }
+    @GetMapping("/delete/{member-id}")
+    public ResponseEntity getdeleteMember(@PathVariable("member-id") @Valid Long memberId){
+        Member member = memberService.findByMember(memberId);
+        return new ResponseEntity<>(
+                new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
+                HttpStatus.OK );
+    }
+
+    @DeleteMapping("/delete/{member-id}/confirm")
+    public ResponseEntity deleteMember(@PathVariable("member-id") @Valid Long memberId){
+        memberService.deleteMember(memberId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/edit/{member-id}/patch")
+    public ResponseEntity patchMember(@PathVariable("member-id") @Valid Long memberId, @RequestBody MemberEditDto memberEditDto){
+        memberEditDto.setMemberId(memberId);
+        Member member = memberService.updateMember(mapper.memberPatchToMember(memberEditDto));
+        return new ResponseEntity<>(
+                new DataResponseDto<>(mapper.memberTomemberProfileResponse(member))
+                ,HttpStatus.OK);
+    }
 
     @GetMapping("/main")
     public ResponseEntity findUsers() {
