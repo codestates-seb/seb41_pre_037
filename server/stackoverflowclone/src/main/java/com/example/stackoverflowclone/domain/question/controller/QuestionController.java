@@ -53,6 +53,7 @@ public class QuestionController {
                                                         @PathVariable("question-title") String questionTitle){
 
         Question question = questionService.findQuestion(questionId);
+        questionService.addViewCount(question);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();

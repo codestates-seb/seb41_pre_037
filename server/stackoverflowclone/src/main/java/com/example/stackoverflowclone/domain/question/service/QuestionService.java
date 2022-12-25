@@ -27,6 +27,10 @@ public class QuestionService {
                 new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
 
+    public void addViewCount(Question question){
+        question.setQuestionViewCount(question.getQuestionViewCount() + 1);
+    }
+
 //    public Question findAllQuestionswithOneMember(Member member) {
 //        Optional<Question> byId = questionRepository.findByMember_MemberId(member.getMemberId());
 //        return byId.orElseThrow(() ->
