@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class QuestionController {
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
-                                                          @RequestBody QuestionPostDto questionPostDto){
+                                                          @RequestBody @Valid QuestionPostDto questionPostDto){
 
         log.info("memberId = {}", memberId);
         List<Tag> tagList = tagService.findTags(questionPostDto);
