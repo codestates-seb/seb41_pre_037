@@ -9,7 +9,9 @@ public enum ExceptionCode {
     QUESTION_EXISTS(409, "Question exists"),
     ANSWER_NOT_FOUND(404, "Answer not found"),
     ANSWER_EXISTS(409, "Answer exists"),
-    VOTE_NOT_ALLOW(405, "You're already voted ");
+    VOTE_NOT_ALLOW(405, "You're already voted "),
+    TAG_NOT_FOUND(404, "Tag not found"),
+    TAG_EXISTS(409, "Tag exists");
 
     @Getter
     private int status;

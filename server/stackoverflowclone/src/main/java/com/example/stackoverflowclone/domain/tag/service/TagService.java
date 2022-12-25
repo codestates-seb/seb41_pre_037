@@ -2,6 +2,8 @@ package com.example.stackoverflowclone.domain.tag.service;
 
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.tag.repository.TagRepository;
+import com.example.stackoverflowclone.global.exception.BusinessLogicException;
+import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +44,7 @@ public class TagService {
                 .map(questionTag -> {
                     Optional<Tag> findTag = tagRepository.findById(questionTag.getTag().getTagId());
                     return findTag.orElseThrow(() ->
-                            new RuntimeException("Tag를 찾을 수 없습니다."));
+                            new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
 
                 })
                 .collect(Collectors.toList());
@@ -50,10 +52,7 @@ public class TagService {
 
     public Tag findTag(String tagName){
         Optional<Tag> findTagName = tagRepository.findByTagName(tagName);
-        /*
-        * 리펙토링 포인트 -> Exception 비지니스 예외로직으로 만들 예정
-        * */
         return findTagName.orElseThrow(() ->
-                new RuntimeException("TagName을 찾을 수 없습니다."));
+                new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
     }
 }
