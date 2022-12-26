@@ -114,4 +114,33 @@ public class QuestionMapper {
                 .questionVoteCount(question.getQuestionVoteCount())
                 .build();
     }
+
+
+    public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions){
+
+        if(questions == null){
+            return null;
+        }
+
+        return questions.stream()
+                .map(question -> {
+                    return QuestionHomeDto.builder()
+                            .questionId(question.getQuestionId())
+                            .memberId(question.getMember().getMemberId())
+                            .username(question.getMember().getUsername())
+                            .image(question.getMember().getImage())
+                            .questionTitle(question.getQuestionTitle())
+                            .questionCreatedAt(question.getCreatedAt())
+//                            .questionModifiedAt(question.getModifiedAt())
+                            .questionVoteCount(question.getQuestionVoteCount())
+                            .questionViewCount(question.getQuestionViewCount())
+                            .questionAnswerCount(question.getAnswers().size())
+                            .questionProblemBody(question.getQuestionProblemBody())
+                            .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
+                            .tag(question.getQuestionTagList())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
 }

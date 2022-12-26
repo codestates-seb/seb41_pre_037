@@ -1,13 +1,15 @@
 package com.example.stackoverflowclone.domain.question.service;
 
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.repository.QuestionRepository;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
