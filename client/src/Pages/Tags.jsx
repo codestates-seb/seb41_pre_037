@@ -1,7 +1,6 @@
 import Header from "../Components/Header/Header"
 import LeftNav from "../Components/LeftNav/LeftNav"
 import styled from "styled-components/macro"
-import RightSidebar from "../Components/RightSidebar/RightSidebar"
 import Tag from "../Components/Tag/Tag"
 import Footer from "../Components/Footer/Footer"
 
