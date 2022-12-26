@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 public interface ControllerTestHelper<T> {
     default RequestBuilder postRequestBuilder(String url,
@@ -23,10 +24,12 @@ public interface ControllerTestHelper<T> {
         return  post(url)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
+                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjQ5MzQsImV4cCI6MTY3MjA2NjczNH0.fqhdRcOLwendCyPv4o91LxlagYDA1muJzVo95Qeqfy4")
+                .content(content)
+                .with(csrf());
     }
 
-    default RequestBuilder patchRequestBuilder(String url, long resourceId, String content) {
+    default RequestBuilder findRequestBuilder(String url, long resourceId, String content) {
         return patch(url, resourceId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,8 +56,7 @@ public interface ControllerTestHelper<T> {
 
     default String toJsonContent(T t) {
         Gson gson = new Gson();
-        String content = gson.toJson(t);
-        return content;
+        return gson.toJson(t);
     }
 
     default String getDataParentPath(DataResponseType dataResponseType) {

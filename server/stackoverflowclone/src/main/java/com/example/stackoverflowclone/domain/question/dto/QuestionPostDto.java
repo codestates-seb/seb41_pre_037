@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -15,5 +16,5 @@ public class QuestionPostDto {
     private String questionTitle;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<Tag> tag;
+    private List<QuestionPostTagDto> tag;
 }

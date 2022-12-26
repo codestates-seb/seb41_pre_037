@@ -41,12 +41,14 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionVoteService questionVoteService;
 
+    @GetMapping("/test")
+    private ResponseEntity getTest(){
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
-                                                          @RequestBody @Valid QuestionPostDto questionPostDto) {
-
-        log.info("memberId = {}", memberId);
+                                                          @RequestBody @Valid QuestionPostDto questionPostDto){
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
@@ -56,8 +58,7 @@ public class QuestionController {
     @GetMapping("/{question-id}/{question-title}")
     public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle) {
-
+                                                        @PathVariable("question-title") String questionTitle){
         Question question = questionService.findQuestion(questionId);
         questionService.addViewCount(question);
         List<QuestionTag> questionTagList = question.getQuestionTagList();

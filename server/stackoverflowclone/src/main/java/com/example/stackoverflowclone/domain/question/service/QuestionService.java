@@ -40,9 +40,8 @@ public class QuestionService {
         question.setQuestionViewCount(question.getQuestionViewCount() + 1);
     }
 
-    //    public Question findAllQuestionswithOneMember(Member member) {
-//        Optional<Question> byId = questionRepository.findByMember_MemberId(member.getMemberId());
-//        return byId.orElseThrow(() ->
-//                new RuntimeException("No!"));
-//    }
+    public Page<Question> findAllQuestionsByPage(int page, int size) {
+        return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
+    }
+
 }
