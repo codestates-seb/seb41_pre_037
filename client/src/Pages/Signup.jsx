@@ -1,5 +1,6 @@
 import styled from "styled-components/macro"
 import BREAKPOINT from "../breakpoint"
+import Google from '../icons/Google.png'
 
 const Background = styled.div`
   background-color: #f6f6f6;
@@ -11,7 +12,7 @@ const Background = styled.div`
 `
 const Container = styled.div`
   width: 100%;
-  height: 70%;
+  height: max-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,6 +80,7 @@ const SignupFormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   height: max-content;
+  width: max-content;
 ` 
 
 const SignupForm = styled.div`
@@ -102,6 +104,7 @@ const SignupInputContainer = styled.div`
   margin: 0 auto;
   margin-top: 20px;
   width: 80%;
+  height: max-content;
   display: flex;
   flex-direction: column;
 `
@@ -146,6 +149,47 @@ const Linker = styled.a`
   color: #0a95ff;
 `
 
+const SocialLoginContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  box-sizing: border-box;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    margin-left: 0;
+  }
+`
+
+
+const GoogleLogin = styled.div`
+  width: 310px;
+  margin-bottom: 10px;
+  height: max-content;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`
+const SocialLoginIcon = styled.img`
+  width: 30px; 
+  height: 30px; 
+  margin: 0;
+`
+
+const SocialLoginText = styled.p`
+  margin: 0;
+  font-size: 15px;
+  text-align: center;
+  padding-top: 5px;
+`
+
 export default function Signup() {
   return (
     <Background>
@@ -187,6 +231,12 @@ export default function Signup() {
           </SignupDetailContent>
         </SignupDetailContainer>
         <SignupFormContainer>
+          <SocialLoginContainer>
+            <GoogleLogin>
+              <SocialLoginIcon src={Google}/>
+              <SocialLoginText>Sign up with Google</SocialLoginText>
+              </GoogleLogin>
+          </SocialLoginContainer>
           <SignupForm>
             <SignupInputContainer>
               <SignupLabel>Display Name</SignupLabel>
