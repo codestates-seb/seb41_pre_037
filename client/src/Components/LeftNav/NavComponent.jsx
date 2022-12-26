@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import "../../index.css";
+import { useNavigate } from "react-router-dom";
 
 const StickyLeftNavContainer = styled.nav`
   width: 164px;
@@ -62,6 +63,8 @@ const LeftNavMenuPublic = styled.li`
 `;
 
 const NavComponent = () => {
+  const navigate = useNavigate();
+
   return (
     <StickyLeftNavContainer>
       <LeftNavMenuContainer>
@@ -70,6 +73,7 @@ const NavComponent = () => {
           css={`
             padding-left: 10px;
           `}
+          onClick={() => navigate('/')}
         >
           <span
             css={`
@@ -96,6 +100,7 @@ const NavComponent = () => {
           css={`
             padding-left: 30px;
           `}
+           onClick={() => navigate('/tags')}
         >
           <span>Tags</span>
         </LeftNavMenu>
@@ -103,6 +108,7 @@ const NavComponent = () => {
           css={`
             padding-left: 30px;
           `}
+           onClick={() => navigate('/users')}
         >
           <span>Users</span>
         </LeftNavMenu>

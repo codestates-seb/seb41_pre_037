@@ -1,5 +1,7 @@
 import styled from "styled-components/macro";
 
+import { useNavigate } from "react-router-dom";
+
 const SearchPopUpView = styled.div`
   border-radius: 3px;
   background-color: #ffffff;
@@ -53,11 +55,14 @@ const Button = styled.button`
   margin-left: 2%;
 
   &:hover {
+    cursor: pointer;
     background-color: rgb(185, 210, 232);
   }
 `;
 
 const SearchPopUpComponent = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <SearchPopUpView onClick={(e) => e.stopPropagation()}>
@@ -74,7 +79,7 @@ const SearchPopUpComponent = () => {
           </SearchPopUpTextContainer>
         </SearchPopUpInnerContainer>
         <SearchPopUpInnerContainer>
-          <Button>Ask a question</Button>
+          <Button onClick={() => {navigate('/askquestions')}}>Ask a question</Button>
         </SearchPopUpInnerContainer>
       </SearchPopUpView>
     </>
