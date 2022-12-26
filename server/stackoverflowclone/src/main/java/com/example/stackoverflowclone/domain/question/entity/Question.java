@@ -47,7 +47,6 @@ public class Question extends Auditable {
     private long questionVoteCount;
 
     @ManyToOne
-    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 

@@ -37,7 +37,6 @@ public class Answer extends Auditable {
 
     @JsonIgnore
     @ManyToOne
-    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 

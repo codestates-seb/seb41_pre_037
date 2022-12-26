@@ -29,7 +29,6 @@ public class AnswerVote extends Auditable {
     private Answer answer;
 
     @ManyToOne
-    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 
