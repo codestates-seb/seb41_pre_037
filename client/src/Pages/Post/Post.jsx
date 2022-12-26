@@ -26,7 +26,6 @@ const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-width: 500px;
   padding: 24px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     width: 100%;
