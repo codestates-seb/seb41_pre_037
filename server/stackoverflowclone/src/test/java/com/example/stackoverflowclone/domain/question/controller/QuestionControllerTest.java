@@ -3,6 +3,7 @@ package com.example.stackoverflowclone.domain.question.controller;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
@@ -76,33 +77,36 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
     private  QuestionVoteService questionVoteService;
 
     @Test
-    @DisplayName("커스텀 어너테이션 테스트")
+    @DisplayName("애노테이션 API : 커스텀 어너테이션 테스트")
     @WithMockCustomUser
     void customWithMockTest() throws Exception {
-        this.mockMvc.perform(get("/questions")
+        this.mockMvc.perform(get("/questions/test")
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isCreated());
     }
 
     @Test
+    @DisplayName("질문 작성 API : createQuestion")
     @WithMockCustomUser
+//    @WithMockUser
     void createQuestion() throws Exception {
 
         QuestionPostDto questionPostDto = (QuestionPostDto) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
         Question question = StubData.MockQuestion.getSingleResponseBody(1L);
         List<Tag> tagList = StubData.MockTag.getSingleResponseBody();
         Member member = StubData.MockMember.getSingleResponseBody(1L);
-
-        log.info("questionPostDto = {}", questionPostDto);
+        QuestionPostResponseDto questionTagListToQuestionPostResponseDto = StubData.MockQuestion.getQuestionTagListToQuestionPostResponseDto(question, tagList);
 
         given(tagService.findTags(Mockito.any(QuestionPostDto.class))).willReturn(tagList);
         given(memberService.findByMember(Mockito.anyLong())).willReturn(member);
-        given(questionService.postQuestion(Mockito.any(Question.class))).willReturn(question);
+        given(questionService.postQuestion(Mockito.any())).willReturn(question);
+        given(questionMapper.questionTagListToQuestionPostResponseDto(Mockito.any(),Mockito.any())).willReturn(questionTagListToQuestionPostResponseDto);
+
         String content = toJsonContent(questionPostDto);
         ResultActions actions = mockMvc.perform(postRequestBuilder(getUrlCreateQuestion(), content));
 
         actions
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
     @Test
     void findQuestion()throws Exception {

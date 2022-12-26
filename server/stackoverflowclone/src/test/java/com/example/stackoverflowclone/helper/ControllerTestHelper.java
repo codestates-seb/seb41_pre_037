@@ -19,13 +19,17 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 public interface ControllerTestHelper<T> {
+
+    default String getJws(){
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjQ5MzQsImV4cCI6MTY3MjA2NjczNH0.fqhdRcOLwendCyPv4o91LxlagYDA1muJzVo95Qeqfy4";
+    }
     default RequestBuilder postRequestBuilder(String url,
                                               String content) {
         return  post(url)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjQ5MzQsImV4cCI6MTY3MjA2NjczNH0.fqhdRcOLwendCyPv4o91LxlagYDA1muJzVo95Qeqfy4")
                 .content(content)
+                .header("Authorization", getJws())
                 .with(csrf());
     }
 

@@ -2,6 +2,8 @@ package com.example.stackoverflowclone.helper;
 
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionPostTagDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import org.springframework.http.HttpMethod;
@@ -14,11 +16,10 @@ public class StubData {
     static {
         stubRequestBody = new HashMap<>();
         stubRequestBody.put(HttpMethod.POST, QuestionPostDto.builder()
-                        .email("dhfif718@gmail.com")
                         .questionTitle("질문 제목 입니다.")
                         .questionProblemBody("질문 내용 1")
                         .questionTryOrExpectingBody("질문 내용 2")
-                        .tag(new ArrayList<>())
+                        .tag(new ArrayList<>())//new ArrayList<QuestionPostTagDto>(List.of(new QuestionPostTagDto("java")))
                         .build());
     }
 
@@ -84,5 +85,17 @@ public class StubData {
                     .answers(new ArrayList<>())
                     .build();
         }
+
+        public static QuestionPostResponseDto getQuestionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList){
+            return QuestionPostResponseDto.builder()
+                    .questionId(question.getQuestionId())
+                    .questionTitle(question.getQuestionTitle())
+                    .questionProblemBody(question.getQuestionProblemBody())
+                    .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
+                    .tag(tagList)
+                    .build();
+        }
+
+
     }
 }
