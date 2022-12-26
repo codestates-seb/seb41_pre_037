@@ -5,6 +5,7 @@ import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.vote.entity.AnswerVote;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -62,18 +63,22 @@ public class Member extends Auditable {
     @Column(name = "fullname")
     private String fullname;
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question> questionList = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<QuestionVote> questionVoteList = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Answer> answersList = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<AnswerVote> answerVoteList = new ArrayList<>();

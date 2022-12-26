@@ -6,8 +6,6 @@ import com.example.stackoverflowclone.domain.question.dto.*;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
-import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
-import com.example.stackoverflowclone.global.enums.VoteStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,9 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionMapper {
 
-    public Question postQuestionDtoToQuestion(QuestionPostDto questionPostDto, List<Tag> tagList, Member member){
+    public Question postQuestionDtoToQuestion(QuestionPostDto questionPostDto, List<Tag> tagList, Member member) {
 
-        if(questionPostDto == null || tagList == null || member == null) {
+        if (questionPostDto == null || tagList == null || member == null) {
             return null;
         }
 
@@ -31,13 +29,13 @@ public class QuestionMapper {
         question.setQuestionTitle(questionPostDto.getQuestionTitle());
         question.setQuestionProblemBody(questionPostDto.getQuestionProblemBody());
         question.setQuestionTryOrExpectingBody(questionPostDto.getQuestionTryOrExpectingBody());
-        question.setQuestionTagList(postQuestionDtoToQuestionTag(question,tagList));
+        question.setQuestionTagList(postQuestionDtoToQuestionTag(question, tagList));
         question.setMember(member);
         return question;
 
     }
 
-    public List<QuestionTag> postQuestionDtoToQuestionTag(Question question, List<Tag> tagList){
+    public List<QuestionTag> postQuestionDtoToQuestionTag(Question question, List<Tag> tagList) {
         return tagList.stream()
                 .map(tag -> {
                     return QuestionTag.builder()
@@ -48,9 +46,9 @@ public class QuestionMapper {
                 .collect(Collectors.toList());
     }
 
-    public QuestionPostResponseDto questionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList){
+    public QuestionPostResponseDto questionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList) {
 
-        if(question == null || tagList == null){
+        if (question == null || tagList == null) {
             return null;
         }
 
@@ -63,9 +61,9 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers){
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers) {
 
-        if(question == null || member == null || tagList == null || answers == null){
+        if (question == null || member == null || tagList == null || answers == null) {
             return null;
         }
 
@@ -86,9 +84,9 @@ public class QuestionMapper {
                 .build();
     }
 
-    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers){
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers) {
 
-        if(answers == null){
+        if (answers == null) {
             return null;
         }
 
@@ -107,7 +105,7 @@ public class QuestionMapper {
                 .collect(Collectors.toList());
     }
 
-    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question){
+    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question) {
 
         return QuestionVoteResponseDto.builder()
                 .questionId(question.getQuestionId())
@@ -116,14 +114,15 @@ public class QuestionMapper {
     }
 
 
-    public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions){
+    public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions) {
 
-        if(questions == null){
+        if (questions == null) {
             return null;
         }
 
         return questions.stream()
                 .map(question -> {
+                    List<QuestionTag> questionTagList = question.getQuestionTagList();
                     return QuestionHomeDto.builder()
                             .questionId(question.getQuestionId())
                             .memberId(question.getMember().getMemberId())
@@ -137,10 +136,9 @@ public class QuestionMapper {
                             .questionAnswerCount(question.getAnswers().size())
                             .questionProblemBody(question.getQuestionProblemBody())
                             .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                            .tag(question.getQuestionTagList())
+                            .tags(question.getQuestionTagList())
                             .build();
                 })
                 .collect(Collectors.toList());
     }
-
 }

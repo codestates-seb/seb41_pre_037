@@ -1,14 +1,18 @@
 package com.example.stackoverflowclone.domain.question.service;
 
+import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.repository.QuestionRepository;
+import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
+import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,4 +56,26 @@ public class QuestionService {
 
         return null;
     }
+
+    public List<Question> finaAllQuestion() {
+        return questionRepository.findAll();
+    }
+    public Page<Question> findAllQuestionByPage(int page, int size) {
+        return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
+    }
+
+    // TODO: Unanswered tab 구현하기
+//    public Page<Question> findAllQuestionByPageOrderByUnanswered(int page, int size) {
+//
+//        Pageable pageable = PageRequest.of(page, size);
+//        questionRepository.findByAnswers()
+//
+//
+//    }
+
+
+
+//    public Page<Tag> findTags(int page, int size) {
+//        return tagRepository.findAll(PageRequest.of(page, size, Sort.by("tagId").descending()));
+//    }
 }

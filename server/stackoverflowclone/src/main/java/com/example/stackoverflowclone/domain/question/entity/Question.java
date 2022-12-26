@@ -47,6 +47,7 @@ public class Question extends Auditable {
     @Column(name = "question_vote_count")
     private long questionVoteCount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -68,6 +69,10 @@ public class Question extends Auditable {
         this.questionTryOrExpectingBody = questionTryOrExpectingBody;
         this.questionViewCount = questionViewCount;
         this.questionVoteCount = questionVoteCount;
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
     }
 
     public void addQuestionTagList(QuestionTag questionTag) {

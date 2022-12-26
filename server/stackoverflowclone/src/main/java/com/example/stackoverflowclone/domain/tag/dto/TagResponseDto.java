@@ -3,8 +3,6 @@ package com.example.stackoverflowclone.domain.tag.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
