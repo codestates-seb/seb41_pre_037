@@ -2,6 +2,8 @@ import styled from "styled-components/macro";
 import { useMobileSearchPopUpStore } from "../../store/store";
 import SearchBarIcon from "../../icons/Search.svg";
 
+import { useNavigate } from "react-router-dom";
+
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -95,6 +97,9 @@ const Button = styled.button`
 
 const MobileSearchPopUp = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
+
+  const navigate = useNavigate();
+
   return (
     <>
       {showMobilePopUp === true ? (
@@ -117,7 +122,7 @@ const MobileSearchPopUp = () => {
               </SearchPopUpTextContainer>
             </SearchPopUpInnerContainer>
             <SearchPopUpInnerContainer>
-              <Button>Ask a question</Button>
+              <Button onClick={() => {navigate('/askquestions')}}>Ask a question</Button>
             </SearchPopUpInnerContainer>
           </SearchPopUpView>
         </SearchPopUpBackdrop>

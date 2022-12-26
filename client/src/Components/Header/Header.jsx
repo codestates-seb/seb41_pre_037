@@ -11,6 +11,8 @@ import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
 
+import { useNavigate } from "react-router-dom";
+
 const HeaderComponent = styled.header`
   height: 50px;
   width: 100vw;
@@ -239,6 +241,7 @@ const ProfileButtonAria = styled.div`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
@@ -251,12 +254,12 @@ const Header = () => {
             <MobileMenuButton onClick={handleLeftNav}>
               <img src={MobileMenuIcon} />
             </MobileMenuButton>
-            <MobileHomeButton>
+            <MobileHomeButton onClick={() => navigate('/')}>
               <img src={MobileLogo} />
             </MobileHomeButton>
           </MobileLeftButtonContainer>
           <ButtonArea>
-            <HomeButton>
+            <HomeButton onClick={() => navigate('/')}>
               <img src={Logo} />
             </HomeButton>
           </ButtonArea>
@@ -274,10 +277,13 @@ const Header = () => {
                 css={`
                   margin-right: 5px;
                 `}
+                onClick={() => navigate('/login')}
               >
                 Log in
               </LoginOutButton>
-              <SignUPButton>Sign up</SignUPButton>
+              <SignUPButton
+              onClick={() => navigate('/signup')}
+              >Sign up</SignUPButton>
             </LoggedOutButtonContainer>
             {/* <LoggedInButtonContainer>
               <MobileSearchBarButton onClick={handleMobilePopUp}>

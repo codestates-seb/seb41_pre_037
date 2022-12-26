@@ -6,6 +6,8 @@ import quillModule from "../../quillModule";
 import "../../quillEditor.css";
 import BREAKPOINT from "../../breakpoint";
 
+import { useNavigate } from "react-router-dom";
+
 const PostBottomContainer = styled.div`
   display: flex;
   width: 100%;
@@ -99,6 +101,8 @@ const BottomNoticeLinker = styled.a`
 `;
 
 export default function PostAnswer() {
+  const navigate = useNavigate();
+
   return (
     <PostBottomContainer>
       <Title>Your Answer</Title>
@@ -115,7 +119,7 @@ export default function PostAnswer() {
           <Tag>api-key</Tag>
           <Tag>netlify-function</Tag>
         </TagsContainer>
-        or <BottomNoticeLinker>ask your own question.</BottomNoticeLinker>
+        or <BottomNoticeLinker onClick={() => {navigate('/askquestions')}}>ask your own question.</BottomNoticeLinker>
       </BottomNotice>
     </PostBottomContainer>
   );

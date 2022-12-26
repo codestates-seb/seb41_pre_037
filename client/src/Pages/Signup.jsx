@@ -2,6 +2,8 @@ import styled from "styled-components/macro"
 import BREAKPOINT from "../breakpoint"
 import Google from '../icons/Google.png'
 
+import { useNavigate } from "react-router-dom"
+
 const Background = styled.div`
   background-color: #f6f6f6;
   width: 100vw;
@@ -147,6 +149,10 @@ const SignupAgreeInfo = styled.p`
 
 const Linker = styled.a`
   color: #0a95ff;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const SocialLoginContainer = styled.div`
@@ -191,6 +197,8 @@ const SocialLoginText = styled.p`
 `
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   return (
     <Background>
       <Container>
@@ -254,7 +262,7 @@ export default function Signup() {
             <SignupButton>Sign up</SignupButton>
             <SignupAgreeInfo>By clicking “Sign up”, you agree to our <Linker>terms of service</Linker>, <Linker>privacy policy</Linker> and <Linker>cookie policy</Linker></SignupAgreeInfo>
           </SignupForm>
-          <p css={`font-size: small;`}>Already have a account? <Linker>Log in</Linker></p>
+          <p css={`font-size: small;`}>Already have a account? <Linker onClick={() => navigate('/login')}>Log in</Linker></p>
         </SignupFormContainer>
       </Container>
     </Background>

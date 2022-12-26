@@ -6,6 +6,8 @@ import BREAKPOINT from "../breakpoint";
 import Logo from "../icons/LogoGlyphMd.svg";
 import AlertCircle from "../icons/AlertCircle.svg";
 
+import { useNavigate } from "react-router-dom";
+
 const Background = styled.div`
   background-color: #f6f6f6;
   width: 100vw;
@@ -96,13 +98,23 @@ const LoginButton = styled.button`
   border: 1px solid #0a95ff;
   border-radius: 4px;
   box-shadow: inset 0 1px 0 0 #6fc0ff;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Linker = styled.a`
   color: #0a95ff;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
@@ -127,7 +139,7 @@ const Login = () => {
               <Validation>Password cannot be empty.</Validation>
               <LoginButton>Log in</LoginButton>
             </LoginForm>
-            <p css={`font-size: small; margin-top: 30px;`}> Don’t have an account? <Linker>Sign up</Linker></p>
+            <p css={`font-size: small; margin-top: 30px;`}> Don’t have an account? <Linker onClick={() => {navigate('/signup')}}>Sign up</Linker></p>
           </LoginFormContainer>
         </Container>
       </Background>

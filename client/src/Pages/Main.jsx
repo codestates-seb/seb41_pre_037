@@ -7,6 +7,8 @@ import Footer from "../Components/Footer/Footer";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Pagination from "../Components/Pagination/Pagination";
 
+import { useNavigate } from "react-router-dom";
+
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -129,6 +131,8 @@ const PaginationContainer = styled.div`
 `
 
 export default function Main() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
@@ -137,7 +141,7 @@ export default function Main() {
         <MainbarContainer>
           <MainbarTopHeader>
             <Title>All Questions</Title>
-            <AskQuestionButton>Ask Questions</AskQuestionButton>
+            <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
           </MainbarTopHeader>
           <MainbarBottomHeader>
             <QuestionCount>2,400,239 questions</QuestionCount>
