@@ -5,6 +5,7 @@ import BREAKPOINT from "../breakpoint";
 import Header from "../Components/Header/Header";
 import Footer from "../Components/Footer/Footer";
 import LeftNav from "../Components/LeftNav/LeftNav";
+import Pagination from "../Components/Pagination/Pagination";
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +13,6 @@ const Container = styled.div`
   height: max-content;
   max-width: 1260px;
   margin: 0 auto;
-  padding: 24px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     justify-content: flex-start;
   }
@@ -42,10 +42,9 @@ const MainbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;
-  min-width: 500px;
+  padding-bottom: 50px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     width: 100%;
-    min-width: 0;
   }
 `;
 const MainbarTopHeader = styled.div`
@@ -53,6 +52,9 @@ const MainbarTopHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 10px;
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    padding-right: 20px;
+  }
 `;
 
 const MainbarBottomHeader = styled.div`
@@ -114,13 +116,17 @@ const AskQuestionButton = styled.button`
 const RightSidebarContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-right: 20px;
+  margin-right: 3%;
   width: 20%;
   min-width: 300px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     display: none;
   }
 `;
+
+const PaginationContainer = styled.div`
+ margin-left: 20px;
+`
 
 export default function Main() {
   return (
@@ -149,6 +155,14 @@ export default function Main() {
           <Question />
           <Question />
           <Question isLast={true} />
+          <PaginationContainer>
+          <Pagination pageinfo={{
+            "page" : 1,
+            "size" : 30,
+            "totalElements" : 30,
+            "totalPages" : 30,
+          }}/>
+          </PaginationContainer>
         </MainbarContainer>
         <RightSidebarContainer>
           <RightSidebar />

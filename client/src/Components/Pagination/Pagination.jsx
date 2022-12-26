@@ -5,7 +5,6 @@ const PaginationContainer = styled.div`
   display: flex;
   width: max-content;
   height: max-content;
-  align-self: flex-end;
   margin-top: 50px;
 `
 

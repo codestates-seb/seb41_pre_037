@@ -63,7 +63,7 @@ const QuestionPreview = styled.div`
   display: flex;
   font-size: 15px;
   margin-top: 10px;
-  min-width: 420px;
+  /* min-width: 420px; */
   text-overflow: ellipsis;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: small;

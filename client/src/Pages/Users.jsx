@@ -22,7 +22,6 @@ const MainbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 500px;
   margin: 0 20px;
   margin-bottom: 50px;
 `
@@ -52,6 +51,10 @@ const SearchBar = styled.div`
     box-shadow: 0 0 0 4px rgba(144, 203, 255, 0.4);
     border: 1px solid rgba(0, 103, 194, 0.4);
   }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    width: 300px;
+  }
 `
 
 const SearchBarInput = styled.input`
@@ -76,8 +79,21 @@ const MainbarUsersContainer = styled.ul`
   padding: 0;
   width: 100%;
   justify-content: space-between;
-`
 
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTAGSTHREE}px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    margin-top: 30px;
+  }
+`
+const PaginationContainer = styled.div`
+  align-self: flex-end;
+`
 
 export default function Tags() {
 
@@ -116,12 +132,14 @@ export default function Tags() {
           <User/>
           <User/>
         </MainbarUsersContainer>
-        <Pagination pageinfo={{
-        "page" : 1,
-        "size" : 30,
-        "totalElements" : 30,
-        "totalPages" : 30,
-    }}/>
+        <PaginationContainer>
+          <Pagination pageinfo={{
+          "page" : 1,
+          "size" : 30,
+          "totalElements" : 30,
+          "totalPages" : 30,
+      }}/>
+        </PaginationContainer>
       </MainbarContainer>
     </Container>
     <Footer/>
