@@ -44,65 +44,44 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         // 인증된 객체로 부터 Resource Owner의 이메일 주소를 얻을 수 있다.
         log.info("# Redirect to Frontend");
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String name = oAuth2User.getName();
-        String email = "";
+        String name = (String) oAuth2User.getAttributes().get("name");
+        String email = (String) oAuth2User.getAttributes().get("email");
+        String picture = (String) oAuth2User.getAttributes().get("picture");
 
         log.info("# getPrincipal : " + oAuth2User);
-//        log.info("attributes -------------> " + oAuth2User.getAttributes());
-
-        /*
-         * 플랫폼에 따른 email 가져오기
-         * */
-        if(name.equals("113229806513837595781")){
-            // 구글
-            log.info("# Google 로그인 실행");
-            email = (String) oAuth2User.getAttributes().get("email");
-        } else if(name.equals("2552807427")){
-            //카카오
-            log.info("# Kakao 로그인 실행");
-            Map<String, Object> attributes = oAuth2User.getAttributes();
-            Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
-            email = (String) kakao_account.get("email");
-        } else if(name.equals("95069395")){
-            log.info("# GitHub 로그인 실행");
-            Map<String, Object> attributes = oAuth2User.getAttributes();
-            email = (String) attributes.get("login");
-        } else {
-            log.info("# Naver 로그인 실행");
-            Map<String, Object> attributes = oAuth2User.getAttributes();
-            Map<String, Object> naver_account = (Map<String, Object>) attributes.get("response");
-            email = (String) naver_account.get("email");
-        }
-
+        log.info("# name : "+ name);
         log.info("# email : "+ email);
+        log.info("# picture : "+ picture);
+
+        // email을 토대로 Member 객체 만들어서 DB에 저장
+        Member member = buildOAuth2Member(name, email, picture);
+        Member saveMember = saveMember(member);
 
         // 얻은 email 주소로 권한 List 만들기
         List<String> authorities = authorityUtils.createRoles(email);
 
-        // email을 토대로 Member 객체 만들어서 DB에 저장
-        Member member = Member.builder()
-                .username("이재혁")
+        // 리다이렉트를 하기위한 정보들을 보내줌
+        redirect(request,response,saveMember,authorities);
+    }
+    private Member buildOAuth2Member(String name, String email, String picture){
+        return Member.builder()
+                .username(name)
                 .email(email)
-                .password("dlwogur135!")
+                .password("")
                 .location("")
                 .aboutMe("")
                 .title("")
                 .fullname("")
-                .image("")
+                .image(picture)
                 .websiteLink("")
                 .twitterLink("")
                 .githubLink("")
                 .fullname("")
                 .build();
-
-        saveMember(member);
-
-        // 리다이렉트를 하기위한 정보들을 보내줌
-        redirect(request,response,member,authorities);
     }
 
-    public void saveMember(Member member){
-        memberService.createMember(member);
+    public Member saveMember(Member member){
+        return memberService.createMemberOAuth2(member);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response, Member member, List<String> authorities) throws IOException {
@@ -114,9 +93,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String uri = createURI(accessToken, refreshToken).toString();
 
         // 헤더에 전송해보기
-//        String headerValue = "Bearer "+ accessToken;
-//        response.setHeader("Authorization",headerValue); // Header에 등록
-//        response.setHeader("Refresh",refreshToken); // Header에 등록
+        String headerValue = "Bearer "+ accessToken;
+        response.setHeader("Authorization",headerValue); // Header에 등록
+        response.setHeader("Refresh",refreshToken); // Header에 등록
 
         // 만든 URI로 리다이렉트 보냄
         getRedirectStrategy().sendRedirect(request,response,uri);

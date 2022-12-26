@@ -42,19 +42,29 @@ public class MemberService {
         return savedMember;
     }
 
+    public Member createMemberOAuth2(Member member){
+        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        if(findMember.isPresent()){
+            return findMember.get();
+        }
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+        verifyExistsEmail(member.getEmail());
+        return memberRepository.save(member);
+    }
+
     public Member findMemberEmail(String email){
         Optional<Member> findMember = memberRepository.findByEmail(email);
-        /*
-         * 리펙토링 포인트 -> Exception 비지니스 예외로직으로 만들 예정
-         * */
         return findMember.orElseThrow(() ->
-                new RuntimeException("해당 email로 멤버를 찾을 수 없습니다."));
+                new BusinessLogicException(ExceptionCode.EMAIL_NOT_FOUND));
     }
+
     public void verifyExistsEmail(String email){
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if (findMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS); // void
     }
+
     @Transactional(readOnly = true)
     public Member findByMember(Long memberId){
         return findVerifiedMember(memberId);

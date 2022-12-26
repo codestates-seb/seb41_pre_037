@@ -11,7 +11,9 @@ public enum ExceptionCode {
     ANSWER_EXISTS(409, "Answer exists"),
     VOTE_NOT_ALLOW(405, "You're already voted "),
     TAG_NOT_FOUND(404, "Tag not found"),
-    TAG_EXISTS(409, "Tag exists");
+    TAG_EXISTS(409, "Tag exists"),
+    EMAIL_NOT_FOUND(404, "Email not found"),
+    EMAIL_EXISTS(404, "Email exists");
 
     @Getter
     private int status;
