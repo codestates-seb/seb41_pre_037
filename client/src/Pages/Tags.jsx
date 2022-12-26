@@ -52,14 +52,6 @@ const MainbarTagsContainer = styled.ul`
   justify-content: space-between;
 `
 
-const RightSidebarContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 20px;
-  width: 20%;
-  min-width: 300px;
-`;
-
 export default function Tags() {
   return (
     <>
