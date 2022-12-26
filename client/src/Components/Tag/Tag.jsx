@@ -4,7 +4,7 @@ const TagContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: auto;
-  height: 165px;
+  height: max-content;
   max-height: 165px;
   border: 1px solid #c7c7c7;
   border-radius: 3px;
