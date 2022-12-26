@@ -13,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
+//@ToString(exclude = {"question"})
 public class QuestionTag extends Auditable {
 
     @Id

@@ -6,7 +6,12 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
     QUESTION_NOT_FOUND(404, "Question not found"),
-    QUESTION_NOT_FOUND_EXISTS(409, "Question Code exists");
+    QUESTION_EXISTS(409, "Question exists"),
+    ANSWER_NOT_FOUND(404, "Answer not found"),
+    ANSWER_EXISTS(409, "Answer exists"),
+    VOTE_NOT_ALLOW(405, "You're already voted "),
+    TAG_NOT_FOUND(404, "Tag not found"),
+    TAG_EXISTS(409, "Tag exists");
 
     @Getter
     private int status;

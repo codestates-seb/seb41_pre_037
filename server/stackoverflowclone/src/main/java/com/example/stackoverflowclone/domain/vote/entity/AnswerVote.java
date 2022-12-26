@@ -3,6 +3,7 @@ package com.example.stackoverflowclone.domain.vote.entity;
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.global.enums.VoteStatus;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,8 +22,8 @@ public class AnswerVote extends Auditable {
     @Column(name = "answer_vote_id")
     private Long answerVoteId;
 
-    @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private VoteStatus status;
 
     @ManyToOne
     @JoinColumn(name = "answer_id")

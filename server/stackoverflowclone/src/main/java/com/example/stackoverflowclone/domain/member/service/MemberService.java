@@ -7,6 +7,7 @@ import com.example.stackoverflowclone.domain.member.entity.Member;
 
 import com.example.stackoverflowclone.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,11 +1,9 @@
 package com.example.stackoverflowclone.global.security.config;
 
+import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.global.security.auth.filter.JwtAuthenticationFilter;
 import com.example.stackoverflowclone.global.security.auth.filter.JwtVerificationFilter;
-import com.example.stackoverflowclone.global.security.auth.handler.MemberAccessDeniedHandler;
-import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationEntryPoint;
-import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationFailureHandler;
-import com.example.stackoverflowclone.global.security.auth.handler.MemberAuthenticationSuccessHandler;
+import com.example.stackoverflowclone.global.security.auth.handler.*;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -29,12 +28,12 @@ import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+//@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
-
     private final CustomAuthorityUtils authorityUtils;
+    private final MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -71,14 +70,17 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PATCH, "/answers/**").hasAnyRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/answers/**").hasAnyRole("USER")
                         .anyRequest().permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService))
                 );
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -109,8 +111,8 @@ public class SecurityConfiguration {
 
             // Spring Security FilterChain에 추가
             builder.addFilter(jwtAuthenticationFilter)  // 우리가만든 jwtAuthenticationFilter 필터추가
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); //  jwtVerificationFilter 필터추가, 뒤에 클래스는 어느클래스 다음에 실행할지 설정
-
+//                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); //  jwtVerificationFilter 필터추가, 뒤에 클래스는 어느클래스 다음에 실행할지 설정
+                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
 

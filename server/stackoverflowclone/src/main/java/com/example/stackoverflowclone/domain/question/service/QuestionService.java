@@ -21,11 +21,14 @@ public class QuestionService {
     public Question postQuestion(Question question){
         return questionRepository.save(question);
     }
-
     public Question findQuestion(Long questionId){
         Optional<Question> findQuestion = questionRepository.findById(questionId);
         return findQuestion.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+    }
+
+    public void addViewCount(Question question){
+        question.setQuestionViewCount(question.getQuestionViewCount() + 1);
     }
 
 //    public Question findAllQuestionswithOneMember(Member member) {

@@ -1,9 +1,0 @@
-package com.example.stackoverflowclone.domain.vote.controller;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping
-public class AnswerVoteController {
-}

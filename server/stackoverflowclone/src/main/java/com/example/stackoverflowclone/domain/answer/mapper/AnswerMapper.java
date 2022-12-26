@@ -2,6 +2,7 @@ package com.example.stackoverflowclone.domain.answer.mapper;
 
 import com.example.stackoverflowclone.domain.answer.dto.AnswerPostDto;
 import com.example.stackoverflowclone.domain.answer.dto.AnswerResponseDto;
+import com.example.stackoverflowclone.domain.answer.dto.AnswerVoteResponseDto;
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.entity.Question;
@@ -24,6 +25,14 @@ public class AnswerMapper {
         return AnswerResponseDto.builder()
                 .answerId(answer.getAnswerId())
                 .answerContent(answer.getAnswerContent())
+                .build();
+    }
+
+    public AnswerVoteResponseDto answerToAnswerVoteResponseDto(Answer answer){
+
+        return AnswerVoteResponseDto.builder()
+                .answerId(answer.getAnswerId())
+                .answerVoteCount(answer.getAnswerVoteCount())
                 .build();
     }
 }

@@ -8,5 +8,4 @@ import lombok.Data;
 public class QuestionVoteResponseDto {
         private Long questionId;
         private Long questionVoteCount;
-        private boolean success;
 }

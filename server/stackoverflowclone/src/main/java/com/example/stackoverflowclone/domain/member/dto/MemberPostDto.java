@@ -9,14 +9,17 @@ import javax.validation.constraints.Pattern;
 @Data
 @Builder
 public class MemberPostDto {
-    @Pattern(regexp = "^\\S+(\\s?\\S+)*$")
-    @NotBlank( message = "회원 이름은 공백이 아니여야한다.")
+
+    @NotBlank(message = "Null값과 공백을 허용할 수 없습니다.")
     private String username;
-    @Email
-    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?")
-    @NotBlank(message = "이메일은 공백이 아니여야 합니다.")
+
+    @NotBlank(message = "Null값과 공백을 허용할 수 없습니다.")
+    @Email(message = "email 형식에 맞춰주십시오.")
     private String email;
-    @NotBlank(message = "비밀번호는 공백이 아니여야 합니다.")
+
+    @NotBlank(message = "Null값과 공백을 허용할 수 없습니다.")
+    @Pattern(message = "'숫자', '문자' 무조건 1개 이상, '최소 8자에서 최대 20자' 허용, !@#$%^&* 특수문자만 허용",
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$")
     private String password;
 
 }

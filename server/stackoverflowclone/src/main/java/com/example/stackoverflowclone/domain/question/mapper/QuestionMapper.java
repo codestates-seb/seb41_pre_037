@@ -2,13 +2,12 @@ package com.example.stackoverflowclone.domain.question.mapper;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.question.dto.QuestionFindResponseDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
+import com.example.stackoverflowclone.domain.question.dto.*;
 import com.example.stackoverflowclone.domain.question.entity.Question;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
+import com.example.stackoverflowclone.global.enums.VoteStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -64,7 +63,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<Answer> answers){
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers){
 
         if(question == null || member == null || tagList == null || answers == null){
             return null;
@@ -87,12 +86,32 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionVote questionMemberInfoToQuestionVote(Member member,Question question){
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers){
 
-        return QuestionVote.builder()
-                .status(true)
-                .member(member)
-                .question(question)
+        if(answers == null){
+            return null;
+        }
+
+        return answers.stream()
+                .map(answer -> {
+                    return QuestionFindAnswerDto.builder()
+                            .answerId(answer.getAnswerId())
+                            .answerCreatedAt("1 min ago") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                            .answerContent(answer.getAnswerContent())
+                            .answerVoteCount(answer.getAnswerVoteCount())
+                            .memberId(answer.getMember().getMemberId())
+                            .username(answer.getMember().getUsername())
+                            .image(answer.getMember().getImage())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question){
+
+        return QuestionVoteResponseDto.builder()
+                .questionId(question.getQuestionId())
+                .questionVoteCount(question.getQuestionVoteCount())
                 .build();
     }
 }
