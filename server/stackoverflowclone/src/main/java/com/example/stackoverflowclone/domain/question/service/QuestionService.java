@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +42,14 @@ public class QuestionService {
 //        return byId.orElseThrow(() ->
 //                new RuntimeException("No!"));
 //    }
+    public List<Question> findMemberQuestion(Member member){ // 추가
+//        List<Question> questions = questionRepository.findByMemberQuestion(member);
 
+
+        log.info("memberId = {}",member.getMemberId());
+//        log.info("memberId 가 들어간 질문 = {}",Collections.frequency(questions.get(1L),member.getMemberId())); // Question == 1 비교 x
+//        return questions;
+
+        return null;
+    }
 }
