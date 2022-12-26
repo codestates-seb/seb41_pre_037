@@ -1,12 +1,14 @@
 package com.example.stackoverflowclone.domain.question.controller;
 
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
 import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.domain.vote.service.QuestionVoteService;
 import com.example.stackoverflowclone.helper.StubData;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @WebMvcTest(QuestionController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
@@ -59,8 +62,10 @@ public class QuestionControllerTest {
     private  QuestionVoteService questionVoteService;
 
     @Test
-    void createQuestion(){
-        StubData.MockQuestion.getRequestBody(HttpMethod.POST);
+    void createQuestion() throws Exception {
+        QuestionPostDto questionPostDto = (QuestionPostDto) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
+
+        log.info("questionPostDto = {}", questionPostDto);
 
     }
 
