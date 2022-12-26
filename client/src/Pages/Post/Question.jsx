@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ShareSheet from "./ShareSheet";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -167,6 +168,7 @@ export default function Question() {
         </TagsContainer>
         <QuestionBottomContainer>
           <ShareLinker>Share</ShareLinker>
+          <ShareSheet />
           <AuthorInfoContainer>
             <AuthorProfileImageArea />
             <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
