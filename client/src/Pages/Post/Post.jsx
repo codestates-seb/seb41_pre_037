@@ -9,6 +9,8 @@ import Question from "./Question";
 import PostAnswer from "./PostAnswer";
 import AnswerList from "./AnswerList";
 
+import { useNavigate } from "react-router-dom";
+
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -113,6 +115,8 @@ const RightSidebarContainer = styled.div`
 `;
 
 export default function Post() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
@@ -122,7 +126,7 @@ export default function Post() {
           <PostHeader>
             <PostHeaderTop>
               <Title>Why my netlify function return an error and doesn't fetch data </Title>
-              <AskQuestionButton>Ask Questions</AskQuestionButton>
+              <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
             </PostHeaderTop>
             <PostHeaderBottom>
               <span

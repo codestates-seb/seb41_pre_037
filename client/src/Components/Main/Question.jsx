@@ -1,5 +1,6 @@
 import styled from "styled-components/macro"
 import BREAKPOINT from "../../breakpoint"
+import { useNavigate } from "react-router-dom"
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -117,6 +118,8 @@ const ProfileLog = styled.p`
 `
 
 export default function Question({isLast}) {
+  const navigate = useNavigate();
+
   return (
     <QuestionContainer isLast={isLast}>
       <QuestionLeftSideContainer>
@@ -125,7 +128,7 @@ export default function Question({isLast}) {
         <QuestionInfo isVote={false}>0 votes</QuestionInfo>
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
-        <QuestionTitle>What is Graphdriver of Docker?</QuestionTitle>
+        <QuestionTitle onClick={() => {navigate('/post/postid')}}>What is Graphdriver of Docker?</QuestionTitle>
         <QuestionPreview>I couldn't find a newest information about built in graphdriver of docker. Not plugin. I could only find Michael Crosby's blog, written on Nov 16, 2017. I want more detailed information. My ...</QuestionPreview>
         <QuestionFooter>
           <Tag>docker</Tag>
