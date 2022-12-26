@@ -6,17 +6,15 @@ import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import ShareSheet from "./ShareSheet";
 
-const PostTopContainer = styled.div`
+const AnswerItemContainer = styled.div`
   display: flex;
   width: 100%;
   border-bottom: 1px solid #e3e3e3;
-  padding-bottom: 16px;
+  padding: 16px 0 16px 0;
 `;
 
-const PostTopInnerContainer = styled.div`
+const AnswerItemInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: calc(100% - 52px);
@@ -59,7 +57,6 @@ const AuthorInfoContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  background-color: #d9e9f7;
   padding: 7px;
   min-width: 200px;
   min-height: 65px;
@@ -141,7 +138,7 @@ const onClick = () => {
 
 export default function Question() {
   return (
-    <PostTopContainer>
+    <AnswerItemContainer>
       <VotingComponentConatiner>
         <VotingComponent>
           <VotingButton>
@@ -153,28 +150,20 @@ export default function Question() {
           </VotingButton>
         </VotingComponent>
       </VotingComponentConatiner>
-      <PostTopInnerContainer>
+      <AnswerItemInnerContainer>
         <QuestionTopContainer>
           <SyntaxHighlighter language="javascript" style={defaultStyle}>
             {markdown}
           </SyntaxHighlighter>
         </QuestionTopContainer>
-        <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
-        </TagsContainer>
         <QuestionBottomContainer>
           <ShareLinker>Share</ShareLinker>
-          <ShareSheet />
           <AuthorInfoContainer>
             <AuthorProfileImageArea />
             <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
           </AuthorInfoContainer>
         </QuestionBottomContainer>
-      </PostTopInnerContainer>
-    </PostTopContainer>
+      </AnswerItemInnerContainer>
+    </AnswerItemContainer>
   );
 }

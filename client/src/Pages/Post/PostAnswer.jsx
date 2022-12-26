@@ -76,6 +76,15 @@ const BottomNotice = styled.h2`
   display: inline;
   font-size: 17px;
   font-weight: 400;
+  margin: 16px 0 16px 0;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTABLET}px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+  }
 `;
 
 const BottomNoticeLinker = styled.a`

@@ -7,6 +7,7 @@ import RightSidebar from "../../Components/RightSidebar/RightSidebar";
 import Footer from "../../Components/Footer/Footer";
 import Question from "./Question";
 import PostAnswer from "./PostAnswer";
+import AnswerList from "./AnswerList";
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const PostHeader = styled.div`
   width: 100%;
   min-height: 80px;
   max-height: max-content;
-  border-bottom: 1px solid rgb(181, 181, 181);
+  border-bottom: 1px solid #e3e3e3;
 `;
 
 const PostHeaderTop = styled.div`
@@ -92,7 +93,14 @@ const PostContentContainer = styled.div`
   width: calc(100% - 300px);
   padding-top: 16px;
   box-sizing: border-box;
-  background-color: powderblue;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTABLET}px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+  }
 `;
 
 const RightSidebarContainer = styled.div`
@@ -135,6 +143,7 @@ export default function Post() {
           >
             <PostContentContainer>
               <Question />
+              <AnswerList />
               <PostAnswer />
             </PostContentContainer>
             <RightSidebarContainer>
