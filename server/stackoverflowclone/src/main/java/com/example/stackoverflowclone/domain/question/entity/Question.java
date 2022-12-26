@@ -7,6 +7,8 @@ import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

@@ -1,8 +1,5 @@
 package com.example.stackoverflowclone.domain.member.mapper;
-import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
-import com.example.stackoverflowclone.domain.member.dto.MemberPostResponseDto;
-import com.example.stackoverflowclone.domain.member.dto.MemberProfileResponseDto;
-import com.example.stackoverflowclone.domain.member.dto.MemberToUserPageResponseDto;
+import com.example.stackoverflowclone.domain.member.dto.*;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,25 +30,21 @@ public class MemberMapper {
               .fullname("")
               .build();
     }
-//    public Member memberPatchToMember(MemberProfilePatchDto memberProfilePatchDto){
-//
-//        return Member.builder()
-//                .memberId(memberProfilePatchDto.getMemberId())
-//                .profileCreatedAt(memberProfilePatchDto.getCreatedAt()) //
-//                .username(memberProfilePatchDto.getUsername())
-//                .email(memberProfilePatchDto.getEmail())
-//                .location(memberProfilePatchDto.getLocation())
-//                .title(memberProfilePatchDto.getTitle())
-//                .aboutMe(memberProfilePatchDto.getAboutMe())
-//                .image(memberProfilePatchDto.getImage())
-//                .websiteLink(memberProfilePatchDto.getWebsiteLink())
-//                .twitterLink(memberProfilePatchDto.getTwitterLink())
-//                .githubLink(memberProfilePatchDto.getGithubLink())
-//                .fullname(memberProfilePatchDto.getFullname())
-////                .answers(member.getAnswerVoteList()) //
-////                .question(member.getMemberId().getQuestionVoteCount()) //
-//                .build();
-//    }
+    public Member memberPatchToMember(MemberEditDto memberEditDto){
+
+        return Member.builder()
+                .memberId(memberEditDto.getMemberId())
+                .username(memberEditDto.getUsername())
+                .location(memberEditDto.getLocation())
+                .title(memberEditDto.getTitle())
+                .aboutMe(memberEditDto.getAboutMe())
+                .image(memberEditDto.getImage())
+                .websiteLink(memberEditDto.getWebsiteLink())
+                .twitterLink(memberEditDto.getTwitterLink())
+                .githubLink(memberEditDto.getGithubLink())
+                .fullname(memberEditDto.getFullname())
+                .build();
+    }
     public MemberPostResponseDto memberToMemberResponse(Member member){
         if (member == null){
             return null;
