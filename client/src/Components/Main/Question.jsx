@@ -88,6 +88,7 @@ const Tag = styled.div`
   background-color: #E1ECF4;
   color: #39739D;
   font-size: small;
+  margin-right: 5px;
 `
 
 const Profile = styled.div`
@@ -117,25 +118,43 @@ const ProfileLog = styled.p`
   color: #4c4c4c;
 `
 
-export default function Question({isLast}) {
+export default function Question({data, isLast}) {
   const navigate = useNavigate();
+  console.log(data);
+
+  const dateCalc = () => {
+    const now = new Date(Date.now());
+    const createdAt = new Date(data.questionCreatedAt);
+    const timeDiff = new Date(now - createdAt);
+    if( timeDiff.getDate() >= 365) {
+      return `asked ${Math.floor(timeDiff.getDate() / 365)} years ago`;
+    } else if( timeDiff.getDate() > 1) {
+      return `asked ${timeDiff.getDate()} days ago`;
+    } else {
+      return `asked ${timeDiff.getHours()} hours ago`;
+    }
+  }
 
   return (
     <QuestionContainer isLast={isLast}>
       <QuestionLeftSideContainer>
-        <QuestionInfo isVote={true}>0 votes</QuestionInfo>
-        <QuestionInfo isVote={false}>0 answers</QuestionInfo>
-        <QuestionInfo isVote={false}>0 votes</QuestionInfo>
+        <QuestionInfo isVote={true}>{`${data.questionVoteCount} votes`}</QuestionInfo>
+        <QuestionInfo isVote={false}>{`${data.questionAnswerCount} answers`}</QuestionInfo>
+        <QuestionInfo isVote={false}>{`${data.questionViewCount} views`}</QuestionInfo>
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
-        <QuestionTitle onClick={() => {navigate('/post/postid')}}>What is Graphdriver of Docker?</QuestionTitle>
+        <QuestionTitle onClick={() => {navigate('/post/postid')}}>{`${data.questionTitle}`}</QuestionTitle>
         <QuestionPreview>I couldn't find a newest information about built in graphdriver of docker. Not plugin. I could only find Michael Crosby's blog, written on Nov 16, 2017. I want more detailed information. My ...</QuestionPreview>
         <QuestionFooter>
-          <Tag>docker</Tag>
+          {
+            data.tags.map((tag) => {
+              return <Tag>{tag.tagName}</Tag>
+            })
+          }
           <Profile>
-            <ProfileImg><img css={`border-radius: 5px;`} alt="img" src="https://lh3.googleusercontent.com/a/AEdFTp4KuAxaIP9SXvUCyy4wiVwwcDbXJJogWJGjyV3j=k-s32"></img></ProfileImg>
-            <ProfileName>김근영</ProfileName>
-            <ProfileLog>asked 1 min ago</ProfileLog>
+            <ProfileImg><img css={`border-radius: 5px;`} alt="img" src={data.image}></img></ProfileImg>
+            <ProfileName>{`${data.username}`}</ProfileName>
+            <ProfileLog>{dateCalc()}</ProfileLog>
           </Profile>
         </QuestionFooter>
       </QuestionRightSideContainer>
