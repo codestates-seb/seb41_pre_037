@@ -5,13 +5,14 @@ import User from "../Components/User/User"
 import Footer from "../Components/Footer/Footer"
 import BREAKPOINT from "../breakpoint"
 import SearchBarIcon from "../icons/Search.svg";
+import Pagination from "../Components/Pagination/Pagination"
 
 
 
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: max-content;
   max-width: 1260px;
   margin: 0 auto;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen;
@@ -115,6 +116,12 @@ export default function Tags() {
           <User/>
           <User/>
         </MainbarUsersContainer>
+        <Pagination pageinfo={{
+        "page" : 1,
+        "size" : 30,
+        "totalElements" : 30,
+        "totalPages" : 30,
+    }}/>
       </MainbarContainer>
     </Container>
     <Footer/>
