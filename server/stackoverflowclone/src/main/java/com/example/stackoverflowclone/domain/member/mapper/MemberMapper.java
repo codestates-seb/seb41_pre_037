@@ -70,11 +70,10 @@ public class MemberMapper {
                 .twitterLink(member.getTwitterLink())
                 .githubLink(member.getGithubLink())
                 .fullname(member.getFullname())
+                .questions(member.getQuestionList().stream().count())
+                .answers(member.getAnswersList().stream().count())
                 .build();
     }
-
-//    List<MemberResponseDto> membersToMemberResponses(List<Member> members);
-
     public List<MemberToUserPageResponseDto> memberUserToResponseDto(List<Member> members) {
         if (members == null) {
             return null;
