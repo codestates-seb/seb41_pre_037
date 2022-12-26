@@ -40,4 +40,7 @@ public class Answer extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public Answer(String answerContent) {
+        this.answerContent = answerContent;
+    }
 }

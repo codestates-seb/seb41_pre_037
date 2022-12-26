@@ -61,6 +61,14 @@ public class Question extends Auditable {
     @OneToMany(mappedBy = "question") // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
     private List<Answer> answers = new ArrayList<>();
 
+    public Question(Long questionId, String questionTitle, String questionProblemBody, String questionTryOrExpectingBody, long questionViewCount, long questionVoteCount) { // 지우기
+        this.questionId = questionId;
+        this.questionTitle = questionTitle;
+        this.questionProblemBody = questionProblemBody;
+        this.questionTryOrExpectingBody = questionTryOrExpectingBody;
+        this.questionViewCount = questionViewCount;
+        this.questionVoteCount = questionVoteCount;
+    }
 
     public void addQuestionTagList(QuestionTag questionTag) {
         questionTagList.add(questionTag);
