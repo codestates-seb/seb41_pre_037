@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.domain.tag.service;
 
+import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.tag.repository.TagRepository;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
@@ -24,6 +25,14 @@ import java.util.stream.Collectors;
 public class TagService {
     private final TagRepository tagRepository;
 
+    public List<List<Tag>> findTagsByAllQuestion(List<Question> allQuestion){
+        return allQuestion.stream()
+                .map(question -> {
+                    return findTags(question.getQuestionTagList());
+                })
+                .collect(Collectors.toList());
+    }
+
 
     public Page<Tag> findTags(int page, int size) {
         return tagRepository.findAll(PageRequest.of(page, size, Sort.by("tagId").descending()));
@@ -45,7 +54,6 @@ public class TagService {
                     Optional<Tag> findTag = tagRepository.findById(questionTag.getTag().getTagId());
                     return findTag.orElseThrow(() ->
                             new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
-
                 })
                 .collect(Collectors.toList());
     }

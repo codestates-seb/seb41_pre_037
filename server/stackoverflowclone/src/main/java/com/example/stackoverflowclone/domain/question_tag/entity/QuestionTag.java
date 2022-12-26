@@ -19,7 +19,6 @@ public class QuestionTag{
     @Column(name = "question_tag_id")
     private Long questionTagId;
 
-
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

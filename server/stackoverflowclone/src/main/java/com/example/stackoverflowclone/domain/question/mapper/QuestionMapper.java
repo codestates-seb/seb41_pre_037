@@ -112,7 +112,10 @@ public class QuestionMapper {
                 .questionVoteCount(question.getQuestionVoteCount())
                 .build();
     }
-
+//
+//    public QuestionHomeResponseDto questionToQuestionHomeResponseDto(QuestionTag questionTag) {
+//
+//    }
 
     public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions) {
 
@@ -122,7 +125,6 @@ public class QuestionMapper {
 
         return questions.stream()
                 .map(question -> {
-                    List<QuestionTag> questionTagList = question.getQuestionTagList();
                     return QuestionHomeDto.builder()
                             .questionId(question.getQuestionId())
                             .memberId(question.getMember().getMemberId())
@@ -136,7 +138,17 @@ public class QuestionMapper {
                             .questionAnswerCount(question.getAnswers().size())
                             .questionProblemBody(question.getQuestionProblemBody())
                             .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                            .tags(question.getQuestionTagList())
+                            .tags(question.getQuestionTagList().stream()
+                                    .map(questionTag -> {
+                                        QuestionHomeFindTagResponseDto questionHomeFindTagResponseDto =
+                                                QuestionHomeFindTagResponseDto.builder()
+                                                        .tagId(questionTag.getTag().getTagId())
+                                                        .tagName(questionTag.getTag().getTagName())
+                                                        .tagBody(questionTag.getTag().getTagBody())
+                                                        .tagUrl(questionTag.getTag().getTagUrl())
+                                                        .build();
+                                        return questionHomeFindTagResponseDto;
+                                    }).collect(Collectors.toList()))
                             .build();
                 })
                 .collect(Collectors.toList());

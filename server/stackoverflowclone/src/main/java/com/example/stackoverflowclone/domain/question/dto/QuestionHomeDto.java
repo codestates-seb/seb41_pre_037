@@ -1,6 +1,5 @@
 package com.example.stackoverflowclone.domain.question.dto;
 
-import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,6 +22,6 @@ public class QuestionHomeDto {
     private long questionAnswerCount;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<QuestionTag> tags;
+    private List<QuestionHomeFindTagResponseDto> tags;
 
 }
