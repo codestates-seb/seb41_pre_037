@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class MemberProfileResponseDto{
     @Positive
     private Long memberId;
-    private LocalDateTime profileCreatedAt;
+    private LocalDateTime profileCreatedAt; // TODO : string으로 바꿔야함
     @Pattern(regexp = "^\\S+(\\s?\\S+)*$")
     @NotBlank( message = "회원 이름은 공백이 아니여야한다.")
     private String username;

@@ -89,7 +89,7 @@ public class MemberService {
                 .ifPresent( githublink -> findMember.setGithubLink(githublink));
         Optional.ofNullable(member.getFullname())
                 .ifPresent( fullname -> findMember.setFullname(fullname));
-        return memberRepository.save(findMember);
+        return findMember;
     }
 
     public void deleteMember(long memberId) {

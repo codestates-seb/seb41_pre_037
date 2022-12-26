@@ -6,6 +6,8 @@ import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.vote.entity.AnswerVote;
 import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -61,22 +63,22 @@ public class Member extends Auditable {
     private String fullname;
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<QuestionVote> questionVoteList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Answer> answersList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<AnswerVote> answerVoteList = new ArrayList<>();
 
-    @Builder.Default
+    @Builder.Default // TODO : MemberTABLE 삭제시 오류
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 

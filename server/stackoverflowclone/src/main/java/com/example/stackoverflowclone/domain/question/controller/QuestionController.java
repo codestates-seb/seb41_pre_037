@@ -43,7 +43,6 @@ public class QuestionController {
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList,member));
-
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 

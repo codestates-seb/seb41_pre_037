@@ -4,6 +4,8 @@ import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -27,6 +29,7 @@ public class AnswerVote extends Auditable {
     private Answer answer;
 
     @ManyToOne
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 

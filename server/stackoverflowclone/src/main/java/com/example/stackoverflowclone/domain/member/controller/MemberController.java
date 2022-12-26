@@ -37,7 +37,9 @@ public class MemberController {
     }
     @GetMapping("/{member-id}/{username}")
     public ResponseEntity getMemberProfile(@PathVariable("member-id") @Valid Long memberId){
+        System.out.println("들어옴");
         Member member = memberService.findByMember(memberId);
+
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
                 HttpStatus.OK );

@@ -34,7 +34,6 @@ public class AnswerController {
         Question question = questionService.findQuestion(questionId);
         Answer answer = answerMapper.answerPostDtoToAnswer(answerPostDto, question, member);
         Answer saveAnswer = answerService.postAnswer(answer);
-
         return new ResponseEntity(new DataResponseDto<>(answerMapper.answerToAnswerResponseDto(saveAnswer)), HttpStatus.CREATED);
     }
 
