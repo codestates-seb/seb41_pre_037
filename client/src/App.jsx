@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AskQuestions from "./Pages/AskQuestions";
 import Login from "./Pages/Login";
 import Main from "./Pages/Main";
-import Post from "./Pages/Post";
+import Post from "./Pages/Post/Post";
 import ProfileDefault from "./Pages/ProfileDefault";
 import ProfileEdit from "./Pages/ProfileEdit";
 import ProfileDelete from "./Pages/ProfileDelete";

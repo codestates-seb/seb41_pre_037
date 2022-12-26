@@ -5,11 +5,7 @@ import MobileLogo from "../../icons/LogoGlyphXSm.svg";
 import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
-import {
-  useLeftNavStore,
-  useSearchPopUpStore,
-  useMobileSearchPopUpStore,
-} from "../../store/store";
+import { useLeftNavStore, useSearchPopUpStore, useMobileSearchPopUpStore } from "../../store/store";
 import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
@@ -25,10 +21,9 @@ const HeaderComponent = styled.header`
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(248, 249, 249);
-  border-top: 3px solid rgb(230, 135, 62);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05),
-    0 2px 8px rgba(0, 0, 0, 0.05);
-  z-index: 30;
+  border-top: 3px solid RGB(244, 130, 36);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 999;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     padding-right: 4%;
@@ -53,6 +48,10 @@ const ButtonArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  > button {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     width: auto;
@@ -79,6 +78,10 @@ const MobileLeftButtonContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 100%;
+
+  > button {
+    cursor: pointer;
+  }
 
   @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;
@@ -165,9 +168,13 @@ const MobileSearchBarButton = styled.button`
 const LoggedOutButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
   padding: 10px;
+
+  > button {
+    cursor: pointer;
+  }
 
   @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
   }
@@ -206,6 +213,10 @@ const LoggedInButtonContainer = styled.div`
   align-items: center;
   justify-content: space-around;
 
+  > button {
+    cursor: pointer;
+  }
+
   @media screen and (min-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
   }
 `;
@@ -218,23 +229,19 @@ const ProfileButtonAria = styled.div`
   align-items: center;
   justify-content: center;
 
+  > button {
+    cursor: pointer;
+  }
+
   &:hover {
     background-color: rgb(228, 230, 232);
   }
 `;
 
-const TestAria = styled.div`
-  width: 100vw;
-  height: 5000px;
-  background-color: blueviolet;
-`;
-
 const Header = () => {
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
-  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore(
-    (state) => state
-  );
+  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
 
   return (
     <>
@@ -259,14 +266,20 @@ const Header = () => {
           </SearchBar>
           <SearchPopUp />
           <ButtonArea>
-            {/* <LoggedOutButtonContainer>
-              <MobileSearchBarButton>
+            <LoggedOutButtonContainer>
+              <MobileSearchBarButton onClick={handleMobilePopUp}>
                 <img src={MobileSearchBarIcon} />
               </MobileSearchBarButton>
-              <LoginOutButton>Log in</LoginOutButton>
+              <LoginOutButton
+                css={`
+                  margin-right: 5px;
+                `}
+              >
+                Log in
+              </LoginOutButton>
               <SignUPButton>Sign up</SignUPButton>
-            </LoggedOutButtonContainer> */}
-            <LoggedInButtonContainer>
+            </LoggedOutButtonContainer>
+            {/* <LoggedInButtonContainer>
               <MobileSearchBarButton onClick={handleMobilePopUp}>
                 <img src={MobileSearchBarIcon} />
               </MobileSearchBarButton>
@@ -282,7 +295,7 @@ const Header = () => {
                 </button>
               </ProfileButtonAria>
               <LoginOutButton>Log out</LoginOutButton>
-            </LoggedInButtonContainer>
+            </LoggedInButtonContainer> */}
           </ButtonArea>
         </HeaderContainer>
       </HeaderComponent>
