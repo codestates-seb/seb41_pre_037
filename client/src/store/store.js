@@ -7,8 +7,7 @@ const useSearchPopUpStore = create((set) => ({
 
 const useMobileSearchPopUpStore = create((set) => ({
   showMobilePopUp: false,
-  handleMobilePopUp: () =>
-    set((state) => ({ showMobilePopUp: !state.showMobilePopUp })),
+  handleMobilePopUp: () => set((state) => ({ showMobilePopUp: !state.showMobilePopUp })),
 }));
 
 const useLeftNavStore = create((set) => ({
@@ -16,4 +15,9 @@ const useLeftNavStore = create((set) => ({
   handleLeftNav: () => set((state) => ({ showLeftNav: !state.showLeftNav })),
 }));
 
-export { useSearchPopUpStore, useLeftNavStore, useMobileSearchPopUpStore };
+const useShareSheetStore = create((set) => ({
+  showShareSheet: false,
+  handleShareSheet: () => set((state) => ({ showShareSheet: !state.showShareSheet })),
+}));
+
+export { useSearchPopUpStore, useLeftNavStore, useMobileSearchPopUpStore, useShareSheetStore };
