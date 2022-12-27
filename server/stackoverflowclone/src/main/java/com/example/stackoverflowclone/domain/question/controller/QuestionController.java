@@ -50,7 +50,7 @@ public class QuestionController {
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody @Valid QuestionPostDto questionPostDto){
 
-        log.info("getQuestionTitle = {}", qusestionPostDto.getQuestionTitle());
+        log.info("getQuestionTitle = {}", questionPostDto.getQuestionTitle());
         log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
 
         log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
