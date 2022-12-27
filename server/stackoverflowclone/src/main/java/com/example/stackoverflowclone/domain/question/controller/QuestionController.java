@@ -54,7 +54,7 @@ public class QuestionController {
         log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
         log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
         log.info("getTag = ");
-        // questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
+        questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
 
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);

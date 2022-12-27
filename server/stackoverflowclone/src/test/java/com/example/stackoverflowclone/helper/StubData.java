@@ -21,7 +21,7 @@ public class StubData {
                         .questionTitle("질문 제목 입니다.")
                         .questionProblemBody("질문 내용 1")
                         .questionTryOrExpectingBody("질문 내용 2")
-                        .tag(new ArrayList<>())//new ArrayList<QuestionPostTagDto>(List.of(new QuestionPostTagDto("java")))
+                        .tag(new ArrayList<QuestionPostTagDto>(List.of(new QuestionPostTagDto("java")))) //)
                         .build());
     }
 

@@ -14,6 +14,7 @@ import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.helper.QuestionControllerTestHelper;
 import com.example.stackoverflowclone.helper.StubData;
 import com.example.stackoverflowclone.helper.WithMockCustomUser;
+import com.example.stackoverflowclone.util.ApiDocumentUtils;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -106,12 +108,55 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
         ResultActions actions = mockMvc.perform(postRequestBuilder(getUrlCreateQuestion(), content));
 
         actions
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.questionId").value(questionTagListToQuestionPostResponseDto.getQuestionId()))
+                .andExpect(jsonPath("$.data.questionTitle").value(questionTagListToQuestionPostResponseDto.getQuestionTitle()))
+                .andExpect(jsonPath("$.data.questionProblemBody").value(questionTagListToQuestionPostResponseDto.getQuestionProblemBody()))
+                .andExpect(jsonPath("$.data.questionTryOrExpectingBody").value(questionTagListToQuestionPostResponseDto.getQuestionTryOrExpectingBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagId").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagId()))
+                .andExpect(jsonPath("$.data.tag.[0].tagName").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagName()))
+                .andExpect(jsonPath("$.data.tag.[0].tagBody").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagUrl").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagUrl()))
+                .andDo(document( "post-question",
+                        ApiDocumentUtils.getRequestPreProcessor(),
+                        ApiDocumentUtils.getResponsePreProcessor(),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("questionTitle").type(JsonFieldType.STRING).description("질문 제목").ignored(),
+                                        fieldWithPath("questionProblemBody").type(JsonFieldType.STRING).description("질문 내용 1").optional(),
+                                        fieldWithPath("questionTryOrExpectingBody").type(JsonFieldType.STRING).description("질문 내용 2").optional(),
+                                        fieldWithPath("tag").type(JsonFieldType.ARRAY).description("태그"),
+                                        fieldWithPath("tag[].tagName").type(JsonFieldType.STRING).description("태그 이름")
+                                )
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터").optional(),
+                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 식별자"),
+                                        fieldWithPath("data.questionTitle").type(JsonFieldType.STRING).description("질문 제목"),
+                                        fieldWithPath("data.questionProblemBody").type(JsonFieldType.STRING).description("질문 내용 1"),
+                                        fieldWithPath("data.questionTryOrExpectingBody").type(JsonFieldType.STRING).description("질문 내용 2"),
+                                        fieldWithPath("data.tag").type(JsonFieldType.ARRAY).description("태그 결과 데이터").optional(),
+                                        fieldWithPath("data.tag[].tagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                        fieldWithPath("data.tag[].tagName").type(JsonFieldType.STRING).description("태그 이름"),
+                                        fieldWithPath("data.tag[].tagBody").type(JsonFieldType.STRING).description("내그 내용"),
+                                        fieldWithPath("data.tag[].tagUrl").type(JsonFieldType.STRING).description("태그 URL")
+                                )
+                        )
+                ));
+
     }
     @Test
+    @DisplayName("질문 게시글 선택 조회 API : findQuestion")
+    @WithMockCustomUser
     void findQuestion()throws Exception {
-        //given(questionService.findQuestion(Mockito.anyLong())).willReturn();
-        //given(tagService.findTags(Mockito.anyList())).willReturn();
+
+        given(questionService.findQuestion(Mockito.anyLong())).willReturn();
+        given(tagService.findTags(Mockito.anyList())).willReturn();
+
+
+        ResultActions actions = mockMvc.perform(getRequestBuilder(getUriFindQuestion(),1L,"제목입니다"));
+
     }
 
 }
