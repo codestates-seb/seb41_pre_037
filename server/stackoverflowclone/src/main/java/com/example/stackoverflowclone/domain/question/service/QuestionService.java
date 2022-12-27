@@ -35,6 +35,7 @@ public class QuestionService {
         if(memberId != compareMemberId) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOW);
         }
+        log.info("# delete question :");
         questionRepository.delete(question);
     }
 
