@@ -44,4 +44,13 @@ public class QuestionService {
         return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }
 
+    public Page<Question> findAllQuestionsRelatedToUserSearch(String q, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
+        return questionRepository.findAllByQuestionTitleContainsOrQuestionProblemBodyContains(q,q,pageable);
+    }
+
+    public Page<Question> findAllQuestionsSortedByUnanswered(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return questionRepository.findAllByAnswersEmpty(pageable);
+    }
 }

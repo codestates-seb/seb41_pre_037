@@ -42,13 +42,13 @@ public class QuestionController {
     private final QuestionVoteService questionVoteService;
 
     @GetMapping("/test")
-    private ResponseEntity getTest(){
+    private ResponseEntity getTest() {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
-                                                          @RequestBody @Valid QuestionPostDto questionPostDto){
+                                                          @RequestBody @Valid QuestionPostDto questionPostDto) {
 
         log.info("getQuestionTitle = {}", questionPostDto.getQuestionTitle());
         log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
@@ -66,7 +66,7 @@ public class QuestionController {
     @GetMapping("/{question-id}/{question-title}")
     public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle){
+                                                        @PathVariable("question-title") String questionTitle) {
         Question question = questionService.findQuestion(questionId);
         questionService.addViewCount(question);
         List<QuestionTag> questionTagList = question.getQuestionTagList();
@@ -107,14 +107,22 @@ public class QuestionController {
         return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
     }
 
-//  https://stackoverflow.com/search?q=user%3A1234
-//    @PostMapping("/search")
-//    public ResponseEntity search(@RequestParam String q) {
-//        int totalQuestions = questionService.finaAllQuestions().size();
-//        Page<Question> listPage = questionService.findAllQuestionsByPage(0, 15);
-//        List<Question> allQuestion = listPage.getContent();
-//        return new ResponseEntity<>(new HomeResponseDto<>(totalQuestions, questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
-//
-//    }
+    //  https://stackoverflow.com/search?q=user%3A1234
+    @GetMapping("/search")
+    public ResponseEntity search(@RequestParam String q,
+                                 @Positive @RequestParam(defaultValue = "1", required = false) int page) {
+        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+        List<Question> content = allQuestionsRelatedToUserSearch.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsRelatedToUserSearch), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/tab")
+    public ResponseEntity changeTabInHome(@RequestParam(defaultValue = "Unanswered") String tab,
+                                          @Positive @RequestParam(defaultValue = "1", required = false) int page) {
+        Page<Question> allQuestionsSortedByUnanswered = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+        List<Question> content = allQuestionsSortedByUnanswered.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByUnanswered), HttpStatus.OK);
+    }
 }
 

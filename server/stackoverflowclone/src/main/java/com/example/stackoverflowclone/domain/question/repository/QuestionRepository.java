@@ -13,6 +13,6 @@ import java.util.Optional;
 
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-//    List<Question> findQuestionByAnswers(Pageable pageable);
-//    List<Question> findByMemberQuestion(Member member);
+    Page<Question> findAllByQuestionTitleContainsOrQuestionProblemBodyContains(String title, String bodyMain, Pageable pageable);
+    Page<Question> findAllByAnswersEmpty(Pageable pageable);
 }
