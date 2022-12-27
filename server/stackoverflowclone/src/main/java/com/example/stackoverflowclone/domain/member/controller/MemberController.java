@@ -123,13 +123,23 @@ public class MemberController {
                 ,HttpStatus.OK);
     }
 
-
     @GetMapping
     public ResponseEntity findUsers(@Positive @RequestParam(defaultValue = "1" ,required = false) int page) {
-        Page<Member> pageUsers = memberService.findMembers(page - 1, 15);
+        Page<Member> pageUsers = memberService.findMembers(page - 1, 16);
         List<Member> users = pageUsers.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.memberUserToResponseDto(users), pageUsers),
                 HttpStatus.OK);
     }
+
+//    @PostMapping
+//
+//    // TODO: 유저 찾기 기능 구현 예정 ex) user:1234
+////        String[] s = new String[]{"user", "useR", "usEr", "usER", "uSer", "uSeR", "uSEr", "uSER",
+////                "User", "UseR", "UsEr", "UsER", "USer", "USeR", "USEr", "USER"};
+//
+//        if (q.startsWith("user")) {
+//        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+//        //repo
+
 
 }
