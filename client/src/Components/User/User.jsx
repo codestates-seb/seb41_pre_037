@@ -30,18 +30,18 @@ const Username = styled.p`
   color: #0074CC;
 `
 
-export default function User() {
+export default function User({data}) {
   const imgSrc = useRef();
   imgSrc.current = Math.floor(Math.random() * 4);
 
   return (
     <UserContainer>
       <UserIMG>
-        <img src={imgArr[imgSrc.current]} alt="profile"></img>
+        <img src={data.image} alt="profile"></img>
       </UserIMG>
       <UserDetailContainer>
-        <Username>Ananimous User</Username>
-        <p css={`color: gray; margin: 0; font-size: small;`}>Seoul, Korea</p>
+        <Username>{data.username}</Username>
+        <p css={`color: gray; margin: 0; font-size: small;`}>{data.location}</p>
       </UserDetailContainer>
     </UserContainer>
   )

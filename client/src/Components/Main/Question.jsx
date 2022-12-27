@@ -120,7 +120,6 @@ const ProfileLog = styled.p`
 
 export default function Question({data, isLast}) {
   const navigate = useNavigate();
-  console.log(data);
 
   const dateCalc = () => {
     const now = new Date(Date.now());
@@ -148,7 +147,7 @@ export default function Question({data, isLast}) {
         <QuestionFooter>
           {
             data.tags.map((tag) => {
-              return <Tag>{tag.tagName}</Tag>
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>
             })
           }
           <Profile>

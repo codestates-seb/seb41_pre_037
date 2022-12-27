@@ -149,15 +149,16 @@ export default function Main() {
   }
 
 
-  const {isSuccess} = useQuery({queryKey: ['fetchQuestion'], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
+  const {isLoading} = useQuery({queryKey: ['fetchQuestion'], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
 
   return (
     <>
       <Header />
       <Container>
         <LeftNav />
-        { isSuccess 
-        ? <MainbarContainer>
+        { isLoading
+        ? <div>Loading....</div> 
+        : <MainbarContainer>
             <MainbarTopHeader>
               <Title>All Questions</Title>
               <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
@@ -170,18 +171,17 @@ export default function Main() {
               </MainbarSortButtonContainer>
             </MainbarBottomHeader>
             {
-              questionData.qusetions?.map((question, index, questions) => {
+              questionData && questionData.qusetions.map((question, index, questions) => {
                 if(index === questions.length - 1) {
                   return <Question data={question} isLast={true} key={question.questionId}/>
                 }
                 return <Question data={question} key={question.questionId}/>
               })
             }
-            <PaginationContainer>
+          <PaginationContainer>
             <Pagination pageinfo={pageInfo}/>
             </PaginationContainer>
           </MainbarContainer>
-          : <div>Loading....</div>
         }
         <RightSidebarContainer>
           <RightSidebar />

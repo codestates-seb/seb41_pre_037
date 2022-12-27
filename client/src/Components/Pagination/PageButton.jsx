@@ -24,7 +24,7 @@ const Button = styled.button`
 export default function PageButton({number, currentPage}) {
   return (
     <Button isNull={!!number} className={number === currentPage && "current" }>
-      {number}
+      {`${number}`}
     </Button>
   )
 }
