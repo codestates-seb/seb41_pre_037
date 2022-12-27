@@ -205,8 +205,25 @@ const Login = () => {
               <LoginInputContainer>
                 <LoginLabel>Email</LoginLabel>
                 <LoginInputInnerContainer>
-                  <LoginInput name="email" value={inputs.email} onChange={onChange} ref={emailInput} />
+                  {inputsEmptyCheck.email ? (
+                    <img
+                      src={AlertCircle}
+                      css={`
+                        position: absolute;
+                        right: 0;
+                        margin-right: 10px;
+                      `}
+                    />
+                  ) : null}
+                  <LoginInput
+                    className={inputsEmptyCheck.email ? "empty" : null}
+                    name="email"
+                    value={inputs.email}
+                    onChange={onChange}
+                    ref={emailInput}
+                  />
                 </LoginInputInnerContainer>
+                {inputsEmptyCheck.email ? <Validation>Email cannot be empty.</Validation> : null}
               </LoginInputContainer>
               <LoginInputContainer>
                 <LoginLabel>Password</LoginLabel>

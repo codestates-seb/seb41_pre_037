@@ -8,10 +8,9 @@ import LeftNav from "../Components/LeftNav/LeftNav";
 import Pagination from "../Components/Pagination/Pagination";
 
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams  } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-
 
 const Container = styled.div`
   display: flex;
@@ -131,71 +130,89 @@ const RightSidebarContainer = styled.div`
 `;
 
 const PaginationContainer = styled.div`
- margin-left: 20px;
-`
-
+  margin-left: 20px;
+`;
 
 export default function Main() {
   const navigate = useNavigate();
   const [questionData, setQuestionData] = useState();
   const [pageInfo, setPageInfo] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page');
+  const page = searchParams.get("page");
 
   useEffect(() => {
-    window.scrollTo({left : 0, top: 0, behavior: "smooth"});
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   }, [questionData]);
-  
+
   const fetchQuestion = () => {
     console.log(page);
-    if(!!page) {
+    if (!!page) {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?page=${page}`);
     } else {
-      console.log('with query', page);
+      console.log("with query", page);
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions`);
     }
-  }
+  };
 
   const fetchQuestionOnSuccess = (response) => {
     setQuestionData(response.data.data);
     setPageInfo(response.data.pageInfo);
-  }
+  };
 
-
-  const {isLoading, refetch} = useQuery({queryKey: ['fetchQuestion', page], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
+  const { isLoading, refetch } = useQuery({
+    queryKey: ["fetchQuestion", page],
+    queryFn: fetchQuestion,
+    keepPreviousData: true,
+    onSuccess: fetchQuestionOnSuccess,
+  });
 
   return (
     <>
       <Header />
       <Container>
         <LeftNav />
-        { isLoading
-        ? <div>Loading....</div> 
-        : <MainbarContainer>
+        {isLoading ? (
+          <div>Loading....</div>
+        ) : (
+          <MainbarContainer>
             <MainbarTopHeader>
               <Title>All Questions</Title>
-              <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
+              <AskQuestionButton
+                onClick={() => {
+                  navigate("/askquestions");
+                }}
+              >
+                Ask Questions
+              </AskQuestionButton>
             </MainbarTopHeader>
             <MainbarBottomHeader>
-              {pageInfo ? <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount> : <p css={`margin-left : 20px;`}>loading...</p>}
+              {pageInfo ? (
+                <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount>
+              ) : (
+                <p
+                  css={`
+                    margin-left: 20px;
+                  `}
+                >
+                  loading...
+                </p>
+              )}
               <MainbarSortButtonContainer>
                 <SortButton isLeft={true}>Latest</SortButton>
                 <SortButton isLeft={false}>Unanswered</SortButton>
               </MainbarSortButtonContainer>
             </MainbarBottomHeader>
-            {
-              questionData?.map((question, index, questions) => {
-                if(index === questions.length - 1) {
-                  return <Question data={question} isLast={true} key={question.questionId}/>
-                }
-                return <Question data={question} key={question.questionId}/>
-              })
-            }
-          <PaginationContainer>
-            {pageInfo && <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch}/>}
+            {questionData?.map((question, index, questions) => {
+              if (index === questions.length - 1) {
+                return <Question data={question} isLast={true} key={question.questionId} />;
+              }
+              return <Question data={question} key={question.questionId} />;
+            })}
+            <PaginationContainer>
+              {pageInfo && <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch} />}
             </PaginationContainer>
           </MainbarContainer>
-        }
+        )}
         <RightSidebarContainer>
           <RightSidebar />
         </RightSidebarContainer>
