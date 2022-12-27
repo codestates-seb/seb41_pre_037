@@ -90,7 +90,8 @@ public class QuestionController {
     }
 
     @GetMapping()
-    public ResponseEntity getHome(@Positive @RequestParam(defaultValue = "1", required = false) int page) {
+    public ResponseEntity getHome(@RequestParam(defaultValue = "Latest", required = false) String tab,
+                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
 
         Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
         List<Question> allQuestion = listPage.getContent();
@@ -106,6 +107,5 @@ public class QuestionController {
 //        return new ResponseEntity<>(new HomeResponseDto<>(totalQuestions, questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
 //
 //    }
-
-        }
+}
 
