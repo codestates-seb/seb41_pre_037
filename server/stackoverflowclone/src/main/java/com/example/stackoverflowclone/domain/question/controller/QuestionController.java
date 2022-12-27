@@ -101,28 +101,37 @@ public class QuestionController {
     @GetMapping()
     public ResponseEntity getHome(@RequestParam(defaultValue = "Latest", required = false) String tab,
                                   @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-
-        Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
-        List<Question> allQuestion = listPage.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
+        if (tab.equals("Latest")) {
+            Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
+            List<Question> allQuestion = listPage.getContent();
+            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
+        } else if (tab.equals("Unanswered")) {
+            Page<Question> allQuestionsSortedByUnanswered = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+            List<Question> content = allQuestionsSortedByUnanswered.getContent();
+            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByUnanswered), HttpStatus.OK);
+        } else {
+            return null;
+        }
     }
 
-    //  https://stackoverflow.com/search?q=user%3A1234
     @GetMapping("/search")
     public ResponseEntity search(@RequestParam String q,
+                                 @RequestParam(defaultValue = "Latest", required = false) String tab,
                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
-        List<Question> content = allQuestionsRelatedToUserSearch.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsRelatedToUserSearch), HttpStatus.OK);
-
+        if (tab.equals("Latest")) {
+            Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+            List<Question> content = allQuestionsRelatedToUserSearch.getContent();
+            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsRelatedToUserSearch), HttpStatus.OK);
+        } else {
+            return null; //TODO : Unanswered 반영예정
+        }
     }
 
-    @GetMapping("/tab")
-    public ResponseEntity changeTabInHome(@RequestParam(defaultValue = "Unanswered") String tab,
-                                          @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        Page<Question> allQuestionsSortedByUnanswered = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
-        List<Question> content = allQuestionsSortedByUnanswered.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByUnanswered), HttpStatus.OK);
+    @PostMapping("/tagged/")
+    public ResponseEntity searchByTag(@RequestParam String tagName,
+                                      @Positive @RequestParam(defaultValue = "1", required = false) int page) {
+        Page<Question> allQuestionsSortedByTagged = questionService.findAllQuestionsSortedByTagged(tagName, page - 1, 15);
+        List<Question> content = allQuestionsSortedByTagged.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByTagged), HttpStatus.OK);
     }
 }
-

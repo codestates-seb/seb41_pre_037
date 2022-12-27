@@ -2,8 +2,6 @@ package com.example.stackoverflowclone.domain.question.service;
 
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.repository.QuestionRepository;
-import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
-import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
@@ -44,13 +42,18 @@ public class QuestionService {
         return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }
 
+    public Page<Question> findAllQuestionsSortedByUnanswered(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return questionRepository.findAllByAnswersEmpty(pageable);
+    }
+
     public Page<Question> findAllQuestionsRelatedToUserSearch(String q, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
         return questionRepository.findAllByQuestionTitleContainsOrQuestionProblemBodyContains(q,q,pageable);
     }
 
-    public Page<Question> findAllQuestionsSortedByUnanswered(int page, int size) {
+    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return questionRepository.findAllByAnswersEmpty(pageable);
+        return questionRepository.findAllByQuestionTagListContains(tagName, pageable);
     }
 }
