@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionHomeFindTagResponseDto {
+public class QuestionTagResponseDto {
     private Long tagId;
     private String tagName;
     private String tagBody;

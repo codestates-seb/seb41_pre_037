@@ -8,5 +8,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class QuestionPostTagDto {
+    private Long tagId;
     private String tagName;
 }

@@ -13,5 +13,5 @@ public class QuestionPostResponseDto {
     private String questionTitle;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<Tag> tag;
+    private List<QuestionTagResponseDto> tag;
 }

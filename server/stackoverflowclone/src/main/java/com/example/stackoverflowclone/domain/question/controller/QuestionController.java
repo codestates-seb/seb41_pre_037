@@ -52,7 +52,6 @@ public class QuestionController {
 
         log.info("getQuestionTitle = {}", questionPostDto.getQuestionTitle());
         log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
-
         log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
         log.info("getTag = ");
         // questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
