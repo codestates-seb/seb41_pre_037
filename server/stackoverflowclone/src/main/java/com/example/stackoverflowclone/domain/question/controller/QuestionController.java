@@ -78,6 +78,17 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto)), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{question-id}")
+    public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
+                                                          @PathVariable("question-id") Long questionId){
+
+        questionService.deleteQuestion(questionId, memberId);
+
+        return new ResponseEntity<>(new DataResponseDto("question delete complete !!"),HttpStatus.NO_CONTENT);
+    }
+
+
+
     @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @PathVariable("question-id") Long questionId) {
