@@ -41,23 +41,32 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionVoteService questionVoteService;
 
+    @GetMapping("/test")
+    private ResponseEntity getTest(){
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
-                                                          @RequestBody @Valid QuestionPostDto questionPostDto) {
+                                                          @RequestBody @Valid QuestionPostDto questionPostDto){
 
-        log.info("memberId = {}", memberId);
+        log.info("getQuestionTitle = {}", questionPostDto.getQuestionTitle());
+        log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
+        log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
+        log.info("getTag = ");
+        // questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
+
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
+
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
 
     @GetMapping("/{question-id}/{question-title}")
     public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
                                                         @PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle) {
-
+                                                        @PathVariable("question-title") String questionTitle){
         Question question = questionService.findQuestion(questionId);
         questionService.addViewCount(question);
         List<QuestionTag> questionTagList = question.getQuestionTagList();

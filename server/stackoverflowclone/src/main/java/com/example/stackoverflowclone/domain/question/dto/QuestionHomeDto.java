@@ -22,6 +22,6 @@ public class QuestionHomeDto {
     private long questionAnswerCount;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<QuestionHomeFindTagResponseDto> tags;
+    private List<QuestionTagResponseDto> tags;
 
 }

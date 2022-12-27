@@ -37,7 +37,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 예외처리 추가
         try{
             Map<String,Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
@@ -49,7 +48,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception",e);
         }
 
-        // 다음 Filter 실행
         filterChain.doFilter(request,response);
     }
 

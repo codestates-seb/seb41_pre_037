@@ -57,7 +57,7 @@ public class QuestionMapper {
                 .questionTitle(question.getQuestionTitle())
                 .questionProblemBody(question.getQuestionProblemBody())
                 .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                .tag(tagList)
+                .tag(tagListToQuestionTagResponseDto(tagList))
                 .build();
     }
 
@@ -79,7 +79,7 @@ public class QuestionMapper {
                 .questionViewCount(question.getQuestionViewCount())
                 .questionProblemBody(question.getQuestionProblemBody())
                 .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                .tag(tagList)
+                .tag(tagListToQuestionTagResponseDto(tagList))
                 .answers(answers)
                 .build();
     }
@@ -138,19 +138,37 @@ public class QuestionMapper {
                             .questionAnswerCount(question.getAnswers().size())
                             .questionProblemBody(question.getQuestionProblemBody())
                             .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                            .tags(question.getQuestionTagList().stream()
-                                    .map(questionTag -> {
-                                        QuestionHomeFindTagResponseDto questionHomeFindTagResponseDto =
-                                                QuestionHomeFindTagResponseDto.builder()
-                                                        .tagId(questionTag.getTag().getTagId())
-                                                        .tagName(questionTag.getTag().getTagName())
-                                                        .tagBody(questionTag.getTag().getTagBody())
-                                                        .tagUrl(questionTag.getTag().getTagUrl())
-                                                        .build();
-                                        return questionHomeFindTagResponseDto;
-                                    }).collect(Collectors.toList()))
+                            .tags(questionTagToQuestionTagResponseDto(question.getQuestionTagList()))
                             .build();
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<QuestionTagResponseDto> questionTagToQuestionTagResponseDto(List<QuestionTag> questionTagList){
+        return questionTagList.stream()
+                .map(questionTag -> {
+                    return QuestionTagResponseDto.builder()
+                            .tagId(questionTag.getTag().getTagId())
+                            .tagName(questionTag.getTag().getTagName())
+                            .tagBody(questionTag.getTag().getTagBody())
+                            .tagUrl(questionTag.getTag().getTagUrl())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<QuestionTagResponseDto> tagListToQuestionTagResponseDto(List<Tag> tagList){
+        return tagList.stream()
+                .map(tag -> {
+                    return QuestionTagResponseDto.builder()
+                            .tagId(tag.getTagId())
+                            .tagName(tag.getTagName())
+                            .tagBody(tag.getTagBody())
+                            .tagUrl(tag.getTagUrl())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+
 }

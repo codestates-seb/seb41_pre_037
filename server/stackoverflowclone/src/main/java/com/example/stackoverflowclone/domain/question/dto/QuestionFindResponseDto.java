@@ -21,6 +21,6 @@ public class QuestionFindResponseDto {
     private Long questionViewCount;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<Tag> tag;
+    private List<QuestionTagResponseDto> tag;
     private List<QuestionFindAnswerDto> answers;
 }
