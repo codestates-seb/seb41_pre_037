@@ -21,15 +21,10 @@ public class TagController {
     private final TagService tagService;
     private final TagMapper mapper;
 
-    @GetMapping("/main")
-    public ResponseEntity findTags() {
-        Page<Tag> pageTags = tagService.findTags(0, 15);
-        List<Tag> tags = pageTags.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),
-                HttpStatus.OK);
-    }
+
     @GetMapping
-    public ResponseEntity findTags(@Positive @RequestParam int page) {
+    public ResponseEntity findTags(@Positive @RequestParam(defaultValue = "1", required = false) int page) {
+        System.out.println(page);
         Page<Tag> pageTags = tagService.findTags(page - 1, 15);
         List<Tag> tags = pageTags.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),

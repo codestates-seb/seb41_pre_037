@@ -45,6 +45,7 @@ public class Question extends Auditable {
     @Column(name = "question_vote_count")
     private long questionVoteCount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -58,6 +59,11 @@ public class Question extends Auditable {
     @Builder.Default
     @OneToMany(mappedBy = "question") // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
     private List<Answer> answers = new ArrayList<>();
+
+    public void addMember(Member member) {
+        this.member = member;
+    }
+
     public void addQuestionTagList(QuestionTag questionTag) {
         questionTagList.add(questionTag);
         questionTag.setQuestion(this);
