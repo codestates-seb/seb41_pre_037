@@ -35,18 +35,6 @@ public class JwtTokenizer {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    private final Environment environment;
-
-    @PostConstruct
-    public void init(){
-        log.info("application.yml parsing succeed ! "+secretKey);
-    }
-    public JwtTokenizer(Environment environment){
-        this.environment = environment;
-        String key = environment.getProperty("JWT_SECRET_KEY");
-        log.info("environment variable get succeed ! "+key);
-    }
-
     // secretKEy 인코딩하기
     public String encodeBase64SecretKey(String secretKey){
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
