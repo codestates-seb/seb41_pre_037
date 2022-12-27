@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import { React, useState, useRef } from "react";
 import styled from "styled-components/macro";
 import Header from "../Components/Header/Header";
 import BREAKPOINT from "../breakpoint";
 import Logo from "../icons/LogoGlyphMd.svg";
 import AlertCircle from "../icons/AlertCircle.svg";
 import Google from "../icons/Google.png";
-
 import { useNavigate } from "react-router-dom";
+import useInputStore, { inputs, setInputs } from "../store/loginstore";
 
 const Background = styled.div`
   background-color: #f6f6f6;
@@ -81,6 +81,10 @@ const LoginInput = styled.input`
   height: 30px;
   border: 1px solid #bababa;
   border-radius: 4px;
+
+  &.empty {
+    border: 1px solid rgb(222, 79, 84);
+  }
 `;
 
 const Validation = styled.p`
@@ -154,6 +158,30 @@ const SocialLoginText = styled.p`
 
 const Login = () => {
   const navigate = useNavigate();
+  const emailInput = useRef();
+  const passwordInput = useRef();
+
+  const { inputs, setInputs } = useInputStore((state) => state);
+  const [inputsEmptyCheck, setinputsEmptyCheck] = useState({ email: false, password: false });
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setInputs(name, value);
+  };
+
+  const onEmptyCheck = () => {
+    if (inputs.email.length <= 0 && inputs.password.length <= 0) {
+      setinputsEmptyCheck({ email: true, password: true });
+    } else if (inputs.email.length <= 0 && inputs.password.length > 0) {
+      setinputsEmptyCheck({ email: true, password: false });
+    } else if (inputs.email.length > 0 && inputs.password.length <= 0) {
+      setinputsEmptyCheck({ email: false, password: true });
+    } else {
+      setinputsEmptyCheck({ email: false, password: false });
+    }
+  };
+
+  console.log(inputsEmptyCheck);
 
   return (
     <>
@@ -177,7 +205,7 @@ const Login = () => {
               <LoginInputContainer>
                 <LoginLabel>Email</LoginLabel>
                 <LoginInputInnerContainer>
-                  <LoginInput />
+                  <LoginInput name="email" value={inputs.email} onChange={onChange} ref={emailInput} />
                 </LoginInputInnerContainer>
               </LoginInputContainer>
               <LoginInputContainer>
@@ -192,6 +220,10 @@ const Login = () => {
                     `}
                   />
                   <LoginInput
+                    name="password"
+                    value={inputs.password}
+                    onChange={onChange}
+                    ref={passwordInput}
                     css={`
                       border: 1px solid rgb(222, 79, 84);
                     `}
@@ -199,7 +231,7 @@ const Login = () => {
                 </LoginInputInnerContainer>
               </LoginInputContainer>
               <Validation>Password cannot be empty.</Validation>
-              <LoginButton>Log in</LoginButton>
+              <LoginButton onClick={onEmptyCheck}>Log in</LoginButton>
             </LoginForm>
             <p
               css={`
@@ -207,8 +239,7 @@ const Login = () => {
                 margin-top: 30px;
               `}
             >
-              {" "}
-              Don’t have an account?{" "}
+              Don’t have an account?
               <Linker
                 onClick={() => {
                   navigate("/signup");

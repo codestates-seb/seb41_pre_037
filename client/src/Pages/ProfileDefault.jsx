@@ -11,6 +11,7 @@ import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
 import PostsList from "../Components/Profile/PostsList";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -249,6 +250,7 @@ const Aboutdescription = styled.span`
 `;
 
 export default function ProfileDefault() {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -311,7 +313,7 @@ export default function ProfileDefault() {
                   <CommunitiesInnerContainer>
                     <div>
                       <img src={SmallLogo} />
-                      <Linker>Stack Overflow</Linker>
+                      <Linker onClick={() => navigate("/")}>Stack Overflow</Linker>
                     </div>
                     1
                   </CommunitiesInnerContainer>
@@ -342,6 +344,7 @@ export default function ProfileDefault() {
               <BottomItemContainer>
                 <ItemLabel>All posts</ItemLabel>
                 <div>View all questions and answers</div>
+                {/* <EmptyPostBox /> */}
                 <PostsList />
               </BottomItemContainer>
             </BottomRightContainer>
