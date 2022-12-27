@@ -6,6 +6,7 @@ import com.example.stackoverflowclone.domain.answer.service.AnswerService;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionHomeDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
@@ -35,7 +36,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
-
     private final MemberService memberService;
     private final TagService tagService;
     private final QuestionService questionService;
@@ -119,34 +119,76 @@ public class QuestionController {
         if (tab.equals("Latest")) {
             Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
             List<Question> allQuestion = listPage.getContent();
-            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
+            return getMultiResponseDtoFromResponseEntity(listPage, allQuestion);
         } else if (tab.equals("Unanswered")) {
             Page<Question> allQuestionsSortedByUnanswered = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
             List<Question> content = allQuestionsSortedByUnanswered.getContent();
-            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByUnanswered), HttpStatus.OK);
+            return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByUnanswered, content);
         } else {
             return null;
         }
     }
 
     @GetMapping("/search")
-    public ResponseEntity search(@RequestParam String q,
-                                 @RequestParam(defaultValue = "Latest", required = false) String tab,
+    public ResponseEntity search(@RequestParam(defaultValue = "", required = false) String q,
                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        if (tab.equals("Latest")) {
-            Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
-            List<Question> content = allQuestionsRelatedToUserSearch.getContent();
-            return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsRelatedToUserSearch), HttpStatus.OK);
+        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+        List<Question> content = allQuestionsRelatedToUserSearch.getContent();
+        if (q.length() > 4) {
+            String userExpect = q.substring(0, 5);
+            if (!(q.equalsIgnoreCase("user:")) && userExpect.equalsIgnoreCase("user:")) {
+                Long userId = Long.parseLong(q.substring(5));
+                Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestionsSortedByUserId(userId, page - 1, 15);
+                List<Question> questions = allQuestionsSortedByUserId.getContent();
+                return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByUserId, questions);
+            } else {
+                //answers
+                return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
+            }
         } else {
-            return null; //TODO : Unanswered 반영예정
+            return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
         }
     }
 
-    @PostMapping("/tagged/")
-    public ResponseEntity searchByTag(@RequestParam String tagName,
-                                      @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        Page<Question> allQuestionsSortedByTagged = questionService.findAllQuestionsSortedByTagged(tagName, page - 1, 15);
-        List<Question> content = allQuestionsSortedByTagged.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(content), allQuestionsSortedByTagged), HttpStatus.OK);
+//    @GetMapping("/tagged/{tag-name}")
+//    public ResponseEntity searchByTag(@Positive @RequestParam(defaultValue = "1", required = false) int page,
+//                                      @PathVariable("tag-name") String tagName) {
+//        log.info("tag-name : {}", tagName);
+//        Page<Question> allQuestionsSortedByTagged = questionService.findAllQuestionsSortedByTagged(tagName, page - 1, 15);
+//        List<Question> content = allQuestionsSortedByTagged.getContent();
+//        return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByTagged, content);
+//    }
+
+
+    @GetMapping("/search/answers")
+    public ResponseEntity findAuthor(@Positive @RequestParam(defaultValue = "1", required = false) int page,
+                                     @RequestParam(defaultValue = "", required = false) String q) {
+        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+        List<Question> content = allQuestionsRelatedToUserSearch.getContent();
+        log.info("q?? {}", q);
+        if (q.length() > 7) {
+            String answersExpect = q.substring(0, 8);
+            log.info("answersExpect?? {}", answersExpect);
+            if (!(q.equalsIgnoreCase("answers:")) && answersExpect.equalsIgnoreCase("answers:")) {
+                Long answerCount = Long.parseLong(q.substring(8));
+                log.info("answerCount?? {}", answerCount);
+                Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+                List<Question> questions = allQuestionsSortedByAnswerCount.getContent();
+                return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByAnswerCount, questions);
+            } else {
+                return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
+            }
+        } else {
+            return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
+        }
     }
+
+
+    private ResponseEntity<MultiResponseDto<QuestionHomeDto>> getMultiResponseDtoFromResponseEntity(Page<Question> allQuestionsByPageNation, List<Question> questions) {
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                questionMapper.questionInfoToQuestionHomeDto(questions),
+                allQuestionsByPageNation),
+                HttpStatus.OK);
+    }
+
 }

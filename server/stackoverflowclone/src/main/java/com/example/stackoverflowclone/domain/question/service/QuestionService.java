@@ -62,13 +62,19 @@ public class QuestionService {
 
     public Page<Question> findAllQuestionsRelatedToUserSearch(String q, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
-        return questionRepository.findAllByQuestionTitleContainsOrQuestionProblemBodyContains(q,q,pageable);
+        return questionRepository.findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(q,q,pageable);
     }
 
-    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return questionRepository.findAllByQuestionTagListContains(tagName, pageable);
+//    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return questionRepository.findAllByQuestionTagListContainingIgnoreCase(tagName, pageable);
+//    }
+
+    public Page<Question> findAllQuestionsSortedByUserId(Long memberId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
+        return questionRepository.findAllByMemberMemberId(memberId, pageable);
     }
+
     public String timestamp(Question question){
         // 질문
         LocalDateTime now = LocalDateTime.now(); // 현재시간
