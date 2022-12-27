@@ -116,7 +116,6 @@ const Linker = styled.a`
 const SocialLoginContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 25px;
   box-sizing: border-box;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
@@ -125,7 +124,7 @@ const SocialLoginContainer = styled.div`
 `;
 
 const GoogleLogin = styled.div`
-  width: 310px;
+  width: 320px;
   margin-bottom: 10px;
   height: max-content;
   background-color: white;

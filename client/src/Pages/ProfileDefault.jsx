@@ -10,6 +10,7 @@ import EditIcon from "../icons/PencilLg.svg";
 import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
+import PostsList from "../Components/Profile/PostsList";
 
 const Container = styled.div`
   display: flex;
@@ -113,7 +114,7 @@ const ProfileHeaderButtonContainer = styled.div`
   width: 245px;
   justify-content: space-between;
 
-  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTTABLET}px) {
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     flex-direction: column;
     height: 80px;
     width: max-content;
@@ -341,7 +342,7 @@ export default function ProfileDefault() {
               <BottomItemContainer>
                 <ItemLabel>All posts</ItemLabel>
                 <div>View all questions and answers</div>
-                <EmptyPostBox />
+                <PostsList />
               </BottomItemContainer>
             </BottomRightContainer>
           </ProfileBottomContaner>
