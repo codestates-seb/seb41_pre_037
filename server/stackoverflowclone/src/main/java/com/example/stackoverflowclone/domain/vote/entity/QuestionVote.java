@@ -6,8 +6,6 @@ import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.global.enums.VoteStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
