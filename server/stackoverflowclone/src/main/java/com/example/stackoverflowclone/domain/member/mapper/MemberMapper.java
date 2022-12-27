@@ -70,8 +70,8 @@ public class MemberMapper {
                 .twitterLink(member.getTwitterLink())
                 .githubLink(member.getGithubLink())
                 .fullname(member.getFullname())
-                .questions(member.getQuestionList().stream().count())
-                .answers(member.getAnswersList().stream().count())
+                .questions((long)member.getQuestionList().size())
+                .answers((long)member.getAnswersList().size())
                 .build();
     }
     public List<MemberToUserPageResponseDto> memberUserToResponseDto(List<Member> members) {
