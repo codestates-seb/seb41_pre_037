@@ -42,16 +42,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // 인증된 객체로 부터 Resource Owner의 이메일 주소를 얻을 수 있다.
-        log.info("# Redirect to Frontend");
+//        log.info("# Redirect to Frontend");
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String name = (String) oAuth2User.getAttributes().get("name");
         String email = (String) oAuth2User.getAttributes().get("email");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
-        log.info("# getPrincipal : " + oAuth2User);
-        log.info("# name : "+ name);
-        log.info("# email : "+ email);
-        log.info("# picture : "+ picture);
+//        log.info("# getPrincipal : " + oAuth2User);
+//        log.info("# name : "+ name);
+//        log.info("# email : "+ email);
+//        log.info("# picture : "+ picture);
 
         // email을 토대로 Member 객체 만들어서 DB에 저장
         Member member = buildOAuth2Member(name, email, picture);
@@ -121,17 +121,17 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private URI createURI(String accessToken, String refreshToken){
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+//        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+//        queryParams.add("access_token", accessToken);
+//        queryParams.add("refresh_token", refreshToken);
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
 //                .port(80) // 기본 포트가 80이기 때문에 괜찮다
-                .path("/receive-token.html")
-                .queryParams(queryParams)
+                .path("/questions")
+//                .queryParams(queryParams)
                 .build()
                 .toUri();
     }

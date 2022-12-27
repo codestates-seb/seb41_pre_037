@@ -60,8 +60,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization",headerValue);
         response.setHeader("Refresh",refreshToken);
 
-        log.info("accessToken = {}",headerValue);
-        log.info("refreshToken = {}",refreshToken);
+//        log.info("accessToken = {}",headerValue);
+//        log.info("refreshToken = {}",refreshToken);
 
         MemberLoginResponseDto loginResponseDto = MemberLoginResponseDto.builder()
                 .memberId(member.getMemberId())
