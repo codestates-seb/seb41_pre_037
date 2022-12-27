@@ -6,6 +6,8 @@ import quillModule from "../quillModule"
 import '../quillEditor.css'
 import BREAKPOINT from "../breakpoint"
 
+import { useState } from "react"
+
 const Background = styled.div`
   width: 100vw;
   height: max-content;
@@ -108,7 +110,23 @@ const QuestionRuleUl = styled.ul`
   padding-left: 30px;
   margin-top: 10px;
 `
+const QuestionBlinder = styled.div`
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #d1d1d1df;
+  position: absolute;
+  z-index: 10;
+  background-color: #ffffffc6;
+  
+  &:hover{
+    cursor: not-allowed;
+  }
+`
+
 const QuestionContainer = styled.div`
+  position: relative;
   width: 70%;
   min-width: 390px;
   display: flex;
@@ -154,6 +172,7 @@ const QuestionButtonContainer = styled.div`
   box-sizing: border-box;
 `
 const Button = styled.button`
+  position: relative;
   margin: auto 0;
   margin-top: 10px;
   width: max-content;
@@ -165,6 +184,9 @@ const Button = styled.button`
   border-radius: 4px;
   box-shadow: inset 0 1px 0 0 #6fc0ff;
   box-sizing: border-box;
+  display: ${props => props.isHidden ? 'none' : 'flex'};
+  pointer-events: ${props => props.isDisabled && 'none'};
+  z-index: 0;
 
   &:hover {
     background-color: #306fa0;
@@ -175,11 +197,28 @@ const Button = styled.button`
   }
 `;
 
+const ButtonBlinder = styled.button`
+  position: absolute;
+  width: 104%;
+  height: 106%;
+  top: -1px;
+  left: -1px;
+  background-color: #ffffffac;
+  border: 1px solid #ffffffac;
+  border-radius: 4px;
+  z-index: 10;
+
+  &:hover {
+    cursor: not-allowed;
+  }
+`;
+
  const QuestionDiscardButton = styled.p`
     color: #a00000;
     font-size: small;
     margin : 10px;
     margin-top: 20px;
+    display: ${props => props.isHidden && 'none'};
  `
 
  const QuestionTipContainer = styled.div`
@@ -237,7 +276,15 @@ const QuestionTipText = styled.div`
   padding: 20px 10px;
 `
 
+
+
 export default function AskQuestions() {
+  const [titleInput, setTitleInput] = useState('');
+  const [contentValue, setContentValue] = useState('');
+  const [extraContentValue, setExtraContentValue] = useState('');
+  const [tagsInput, setTagsInput] = useState('');
+  const [tagsArr, setTagsArr] = useState([]);
+
 
   return (
     <>
@@ -280,36 +327,45 @@ export default function AskQuestions() {
         </QuestionTipContainer>
         <QuestionContainer height={125}>
           <QuestionLabel>Title</QuestionLabel>
-          <QuestionLabelDetail>Be specific and imagine you’re asking a question to another person.</QuestionLabelDetail>
-          <QuestionInput/>
-          <Button>Next</Button>
+          <QuestionLabelDetail>Be specific and imagine you’re asking a question to another person. Minimum 15 characters.</QuestionLabelDetail>
+          <QuestionInput value={titleInput} onChange={e => setTitleInput(e.target.value)}/>
+          <Button isHidden={false} isDisabled={true}>
+            <ButtonBlinder/>
+            Next
+          </Button>
         </QuestionContainer>
         </div>
         <QuestionContainer height={'max-content'}>
+          <QuestionBlinder/>
           <QuestionLabel>What are the details of your problem?</QuestionLabel>
           <QuestionLabelDetail>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</QuestionLabelDetail>
           <QuestionEditorContainer>
-            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}}/>
+            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}} value={contentValue} onChange={setContentValue}/>
           </QuestionEditorContainer>
-          <Button>Next</Button>
+          <Button isHidden={true}>Next</Button>
         </QuestionContainer>
         <QuestionContainer height={'max-content'}>
+          <QuestionBlinder/>
           <QuestionLabel>What did you try and what were you expecting?</QuestionLabel>
           <QuestionLabelDetail>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</QuestionLabelDetail>
           <QuestionEditorContainer>
-            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}}/>
+            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}} value={extraContentValue} onChange={setExtraContentValue}/>
           </QuestionEditorContainer>
-          <Button>Next</Button>
+          <Button isHidden={true}>Next</Button>
         </QuestionContainer>
         <QuestionContainer height={125}>
+          <QuestionBlinder/>
           <QuestionLabel>Tags</QuestionLabel>
           <QuestionLabelDetail>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</QuestionLabelDetail>
-          <QuestionInput/>
-          <Button>Next</Button>
+          <QuestionInput value={tagsInput} onChange={e => setTagsInput(e.target.value)}/>
+          <Button isHidden={true}>Next</Button>
         </QuestionContainer>
         <QuestionButtonContainer>
-          <Button>Review your question</Button>
-          <QuestionDiscardButton>Discard draft</QuestionDiscardButton>
+          <Button isDisabled={true}>
+            <ButtonBlinder/>
+            Review your question
+          </Button>
+          <QuestionDiscardButton isHidden={true}>Discard draft</QuestionDiscardButton>
         </QuestionButtonContainer>
       </Container>
       </Background>
