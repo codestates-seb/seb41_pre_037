@@ -89,16 +89,9 @@ public class QuestionController {
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionToQuestionVoteResponseDto(question)), HttpStatus.OK);
     }
 
-    @GetMapping("/home")
-    public ResponseEntity getHome() {
-        Page<Question> listPage = questionService.findAllQuestionsByPage(0, 15);
-        List<Question> allQuestion = listPage.getContent();
-
-        return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion),listPage),HttpStatus.OK);
-        }
-
     @GetMapping()
-    public ResponseEntity getHome(@Positive @RequestParam int page) {
+    public ResponseEntity getHome(@Positive @RequestParam(defaultValue = "1", required = false) int page) {
+
         Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
         List<Question> allQuestion = listPage.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(questionMapper.questionInfoToQuestionHomeDto(allQuestion), listPage), HttpStatus.OK);
