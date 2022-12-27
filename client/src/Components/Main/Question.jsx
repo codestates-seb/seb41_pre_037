@@ -6,7 +6,6 @@ const QuestionContainer = styled.div`
   display: flex;
   max-width: 900px;
   float: right;
-  /* min-width: 300px; */
   height: max-content;
   border: 1px solid #c5c5c5;
   border-width: ${props => props.isLast? '1px 0 1px 0' : '1px 0 0 0'};
@@ -143,7 +142,7 @@ export default function Question({data, isLast}) {
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
         <QuestionTitle onClick={() => {navigate('/post/postid')}}>{`${data.questionTitle}`}</QuestionTitle>
-        <QuestionPreview>I couldn't find a newest information about built in graphdriver of docker. Not plugin. I could only find Michael Crosby's blog, written on Nov 16, 2017. I want more detailed information. My ...</QuestionPreview>
+        <QuestionPreview>{data.questionProblemBody}</QuestionPreview>
         <QuestionFooter>
           {
             data.tags.map((tag) => {
@@ -151,7 +150,7 @@ export default function Question({data, isLast}) {
             })
           }
           <Profile>
-            <ProfileImg><img css={`border-radius: 5px;`} alt="img" src={data.image}></img></ProfileImg>
+            <ProfileImg><img css={`border-radius: 5px;`} alt="img" src="https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921"></img></ProfileImg>
             <ProfileName>{`${data.username}`}</ProfileName>
             <ProfileLog>{dateCalc()}</ProfileLog>
           </Profile>

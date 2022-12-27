@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const Button = styled.button`
   padding : 4px 7px;
@@ -21,9 +22,14 @@ const Button = styled.button`
   }
 `
 
-export default function PageButton({number, currentPage}) {
+export default function PageButton({number, currentPage, setPage, refetch}) {
+  const buttonOnClickHandler = () => {
+    setPage({page : number});
+    refetch();
+  }
+
   return (
-    <Button isNull={!!number} className={number === currentPage && "current" }>
+    <Button isNull={!!number} className={number === currentPage && "current" } onClick={buttonOnClickHandler}>
       {`${number}`}
     </Button>
   )

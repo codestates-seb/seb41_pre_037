@@ -7,10 +7,11 @@ import Footer from "../Components/Footer/Footer";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Pagination from "../Components/Pagination/Pagination";
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams  } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+
 
 const Container = styled.div`
   display: flex;
@@ -136,20 +137,32 @@ const PaginationContainer = styled.div`
 
 export default function Main() {
   const navigate = useNavigate();
-  const [questionData, setQuestionData] = useState('');
-  const [pageInfo, setPageInfo] = useState('');
+  const [questionData, setQuestionData] = useState();
+  const [pageInfo, setPageInfo] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page');
+
+  useEffect(() => {
+    window.scrollTo({left : 0, top: 0, behavior: "smooth"});
+  }, [questionData]);
   
   const fetchQuestion = () => {
-    return axios.get('http://localhost:8000/questions');
+    console.log(page);
+    if(!!page) {
+      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/questions?page=${page}`);
+    } else {
+      console.log('with query', page);
+      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/questions`);
+    }
   }
 
-  const fetchQuestionOnSuccess = (data) => {
-    setQuestionData(data.data.data[0]);
-    setPageInfo(data.data.pageInfo);
+  const fetchQuestionOnSuccess = (response) => {
+    setQuestionData(response.data.data);
+    setPageInfo(response.data.pageInfo);
   }
 
 
-  const {isLoading} = useQuery({queryKey: ['fetchQuestion'], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
+  const {isLoading, refetch} = useQuery({queryKey: ['fetchQuestion', page], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
 
   return (
     <>
@@ -164,14 +177,14 @@ export default function Main() {
               <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
             </MainbarTopHeader>
             <MainbarBottomHeader>
-              <QuestionCount>{`${questionData?.totalQuestions} questions`}</QuestionCount>
+              {pageInfo ? <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount> : <p css={`margin-left : 20px;`}>loading...</p>}
               <MainbarSortButtonContainer>
                 <SortButton isLeft={true}>Latest</SortButton>
                 <SortButton isLeft={false}>Unanswered</SortButton>
               </MainbarSortButtonContainer>
             </MainbarBottomHeader>
             {
-              questionData && questionData.qusetions.map((question, index, questions) => {
+              questionData?.map((question, index, questions) => {
                 if(index === questions.length - 1) {
                   return <Question data={question} isLast={true} key={question.questionId}/>
                 }
@@ -179,7 +192,7 @@ export default function Main() {
               })
             }
           <PaginationContainer>
-            <Pagination pageinfo={pageInfo}/>
+            {pageInfo && <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch}/>}
             </PaginationContainer>
           </MainbarContainer>
         }

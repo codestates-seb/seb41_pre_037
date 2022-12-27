@@ -48,26 +48,26 @@ const LastPageSkipperGroup = styled.div`
   width: max-content;
 `
 
-export default function Pagination({pageinfo}) {
+export default function Pagination({pageinfo, setPage, refetch}) {
   const currentPage = pageinfo.page;
 
  
-  if(currentPage > pageinfo.totalPages - 5) {
+  if(currentPage > pageinfo.totalPages - 5 && pageinfo.totalPages - 5 > 0) {
     return (
       <PaginationContainer>
         <PagePrevButton isFirst={currentPage === 1}>Prev</PagePrevButton>
         <FirstPageSkipperGroup isFirst={currentPage === 1}>
-          <PageButton hidden={true} number={1}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} hidden={true} number={1}/>
           <p css={`margin: 0 2px;`}>...</p>
         </FirstPageSkipperGroup>
-        <PageButton currentPage={currentPage} number={pageinfo.totalPages - 4}/>
-        <PageButton currentPage={currentPage} number={pageinfo.totalPages - 3}/>
-        <PageButton currentPage={currentPage} number={pageinfo.totalPages - 2}/>
-        <PageButton currentPage={currentPage} number={pageinfo.totalPages - 1}/>
-        <PageButton currentPage={currentPage} number={pageinfo.totalPages}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - 4}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - 3}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - 2}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - 1}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages}/>
         <LastPageSkipperGroup isHidden={currentPage > pageinfo.totalPages - 5}>
           <p css={`margin: 0 2px;`}>...</p>
-          <PageButton number={pageinfo.totalPages}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages}/>
         </LastPageSkipperGroup>
         <PageNextButton isLast={currentPage === pageinfo.totalPages}>Next</PageNextButton>
       </PaginationContainer>
@@ -75,21 +75,29 @@ export default function Pagination({pageinfo}) {
   }
 
   else if(currentPage >= 5) {
+    const pageNumArr = new Array(pageinfo.totalPages).map((num) => {});
+
+
     return (
       <PaginationContainer>
         <PagePrevButton>Prev</PagePrevButton>
         <FirstPageSkipperGroup>
-          <PageButton hidden={true} number={1}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} hidden={true} number={1}/>
           <p css={`margin: 0 2px;`}>...</p>
         </FirstPageSkipperGroup>
-        <PageButton currentPage={currentPage} number={currentPage - 2}/>
-        <PageButton currentPage={currentPage} number={currentPage - 1}/>
-        <PageButton currentPage={currentPage} number={currentPage}/>
-        <PageButton currentPage={currentPage} number={currentPage + 1}/>
-        <PageButton currentPage={currentPage} number={currentPage + 2}/>
+        {
+          pageNumArr.map((page) => {
+            return <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage}/>
+          })
+        }
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage - 2}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage - 1}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 1}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 2}/>
         <LastPageSkipperGroup>
           <p css={`margin: 0 2px;`}>...</p>
-          <PageButton number={pageinfo.totalPages}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages}/>
         </LastPageSkipperGroup>
         <PageNextButton>Next</PageNextButton>
       </PaginationContainer>
@@ -101,17 +109,17 @@ export default function Pagination({pageinfo}) {
       <PaginationContainer>
         <PagePrevButton isFirst={currentPage === 1}>Prev</PagePrevButton>
         <FirstPageSkipperGroup isFirst={currentPage === 1}>
-          <PageButton hidden={true} number={1}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} hidden={true} number={1}/>
           <p css={`margin: 0 2px;`}>...</p>
         </FirstPageSkipperGroup>
-        <PageButton currentPage={currentPage} number={currentPage}/>
-        <PageButton currentPage={currentPage} number={currentPage + 1}/>
-        <PageButton currentPage={currentPage} number={currentPage + 2}/>
-        <PageButton currentPage={currentPage} number={currentPage + 3}/>
-        <PageButton currentPage={currentPage} number={currentPage + 4}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 1}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 2}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 3}/>
+        <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={currentPage + 4}/>
         <LastPageSkipperGroup isLast={currentPage === pageinfo.totalPages}>
           <p css={`margin: 0 2px;`}>...</p>
-          <PageButton number={pageinfo.totalPages}/>
+          <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages}/>
         </LastPageSkipperGroup>
         <PageNextButton isLast={currentPage === pageinfo.totalPages}>Next</PageNextButton>
       </PaginationContainer>
