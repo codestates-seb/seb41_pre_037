@@ -28,6 +28,16 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    public void deleteQuestion(Long questionId, Long memberId) {
+        Question question = findQuestion(questionId);
+
+        Long compareMemberId = question.getMember().getMemberId();
+        if(memberId != compareMemberId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOW);
+        }
+        questionRepository.delete(question);
+    }
+
     public Question findQuestion(Long questionId) {
         Optional<Question> findQuestion = questionRepository.findById(questionId);
         return findQuestion.orElseThrow(() ->

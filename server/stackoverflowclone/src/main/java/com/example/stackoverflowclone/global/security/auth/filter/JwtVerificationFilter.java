@@ -65,7 +65,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * */
     private Map<String,Object> verifyJws(HttpServletRequest request){
         String jws = request.getHeader("Authorization").replace("Bearer ","");
-        log.info("토큰정보 : " + jws);
+//        log.info("토큰정보 : " + jws);
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
     }
@@ -80,9 +80,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
 
-        for(GrantedAuthority s : authorities){
-            log.info("유저 권한정보 : {}", s.getAuthority());
-        }
+//        for(GrantedAuthority s : authorities){
+//            log.info("유저 권한정보 : {}", s.getAuthority());
+//        }
         Authentication authentication = new UsernamePasswordAuthenticationToken(new TokenPrincipalDto(id, email), null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
