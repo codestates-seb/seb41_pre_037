@@ -49,6 +49,14 @@ public class QuestionController {
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody @Valid QuestionPostDto questionPostDto){
+
+        log.info("getQuestionTitle = {}", qusestionPostDto.getQuestionTitle());
+        log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
+
+        log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
+        log.info("getTag = ");
+        // questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
+
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
