@@ -1,14 +1,10 @@
 package com.example.stackoverflowclone.domain.member.controller;
 
-import com.example.stackoverflowclone.domain.answer.entity.Answer;
-import com.example.stackoverflowclone.domain.answer.service.AnswerService;
 import com.example.stackoverflowclone.domain.member.dto.MemberEditDto;
 import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
-import com.example.stackoverflowclone.domain.question.entity.Question;
-import com.example.stackoverflowclone.domain.question.service.QuestionService;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final QuestionService questionService;
-    private final AnswerService answerService;
     private final MemberMapper mapper;
 
     @PostMapping("/signup")
@@ -45,19 +39,6 @@ public class MemberController {
     public ResponseEntity getMemberProfile(@PathVariable("member-id") @Valid Long memberId){
         System.out.println("들어옴");
         Member member = memberService.findByMember(memberId);
-        // TODO: 내가 한 Question, Answer 조회 기능
-//        List<Question> questions = questionService.findMemberQuestion(member);
-//        log.info("questions = {}", questions);
-//        log.info("questions.size() = {}", questions.size()); //누가 한지는 모른다.
-//
-//        List<Answer> answers = answerService.findMemberAnswer(member);
-//        log.info("answer = {}", answers);
-//        log.info("answer.size() = {}", answers.size());
-
-        // 멤버 객체를 이용한 답변 내가 작성한 객체를 가져와야함
-        // 회원아이디찾아서 size()? list<>
-        // answer repo에서 아이디 찾음
-        // answer 서비스에서 반환
         return new ResponseEntity<>(
                 new DataResponseDto<>(mapper.memberTomemberProfileResponse(member)),
                 HttpStatus.OK );
