@@ -108,10 +108,10 @@ export default function Tags() {
   const fetchUsers = () => {
     console.log(page);
     if(!!page) {
-      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/users?page=${page}`);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users?page=${page}`);
     } else {
       console.log('with query', page);
-      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/users`);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users`);
     }
   }
 

@@ -93,10 +93,10 @@ export default function Tags() {
   const fetchTags = () => {
     console.log(page);
     if(!!page) {
-      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/tags?page=${page}`);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags?page=${page}`);
     } else {
       console.log('with query', page);
-      return axios.get(`https://d1a8-180-230-197-106.jp.ngrok.io/tags`);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags`);
     }
   }
 
