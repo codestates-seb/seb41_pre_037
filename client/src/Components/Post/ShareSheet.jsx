@@ -1,9 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components/macro";
 import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from "react-share";
+import { useShareSheetStore } from "../../store/store";
 
 const ShareSheetContainer = styled.div`
   display: flex;
+  position: absolute;
+  top: 25px;
+  left: -10px;
 `;
 
 const ShareSheetTooltip = styled.div`
@@ -105,36 +110,39 @@ const handleCopyClipBoard = async (text) => {
 };
 
 export default function ShareSheet() {
+  const { showShareSheet, handleShareSheet } = useShareSheetStore((state) => state);
   return (
     <>
-      <ShareSheetContainer>
-        <ShareSheetInnerContainer>
-          <Label>Share a link to this question</Label>
-          <ShareLinkInput value={DUMMYURL} />
-          <ShareSheetBottomContainer>
-            <Linker onClick={() => handleCopyClipBoard(DUMMYURL)}>Copy Link</Linker>
-            <SNSContainer>
-              <FacebookShareButton url={DUMMYURL}>
-                <FacebookIcon
-                  size={18}
-                  css={`
-                    border-radius: 2px;
-                  `}
-                ></FacebookIcon>
-              </FacebookShareButton>
-              <TwitterShareButton style={{ marginLeft: "10px" }} url={"https://www.naver.com/"}>
-                <TwitterIcon
-                  size={18}
-                  css={`
-                    border-radius: 2px;
-                  `}
-                ></TwitterIcon>
-              </TwitterShareButton>
-            </SNSContainer>
-          </ShareSheetBottomContainer>
-        </ShareSheetInnerContainer>
-        <ShareSheetTooltip />
-      </ShareSheetContainer>
+      {showShareSheet ? (
+        <ShareSheetContainer>
+          <ShareSheetInnerContainer>
+            <Label>Share a link to this question</Label>
+            <ShareLinkInput value={DUMMYURL} />
+            <ShareSheetBottomContainer>
+              <Linker onClick={() => handleCopyClipBoard(DUMMYURL)}>Copy Link</Linker>
+              <SNSContainer>
+                <FacebookShareButton url={DUMMYURL}>
+                  <FacebookIcon
+                    size={18}
+                    css={`
+                      border-radius: 2px;
+                    `}
+                  ></FacebookIcon>
+                </FacebookShareButton>
+                <TwitterShareButton style={{ marginLeft: "10px" }} url={"https://www.naver.com/"}>
+                  <TwitterIcon
+                    size={18}
+                    css={`
+                      border-radius: 2px;
+                    `}
+                  ></TwitterIcon>
+                </TwitterShareButton>
+              </SNSContainer>
+            </ShareSheetBottomContainer>
+          </ShareSheetInnerContainer>
+          <ShareSheetTooltip />
+        </ShareSheetContainer>
+      ) : null}
     </>
   );
 }

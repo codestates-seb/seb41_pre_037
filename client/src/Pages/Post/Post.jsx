@@ -7,7 +7,7 @@ import RightSidebar from "../../Components/RightSidebar/RightSidebar";
 import Footer from "../../Components/Footer/Footer";
 import Question from "./Question";
 import PostAnswer from "./PostAnswer";
-import AnswerList from "./AnswerList";
+import AnswerList from "../../Components/Post/AnswerList";
 
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,6 @@ const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-width: 500px;
   padding: 24px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     width: 100%;
@@ -126,7 +125,13 @@ export default function Post() {
           <PostHeader>
             <PostHeaderTop>
               <Title>Why my netlify function return an error and doesn't fetch data </Title>
-              <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
+              <AskQuestionButton
+                onClick={() => {
+                  navigate("/askquestions");
+                }}
+              >
+                Ask Questions
+              </AskQuestionButton>
             </PostHeaderTop>
             <PostHeaderBottom>
               <span

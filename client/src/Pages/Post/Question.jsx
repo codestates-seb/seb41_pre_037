@@ -6,8 +6,9 @@ import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import ShareSheet from "./ShareSheet";
+import ShareSheet from "../../Components/Post/ShareSheet";
+import { useShareSheetStore } from "../../store/store";
+import QnABottom from "../../Components/Post/QnABottom";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -99,12 +100,22 @@ const ShareLinker = styled.a`
   }
 `;
 
+const DeleteButton = styled.p`
+  color: #a00000;
+  margin-left: 10px;
+`;
+
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
   width: max-content;
   height: max-content;
   padding: 20px 5px 20px 0;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+    display: inline;
+  }
 `;
 
 const Tag = styled.div`
@@ -117,9 +128,14 @@ const Tag = styled.div`
   color: #39739d;
   font-size: small;
   margin-right: 5px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: inline;
+    padding: 5px;
+  }
 `;
 
-const markdown = `<script>
+const DUMMYMARKDOWNTEXT = `<script>
 export let audio;
 
 let isPaused = true;
@@ -140,6 +156,8 @@ const onClick = () => {
 `;
 
 export default function Question() {
+  const { handleShareSheet } = useShareSheetStore((state) => state);
+
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
@@ -156,7 +174,7 @@ export default function Question() {
       <PostTopInnerContainer>
         <QuestionTopContainer>
           <SyntaxHighlighter language="javascript" style={defaultStyle}>
-            {markdown}
+            {DUMMYMARKDOWNTEXT}
           </SyntaxHighlighter>
         </QuestionTopContainer>
         <TagsContainer>
@@ -166,14 +184,7 @@ export default function Question() {
           <Tag>api-key</Tag>
           <Tag>netlify-function</Tag>
         </TagsContainer>
-        <QuestionBottomContainer>
-          <ShareLinker>Share</ShareLinker>
-          <ShareSheet />
-          <AuthorInfoContainer>
-            <AuthorProfileImageArea />
-            <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
-          </AuthorInfoContainer>
-        </QuestionBottomContainer>
+        <QnABottom color={"#d9e9f7"} />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

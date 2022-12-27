@@ -6,6 +6,7 @@ import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import QnABottom from "./QnABottom";
 
 const AnswerItemContainer = styled.div`
   display: flex;
@@ -156,13 +157,7 @@ export default function Question() {
             {markdown}
           </SyntaxHighlighter>
         </QuestionTopContainer>
-        <QuestionBottomContainer>
-          <ShareLinker>Share</ShareLinker>
-          <AuthorInfoContainer>
-            <AuthorProfileImageArea />
-            <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
-          </AuthorInfoContainer>
-        </QuestionBottomContainer>
+        <QnABottom />
       </AnswerItemInnerContainer>
     </AnswerItemContainer>
   );
