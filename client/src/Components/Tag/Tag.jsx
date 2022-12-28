@@ -38,7 +38,7 @@ export default function Tag({data}) {
   return (
     <TagContainer>
       <TagTitle>{data.tagName}</TagTitle>
-      <TagDetail>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi laboriosam ea natus quaerat, tenetur adipisci aperiam corporis alias eaque illum placeat. Quis tempore quae rerum impedit! Sequi cumque esse ipsum.</TagDetail>
+      <TagDetail>{data.tagBody}</TagDetail>
       <TagInfo>{data.questionAmount}</TagInfo>
     </TagContainer>
   )

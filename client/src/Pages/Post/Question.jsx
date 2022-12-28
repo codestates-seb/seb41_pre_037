@@ -6,8 +6,10 @@ import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import ShareSheet from "./ShareSheet";
+import ShareSheet from "../../Components/Post/ShareSheet";
+import { useShareSheetStore } from "../../store/store";
+import QuestionBottom from "../../Components/Post/QuestionBottom";
+import Tag from "../../Components/Tag/Tag";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -99,27 +101,25 @@ const ShareLinker = styled.a`
   }
 `;
 
+const DeleteButton = styled.p`
+  color: #a00000;
+  margin-left: 10px;
+`;
+
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
   width: max-content;
   height: max-content;
   padding: 20px 5px 20px 0;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+    display: inline;
+  }
 `;
 
-const Tag = styled.div`
-  width: max-content;
-  padding: 5px 8px;
-  height: 15px;
-  border: 1px #e1ecf4;
-  border-radius: 5px;
-  background-color: #e1ecf4;
-  color: #39739d;
-  font-size: small;
-  margin-right: 5px;
-`;
-
-const markdown = `<script>
+const DUMMYMARKDOWNTEXT = `<script>
 export let audio;
 
 let isPaused = true;
@@ -139,7 +139,9 @@ const onClick = () => {
 <button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
 `;
 
-export default function Question() {
+export default function Question({ postData }) {
+  const { handleShareSheet } = useShareSheetStore((state) => state);
+
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
@@ -147,7 +149,7 @@ export default function Question() {
           <VotingButton>
             <img src={ArrowUpIcon} />
           </VotingButton>
-          <VotingCounter>0</VotingCounter>
+          <VotingCounter>{postData.questionVoteCount}</VotingCounter>
           <VotingButton>
             <img src={ArrowDownIcon} />
           </VotingButton>
@@ -155,25 +157,16 @@ export default function Question() {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <SyntaxHighlighter language="javascript" style={defaultStyle}>
-            {markdown}
-          </SyntaxHighlighter>
+          {postData.questionProblemBody}
+          {postData.questionTryOrExpectingBody}
+          {/* <SyntaxHighlighter language="javascript" style={defaultStyle}>
+            {DUMMYMARKDOWNTEXT}
+          </SyntaxHighlighter> */}
         </QuestionTopContainer>
         <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
+          {postData && postData.map((postData) => <Tag tagData={postData.tag} key={postData.tag.tagId} />)}
         </TagsContainer>
-        <QuestionBottomContainer>
-          <ShareLinker>Share</ShareLinker>
-          <ShareSheet />
-          <AuthorInfoContainer>
-            <AuthorProfileImageArea />
-            <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
-          </AuthorInfoContainer>
-        </QuestionBottomContainer>
+        <QuestionBottom />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

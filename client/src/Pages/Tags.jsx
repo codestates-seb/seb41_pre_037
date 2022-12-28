@@ -8,7 +8,9 @@ import Pagination from "../Components/Pagination/Pagination"
 
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useState,  useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
+
 
 const Container = styled.div`
   display: flex;
@@ -81,18 +83,30 @@ const PaginationContainer = styled.div`
 export default function Tags() {
   const [tagsData, setTagsData] = useState('');
   const [pageInfo, setPageInfo] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page');
+
+  useEffect(() => {
+    window.scrollTo({left : 0, top: 0, behavior: "smooth"});
+  }, [tagsData]);
   
   const fetchTags = () => {
-    return axios.get('http://localhost:8000/tags');
+    console.log(page);
+    if(!!page) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags?page=${page}`);
+    } else {
+      console.log('with query', page);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags`);
+    }
   }
 
-  const fetchTagsOnSuccess = (data) => {
-    setTagsData(data.data.data);
-    setPageInfo(data.data.pageInfo);
+  const fetchTagsOnSuccess = (response) => {
+    setTagsData(response.data.data);
+    setPageInfo(response.data.pageInfo);
   }
 
 
-  const {isLoading} = useQuery({queryKey: ['fetchTags'], queryFn: fetchTags, keepPreviousData: true, onSuccess: fetchTagsOnSuccess});
+  const {isLoading, refetch} = useQuery({queryKey: ['fetchTags', page], queryFn: fetchTags, keepPreviousData: true, onSuccess: fetchTagsOnSuccess});
 
 
 
@@ -115,7 +129,7 @@ export default function Tags() {
         }
         </MainbarTagsContainer>
         <PaginationContainer>
-          <Pagination pageinfo={pageInfo}/>
+          <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch}/>
         </PaginationContainer>
       </MainbarContainer>
     </Container>

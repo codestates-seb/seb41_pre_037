@@ -9,7 +9,8 @@ import Pagination from "../Components/Pagination/Pagination"
 
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
 
 const Container = styled.div`
   display: flex;
@@ -101,10 +102,22 @@ export default function Tags() {
 
   const [usersData, setUsersData] = useState('');
   const [pageInfo, setPageInfo] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page');
   
   const fetchUsers = () => {
-    return axios.get('http://localhost:8000/users');
+    console.log(page);
+    if(!!page) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users?page=${page}`);
+    } else {
+      console.log('with query', page);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users`);
+    }
   }
+
+  useEffect(() => {
+    window.scrollTo({left : 0, top: 0, behavior: "smooth"});
+  }, [usersData]);
 
   const fetchUsersOnSuccess = (data) => {
     setUsersData(data.data.data);
@@ -112,7 +125,7 @@ export default function Tags() {
   }
 
 
-  const {isLoading} = useQuery({queryKey: ['fetchUsers'], queryFn: fetchUsers, keepPreviousData: true, onSuccess: fetchUsersOnSuccess});
+  const {isLoading, refetch} = useQuery({queryKey: ['fetchUsers', page], queryFn: fetchUsers, keepPreviousData: true, onSuccess: fetchUsersOnSuccess});
 
 
 
@@ -137,7 +150,7 @@ export default function Tags() {
           })}
         </MainbarUsersContainer>
         <PaginationContainer>
-          <Pagination pageinfo={pageInfo}/>
+          <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch}/>
         </PaginationContainer>
       </MainbarContainer>
     </Container>

@@ -7,9 +7,11 @@ import RightSidebar from "../../Components/RightSidebar/RightSidebar";
 import Footer from "../../Components/Footer/Footer";
 import Question from "./Question";
 import PostAnswer from "./PostAnswer";
-import AnswerList from "./AnswerList";
-
-import { useNavigate } from "react-router-dom";
+import AnswerList from "../../Components/Post/AnswerList";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +28,6 @@ const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-width: 500px;
   padding: 24px;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     width: 100%;
@@ -116,45 +117,72 @@ const RightSidebarContainer = styled.div`
 
 export default function Post() {
   const navigate = useNavigate();
+  const [post, setPost] = useState();
+  const { questionId, questionTitle } = useParams();
+
+  const fetchPost = () => {
+    return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/${questionId}/${questionTitle}`);
+  };
+
+  const fetchPostOnSuccess = (response) => {
+    setPost(response.data.data);
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ["fetchPost"],
+    queryFn: fetchPost,
+    keepPreviousData: true,
+    onSuccess: fetchPostOnSuccess,
+  });
 
   return (
     <>
       <Header />
       <Container>
         <LeftNav />
-        <InnerContainer>
-          <PostHeader>
-            <PostHeaderTop>
-              <Title>Why my netlify function return an error and doesn't fetch data </Title>
-              <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
-            </PostHeaderTop>
-            <PostHeaderBottom>
-              <span
-                css={`
-                  color: #525960;
-                  margin-right: 7px;
-                `}
-              >
-                Asked
-              </span>
-              <span>today</span>
-            </PostHeaderBottom>
-          </PostHeader>
-          <div
-            css={`
-              display: flex;
-            `}
-          >
-            <PostContentContainer>
-              <Question />
-              <AnswerList />
-              <PostAnswer />
-            </PostContentContainer>
-            <RightSidebarContainer>
-              <RightSidebar />
-            </RightSidebarContainer>
-          </div>
-        </InnerContainer>
+        {isLoading ? (
+          <div>Loading....</div>
+        ) : (
+          <InnerContainer>
+            <PostHeader>
+              <PostHeaderTop>
+                <Title> {post.questionId} </Title>
+                <AskQuestionButton
+                  onClick={() => {
+                    navigate("/askquestions");
+                  }}
+                >
+                  Ask Questions
+                </AskQuestionButton>
+              </PostHeaderTop>
+              <PostHeaderBottom>
+                <span
+                  css={`
+                    color: #525960;
+                    margin-right: 7px;
+                  `}
+                >
+                  Asked
+                </span>
+                <span>{post.questionCreatedAt}</span>
+              </PostHeaderBottom>
+            </PostHeader>
+            <div
+              css={`
+                display: flex;
+              `}
+            >
+              <PostContentContainer>
+                <Question postData={post} />
+                <AnswerList answersData={post.answers} />
+                <PostAnswer />
+              </PostContentContainer>
+              <RightSidebarContainer>
+                <RightSidebar />
+              </RightSidebarContainer>
+            </div>
+          </InnerContainer>
+        )}
       </Container>
       <Footer />
     </>

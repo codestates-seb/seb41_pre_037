@@ -1,8 +1,8 @@
 .ql-toolbar.ql-snow {
-max-height: 40px;
-overflow: scroll;
-display: flex;
-flex-wrap: nowrap;
+  max-height: 50px;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .ql-snow .ql-formats {

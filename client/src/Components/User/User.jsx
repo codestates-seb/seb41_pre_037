@@ -37,7 +37,7 @@ export default function User({data}) {
   return (
     <UserContainer>
       <UserIMG>
-        <img src={data.image} alt="profile"></img>
+        <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921" alt="profile"></img>
       </UserIMG>
       <UserDetailContainer>
         <Username>{data.username}</Username>

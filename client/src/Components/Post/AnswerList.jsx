@@ -21,13 +21,14 @@ const AnswerListHeader = styled.h2`
   margin: 20px 0 10px 0;
 `;
 
-export default function AnswerList() {
+export default function AnswerList({ answersData }) {
+  //answersData === post.answers
   return (
     <AnswerListContainer>
-      <AnswerListHeader>2 Answers</AnswerListHeader>
+      <AnswerListHeader>{answersData.length + 1}Answers</AnswerListHeader>
       <AnswerListInnerContainer>
-        <AnswerItem />
-        <AnswerItem />
+        {answersData &&
+          answersData.map((answerData) => <AnswerItem answerData={answerData} key={answerData.answerId} />)}
       </AnswerListInnerContainer>
     </AnswerListContainer>
   );
