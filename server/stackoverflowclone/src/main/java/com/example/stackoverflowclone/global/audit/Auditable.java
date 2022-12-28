@@ -1,6 +1,5 @@
 package com.example.stackoverflowclone.global.audit;
 
-import com.example.stackoverflowclone.domain.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

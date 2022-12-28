@@ -7,6 +7,7 @@ import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
+import com.example.stackoverflowclone.global.time.MemberTimeStamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
+    private final MemberTimeStamp memberTimeStamp;
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
@@ -43,7 +45,7 @@ public class MemberController {
     public ResponseEntity getMemberProfile(@PathVariable("member-id") @Valid Long memberId) {
 
         Member member = memberService.findByMember(memberId);
-        String str = memberService.timestamp(member);
+        String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
                 HttpStatus.OK);
 
@@ -53,7 +55,7 @@ public class MemberController {
     public ResponseEntity getMemberEdit(@PathVariable("member-id")
                                         @Valid Long memberId) {
         Member member = memberService.findByMember(memberId);
-        String str = memberService.timestamp(member);
+        String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
                 HttpStatus.OK);
     }
@@ -61,7 +63,7 @@ public class MemberController {
     @GetMapping("/delete/{member-id}")
     public ResponseEntity getdeleteMember(@PathVariable("member-id") @Valid Long memberId) {
         Member member = memberService.findByMember(memberId);
-        String str = memberService.timestamp(member);
+        String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
                 HttpStatus.OK);
     }
@@ -76,7 +78,7 @@ public class MemberController {
     public ResponseEntity patchMember(@PathVariable("member-id") @Valid Long memberId, @RequestBody MemberEditDto memberEditDto) {
         memberEditDto.setMemberId(memberId);
         Member member = memberService.updateMember(mapper.memberPatchToMember(memberEditDto));
-        String str = memberService.timestamp(member);
+        String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str))
                 , HttpStatus.OK);
     }
