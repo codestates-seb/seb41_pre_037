@@ -56,10 +56,10 @@ public class MemberMapper {
                 .email(member.getEmail())
                 .build();
     }
-    public MemberProfileResponseDto memberTomemberProfileResponse(Member member){
+    public MemberProfileResponseDto memberTomemberProfileResponse( Member member,String str){
         return MemberProfileResponseDto.builder()
                 .memberId(member.getMemberId())
-                .profileCreatedAt(member.getCreatedAt()) //
+                .profileCreatedAt(str) //
                 .username(member.getUsername())
                 .email(member.getEmail())
                 .location(member.getLocation())
@@ -70,8 +70,8 @@ public class MemberMapper {
                 .twitterLink(member.getTwitterLink())
                 .githubLink(member.getGithubLink())
                 .fullname(member.getFullname())
-                .questions(member.getQuestionList().stream().count())
-                .answers(member.getAnswersList().stream().count())
+                .questions((long)member.getQuestionList().size())
+                .answers((long)member.getAnswersList().size())
                 .build();
     }
     public List<MemberToUserPageResponseDto> memberUserToResponseDto(List<Member> members) {

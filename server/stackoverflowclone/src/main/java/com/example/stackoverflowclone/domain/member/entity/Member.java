@@ -81,8 +81,8 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<AnswerVote> answerVoteList = new ArrayList<>();
 
-    @Builder.Default // TODO : MemberTABLE 삭제시 오류
+    @Builder.Default //TODO: MemberTABLE 삭제시 오류
     @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "", joinColumns = @JoinColumn(name ="")) //TODO: 추가 진행중
     private List<String> roles = new ArrayList<>();
-
 }

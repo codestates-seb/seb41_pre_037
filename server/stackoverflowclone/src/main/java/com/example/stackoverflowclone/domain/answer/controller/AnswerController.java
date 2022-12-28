@@ -48,7 +48,7 @@ public class AnswerController {
         Member member = memberService.findByMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
         answerVoteService.increaseVote(member, answer);
-
+//        String str = answerService.timestamp(answer); //TODO: 시간로직 변경하기, 여기가 아닌가?
         return new ResponseEntity<>(new DataResponseDto(answerMapper.answerToAnswerVoteResponseDto(answer)),HttpStatus.OK);
     }
 

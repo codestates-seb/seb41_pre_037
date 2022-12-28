@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.domain.member.service;
 
+import com.example.stackoverflowclone.global.enums.ProfileImage;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
@@ -14,8 +15,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,11 +32,12 @@ public class MemberService {
 
     public Member createMember(Member member){
 
+        verifyExistsEmail(member.getEmail());
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
-        verifyExistsEmail(member.getEmail());
+        createProfileImage(member);
         return memberRepository.save(member);
     }
 
@@ -101,4 +107,43 @@ public class MemberService {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
+    public ProfileImage createProfileImage(Member member){
+        ProfileImage[] randomImageList = ProfileImage.values();
+        Long profileImageIndex = Long.valueOf((int) (Math.random()*10)+1 % randomImageList.length);
+
+        System.out.println(profileImageIndex);
+        List<ProfileImage> profileImageList = Arrays.stream(randomImageList)
+                .filter(image -> image.getIndex() == profileImageIndex)
+                .collect(Collectors.toList());
+
+        ProfileImage profileImage = profileImageList.get(0);
+        member.setImage(profileImage.getUrl());
+        return profileImage;
+    }
+    public String timestamp(Member member){
+        LocalDateTime now = LocalDateTime.now(); // 현재시간
+//        LocalDateTime date = LocalDateTime.of(2022,12,25,0,0,0); // 생성시간 테스트
+        LocalDateTime date = member.getCreatedAt(); // 실제 생성시간
+        System.out.println("현재시간 = "+now);
+        System.out.println("생성시간 = "+date);
+        long days = ChronoUnit.DAYS.between(date, now);
+        long months = ChronoUnit.MONTHS.between(date, now);
+        long years = ChronoUnit.YEARS.between(date, now);
+        // 프로필
+        System.out.println("================= 프로필 =================");
+//        System.out.println("member for "+ days +" Day"); //
+//        System.out.println("Last seen this week");
+//        System.out.println("Visited "+ days +" days," + days +" consecutive"); // 연속 방문 일수  -> ???
+//        System.out.println("=========================================");
+        String str = "member for ";
+        if (years%100 != 0){
+            str += years%100+" years";
+        }
+        if(months%12 != 0){
+            str += months%12 + " month";
+        }
+        str += days%30+" days";
+        System.out.println("=========================================");
+        return str;
+    }
 }

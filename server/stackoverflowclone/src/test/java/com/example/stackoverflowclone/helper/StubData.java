@@ -4,7 +4,9 @@ import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostTagDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionTagResponseDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
+import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import org.springframework.http.HttpMethod;
 
@@ -92,7 +94,7 @@ public class StubData {
                     .questionTitle(question.getQuestionTitle())
                     .questionProblemBody(question.getQuestionProblemBody())
                     .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                    .tag(tagList)
+                    .tag(new ArrayList<>(List.of(new QuestionTagResponseDto(1L,"java","태그 내용 입니다.",""))))
                     .build();
         }
 

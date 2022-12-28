@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.domain.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public class MemberProfileResponseDto{
     @Positive
     private Long memberId;
-    private LocalDateTime profileCreatedAt; // TODO : string으로 바꿔야함
+    private String profileCreatedAt;
     @Pattern(regexp = "^\\S+(\\s?\\S+)*$")
     @NotBlank( message = "회원 이름은 공백이 아니여야한다.")
     private String username;
