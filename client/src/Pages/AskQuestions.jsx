@@ -360,7 +360,12 @@ export default function AskQuestions() {
       tag : tagsArr.map((tag) => {return {tagName : tag}}),
     }
 
-    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data);
+    const headers = {
+      'Authroization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxMDcsInN1YiI6ImNvZGVzdGF0ZXNAY29kZXN0YXRlcy5jb20iLCJpYXQiOjE2NzIyNDYzNTEsImV4cCI6MTY3MjI0ODE1MX0.F5spWuwMWY5-03V284EJNwiXF61hVCKlXOFzzC9i3BU',
+      'Content-Type' : 'Application/json '
+    }
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, {headers});
   }
 
   const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData});
@@ -440,9 +445,21 @@ export default function AskQuestions() {
 
   const postQuestionOnClickHandler = () => {
     const createQuestionOnSuccess = () => {
-      navigate('/');
+
     }
     createQuestion({onSuccess : createQuestionOnSuccess});
+  }
+
+  const testHandler = () => {
+    const data = {
+      quesstionTitle : titleInput,
+      questionProblemBody : contentValue,
+      questionTryOrExpectingBody : extraContentValue,
+      tag : tagsArr.map((tag) => {return {tagName : tag}}),
+    }
+
+
+    console.log(data);
   }
 
   return (
