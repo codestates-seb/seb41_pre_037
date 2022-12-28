@@ -2,7 +2,9 @@ import styled from "styled-components/macro";
 import { useMobileSearchPopUpStore } from "../../store/store";
 import SearchBarIcon from "../../icons/Search.svg";
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
@@ -97,8 +99,14 @@ const Button = styled.button`
 
 const MobileSearchPopUp = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
-
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
+
+  const searchBarInputKeyUpHandler = e => {
+    if(e.key === 'Enter') {
+      navigate(`./search?q=${searchInput}`);
+    }
+  }
 
   return (
     <>
@@ -106,7 +114,11 @@ const MobileSearchPopUp = () => {
         <SearchPopUpBackdrop onClick={handleMobilePopUp}>
           <SearchBar className={showMobilePopUp ? "input-actived" : null} onClick={(e) => e.stopPropagation()}>
             <img src={SearchBarIcon} />
-            <SearchBarInput placeholder="Search..." onClick={(e) => e.stopPropagation()} />
+            <SearchBarInput placeholder="Search..." 
+            onClick={(e) => e.stopPropagation()} 
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            onKeyUp={searchBarInputKeyUpHandler}/>
           </SearchBar>
           <SearchPopUpView>
             <SearchPopUpInnerContainer
