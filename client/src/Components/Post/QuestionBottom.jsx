@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
-import ShareSheet from "../../Components/Post/ShareSheet";
+import ShareSheet from "./ShareSheet";
 import { useShareSheetStore } from "../../store/store";
 
-const QnABottomContainer = styled.div`
+const AnswerBottomContainer = styled.div`
   display: flex;
   width: 100%;
   padding-top: 20px;
@@ -35,7 +35,7 @@ const AuthorInfoContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  background-color: ${(props) => props.color || "#ffffff"};
+  background-color: #d9e9f7;
   padding: 7px;
   min-width: 200px;
   min-height: 65px;
@@ -59,10 +59,10 @@ const AuthorProfileLinker = styled.a`
   }
 `;
 
-export default function QnABottom({ color }) {
+export default function QuestionBottom() {
   const { handleShareSheet } = useShareSheetStore((state) => state);
   return (
-    <QnABottomContainer>
+    <AnswerBottomContainer>
       <div
         css={`
           position: relative;
@@ -80,10 +80,10 @@ export default function QnABottom({ color }) {
 
         <ShareSheet />
       </div>
-      <AuthorInfoContainer color={color}>
+      <AuthorInfoContainer>
         <AuthorProfileImageArea />
         <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
       </AuthorInfoContainer>
-    </QnABottomContainer>
+    </AnswerBottomContainer>
   );
 }

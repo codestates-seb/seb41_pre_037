@@ -8,7 +8,8 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ShareSheet from "../../Components/Post/ShareSheet";
 import { useShareSheetStore } from "../../store/store";
-import QnABottom from "../../Components/Post/QnABottom";
+import QuestionBottom from "../../Components/Post/QuestionBottom";
+import Tag from "../../Components/Tag/Tag";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -118,23 +119,6 @@ const TagsContainer = styled.div`
   }
 `;
 
-const Tag = styled.div`
-  width: max-content;
-  padding: 5px 8px;
-  height: 15px;
-  border: 1px #e1ecf4;
-  border-radius: 5px;
-  background-color: #e1ecf4;
-  color: #39739d;
-  font-size: small;
-  margin-right: 5px;
-
-  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
-    display: inline;
-    padding: 5px;
-  }
-`;
-
 const DUMMYMARKDOWNTEXT = `<script>
 export let audio;
 
@@ -155,7 +139,7 @@ const onClick = () => {
 <button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
 `;
 
-export default function Question() {
+export default function Question({ postData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
 
   return (
@@ -165,7 +149,7 @@ export default function Question() {
           <VotingButton>
             <img src={ArrowUpIcon} />
           </VotingButton>
-          <VotingCounter>0</VotingCounter>
+          <VotingCounter>{postData.questionVoteCount}</VotingCounter>
           <VotingButton>
             <img src={ArrowDownIcon} />
           </VotingButton>
@@ -173,18 +157,16 @@ export default function Question() {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <SyntaxHighlighter language="javascript" style={defaultStyle}>
+          {postData.questionProblemBody}
+          {postData.questionTryOrExpectingBody}
+          {/* <SyntaxHighlighter language="javascript" style={defaultStyle}>
             {DUMMYMARKDOWNTEXT}
-          </SyntaxHighlighter>
+          </SyntaxHighlighter> */}
         </QuestionTopContainer>
         <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
+          {postData && postData.map((postData) => <Tag tagData={postData.tag} key={postData.tag.tagId} />)}
         </TagsContainer>
-        <QnABottom color={"#d9e9f7"} />
+        <QuestionBottom />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

@@ -228,26 +228,26 @@ const Login = () => {
               <LoginInputContainer>
                 <LoginLabel>Password</LoginLabel>
                 <LoginInputInnerContainer>
-                  <img
-                    src={AlertCircle}
-                    css={`
-                      position: absolute;
-                      right: 0;
-                      margin-right: 10px;
-                    `}
-                  />
+                  {inputsEmptyCheck.password ? (
+                    <img
+                      src={AlertCircle}
+                      css={`
+                        position: absolute;
+                        right: 0;
+                        margin-right: 10px;
+                      `}
+                    />
+                  ) : null}
                   <LoginInput
+                    className={inputsEmptyCheck.password ? "empty" : null}
                     name="password"
                     value={inputs.password}
                     onChange={onChange}
                     ref={passwordInput}
-                    css={`
-                      border: 1px solid rgb(222, 79, 84);
-                    `}
                   />
                 </LoginInputInnerContainer>
+                {inputsEmptyCheck.password ? <Validation>Password cannot be empty.</Validation> : null}
               </LoginInputContainer>
-              <Validation>Password cannot be empty.</Validation>
               <LoginButton onClick={onEmptyCheck}>Log in</LoginButton>
             </LoginForm>
             <p
