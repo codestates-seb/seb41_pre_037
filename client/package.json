@@ -54,5 +54,8 @@
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^2.0.7"
-  }
+  },
+
+  "homepage": "."
+
 }

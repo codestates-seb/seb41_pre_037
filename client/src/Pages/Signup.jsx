@@ -4,6 +4,8 @@ import Google from '../icons/Google.png'
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { useMutation } from "@tanstack/react-query"
 
 const Background = styled.div`
   background-color: #f6f6f6;
@@ -119,9 +121,13 @@ const SignupLabel = styled.label`
 const SignupInputBox = styled.div`
   width: 100%;
   height: 30px;
-  border: ${props => props.isValid ? '1px solid #bababa' : '1px solid #b90101;'};
+  border: 1px solid #bababa;
   border-radius: 4px;
   display: flex;
+
+  &.focused {
+    border: ${props => props.isValid ? '1px solid #bababa' : '1px solid #b90101;'};
+  }
 `
 
 const SignupInput = styled.input`
@@ -188,7 +194,7 @@ const SocialLoginContainer = styled.div`
 `
 
 
-const GoogleLogin = styled.div`
+const GoogleLogin = styled.a`
   width: 310px;
   margin-bottom: 10px;
   height: max-content;
@@ -240,10 +246,27 @@ export default function Signup() {
   const [userEmailValid, setUserEmailValid] = useState(false);
   const [userEmailOnFocus, setUserEmailOnFocus] = useState(false);
   const [userPassword, setUserPassword] = useState('');
-  const [userPasswordValid, setUserPasswordValid] = useState(false);
   const [userPasswordOnFocus, setUserPasswordeOnFocus] = useState(false);
   const [passwordLegnthValid, setPasswordLengthValid] = useState(false);
   const [passwordRegexValid, setPasswordRegexValid] = useState(false);
+
+
+  const postSignupData = () => {
+    const data = {
+      username: displayName,
+      email: userEmail,
+      password: userPassword,
+    }
+
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    }
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}users/signup`, data, headers);
+  }
+
+  const {mutate:createUser} = useMutation({mutationKey:['postSignupData'], mutationFn:postSignupData});
 
   // 실시간 유효성 검사
   useEffect(() => {
@@ -269,7 +292,7 @@ export default function Signup() {
       setPasswordLengthValid(false);
     }
 
-    if(/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/.test(userPassword)) {
+    if(/^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(userPassword)) {
       setPasswordRegexValid(true);
     } else {
       setPasswordRegexValid(false);
@@ -277,6 +300,15 @@ export default function Signup() {
   }, [userPassword]);
 
   const signupClickHandler = () => {
+    if(displayNameValid && userEmailValid && passwordLegnthValid && passwordRegexValid) {
+      try{
+        createUser();
+      } catch {
+        navigate('/error');
+      }
+    } else {
+      window.alert('please fill in the whole forms');
+    }
   }
 
   return (
@@ -320,7 +352,7 @@ export default function Signup() {
         </SignupDetailContainer>
         <SignupFormContainer>
           <SocialLoginContainer>
-            <GoogleLogin>
+            <GoogleLogin href={`/oauth2/authorization/google`}>
               <SocialLoginIcon src={Google}/>
               <SocialLoginText>Sign up with Google</SocialLoginText>
               </GoogleLogin>
@@ -329,8 +361,8 @@ export default function Signup() {
           <SignupForm>
             <SignupInputContainer>
               <SignupLabel>Display Name</SignupLabel>
-              <SignupInputBox isValid={!displayNameValid && !displayNameOnFocus}>
-                <SignupInput value={displayName} onChange={e => {setDisplayName(e.target.value)}} onFocus={() => {setDisplayNameOnFocus(true)}} onBlur={() => {setDisplayNameOnFocus(false)}}/>
+              <SignupInputBox className={displayNameOnFocus && !displayNameValid &&'focused'} isValid={displayNameValid && displayNameOnFocus}>
+                <SignupInput value={displayName} onChange={e => {setDisplayName(e.target.value)}} onFocus={() => {setDisplayNameOnFocus(true)}}/>
                 {
                 !displayNameValid && displayNameOnFocus &&
                 <SignupWarningIconContainer>
@@ -347,17 +379,17 @@ export default function Signup() {
             </SignupInputContainer>
             <SignupInputContainer>
               <SignupLabel>Email</SignupLabel>
-              <SignupInputBox isValid={userEmailValid}>
-                <SignupInput type="email" value={userEmail} onChange={e => {setUserEmail(e.target.value)}}/>
+              <SignupInputBox className={userEmailOnFocus && !userEmailValid &&'focused'} isValid={userEmailValid && userEmailOnFocus}>
+                <SignupInput type="email" value={userEmail} onChange={e => {setUserEmail(e.target.value)}} onFocus={() => {setUserEmailOnFocus(true)}}/>
                 {
-                !userEmailValid &&
+                !userEmailValid && userEmailOnFocus &&
                 <SignupWarningIconContainer>
                   <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#b90101" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
                 </SignupWarningIconContainer>
                 } 
               </SignupInputBox>
               {
-                !userEmailValid &&
+                !userEmailValid && userEmailOnFocus &&
                 <SignupValidationContainer>
                 Email must have valid email form.
               </SignupValidationContainer>
@@ -365,23 +397,23 @@ export default function Signup() {
             </SignupInputContainer>
             <SignupInputContainer>
               <SignupLabel>Password</SignupLabel>
-              <SignupInputBox isValid={userPasswordValid}>
-                <SignupInput type="password" value={userPassword} onChange={e => {setUserPassword(e.target.value)}}/>
+              <SignupInputBox className={userPasswordOnFocus && !(passwordLegnthValid && passwordRegexValid) &&'focused'} isValid={userPasswordOnFocus && (passwordLegnthValid && passwordRegexValid)}>
+                <SignupInput type="password" value={userPassword} onChange={e => {setUserPassword(e.target.value)}} onFocus={() => {setUserPasswordeOnFocus(true)}}/>
                 {
-                !userPasswordValid &&
+                !(passwordLegnthValid && passwordRegexValid) && userPasswordOnFocus && 
                 <SignupWarningIconContainer>
                   <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#b90101" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
                 </SignupWarningIconContainer>
                 }
                 </SignupInputBox>
                 {
-                  ! (passwordLegnthValid && passwordRegexValid) &&
+                  !(passwordLegnthValid && passwordRegexValid) && userPasswordOnFocus &&
                   <SignupValidationContainer>
                     Password must follow valid rules.
                     <ul css={`padding: 0; padding-left: 20px;`}>
-                      {!passwordLegnthValid && <li css={`margin-top: 5px;`}>Password must be 8 ~ 20 characters.</li>}
-                      {!passwordRegexValid && <li css={`margin-top: 5px;`}>Password must have one or more number and character</li>}
-                      {!passwordRegexValid && <li css={`margin-top: 5px;`}>Password cannot use special characters other than !@#$%^&*</li>}
+                      {!passwordLegnthValid && userPasswordOnFocus && <li css={`margin-top: 5px;`}>Password must be 8 ~ 20 characters.</li>}
+                      {!passwordRegexValid && userPasswordOnFocus && <li css={`margin-top: 5px;`}>Password must have one or more number and character</li>}
+                      {!passwordRegexValid && userPasswordOnFocus && <li css={`margin-top: 5px;`}>Password cannot use special characters other than !@#$%^&*</li>}
                     </ul>
                   </SignupValidationContainer>
                 } 
