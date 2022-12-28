@@ -90,8 +90,13 @@ const SortButton = styled.button`
   border-width: ${(props) => (props.isLeft ? "1px 0 1px 1px" : "1px")};
 
   &:hover {
-    background-color: #e8e8e8;
+    background-color: #a2a2a2;
     cursor: pointer;
+  }
+
+  &.selected {
+    background-color: #777777;
+    color: #3a3a3a;
   }
 `;
 
@@ -137,7 +142,10 @@ export default function MainSearch() {
   const navigate = useNavigate();
   const [questionData, setQuestionData] = useState();
   const [pageInfo, setPageInfo] = useState();
+  const [currentTab, setCurrentTab] = useState('Newest');
   const [searchParams, setSearchParams] = useSearchParams();
+
+
   const query = searchParams.get("q");
   const page = searchParams.get("page");
 
@@ -146,7 +154,18 @@ export default function MainSearch() {
   }, [questionData]);
 
   const fetchSearchedQuestion = () => {
-    console.log(query, page);
+    console.log(query, page, currentTab);
+    if(currentTab === 'Unanswered') {
+      if(!!page) {
+        console.log('page and tab')
+        return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}&page=${page}`);
+      }
+      else {
+        console.log('no page and tab')
+        return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}`);
+      }
+    } 
+
     if (!!page) {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/search?q=${query}&page=${page}`);
     } else {
@@ -161,11 +180,16 @@ export default function MainSearch() {
   };
 
   const { isLoading, refetch } = useQuery({
-    queryKey: ["fetchSearchedQuestion", query],
+    queryKey: ["fetchSearchedQuestion", query, currentTab],
     queryFn: fetchSearchedQuestion,
     keepPreviousData: true,
     onSuccess: fetchSearchedQuestionOnSuccess,
   });
+
+
+  const sortButtonClickHandler = e => {
+    setCurrentTab(e.target.value);
+  } 
 
   return (
     <>
@@ -199,8 +223,8 @@ export default function MainSearch() {
                 </p>
               )}
               <MainbarSortButtonContainer>
-                <SortButton isLeft={true}>Latest</SortButton>
-                <SortButton isLeft={false}>Unanswered</SortButton>
+                <SortButton className={currentTab === 'Newest' ? 'selected' : ''} value={'Newest'} isLeft={true} onClick={sortButtonClickHandler}>Newest</SortButton>
+                <SortButton className={currentTab === 'Unanswered' ? 'selected' : ''} value={'Unanswered'} isLeft={false} onClick={sortButtonClickHandler}>Unanswered</SortButton>
               </MainbarSortButtonContainer>
             </MainbarBottomHeader>
             {questionData?.map((question, index, questions) => {
