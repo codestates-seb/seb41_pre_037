@@ -1,7 +1,5 @@
 package com.example.stackoverflowclone.domain.question.dto;
 
-import com.example.stackoverflowclone.domain.answer.entity.Answer;
-import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import lombok.Builder;
 import lombok.Data;
 

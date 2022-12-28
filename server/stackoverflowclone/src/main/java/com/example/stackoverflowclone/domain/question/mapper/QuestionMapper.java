@@ -61,7 +61,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers) {
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers,String str,String modified) {
 
         if (question == null || member == null || tagList == null || answers == null) {
             return null;
@@ -73,8 +73,8 @@ public class QuestionMapper {
                 .username(member.getUsername())
                 .image(member.getImage())
                 .questionTitle(question.getQuestionTitle())
-                .questionCreatedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
-                .questionModifiedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                .questionCreatedAt(str)
+                .questionModifiedAt(modified)
                 .questionVoteCount(question.getQuestionVoteCount())
                 .questionViewCount(question.getQuestionViewCount())
                 .questionProblemBody(question.getQuestionProblemBody())
@@ -84,7 +84,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers) {
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers,String astr) {
 
         if (answers == null) {
             return null;
@@ -94,7 +94,7 @@ public class QuestionMapper {
                 .map(answer -> {
                     return QuestionFindAnswerDto.builder()
                             .answerId(answer.getAnswerId())
-                            .answerCreatedAt("1 min ago") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                            .answerCreatedAt(astr) // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
                             .answerContent(answer.getAnswerContent())
                             .answerVoteCount(answer.getAnswerVoteCount())
                             .memberId(answer.getMember().getMemberId())

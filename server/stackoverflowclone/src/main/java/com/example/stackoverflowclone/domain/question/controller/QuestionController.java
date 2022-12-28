@@ -2,6 +2,7 @@ package com.example.stackoverflowclone.domain.question.controller;
 
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
+import com.example.stackoverflowclone.domain.answer.service.AnswerService;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
@@ -40,7 +41,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
     private final QuestionVoteService questionVoteService;
-
+    private final AnswerService answerService;
     @GetMapping("/test")
     private ResponseEntity getTest() {
         return new ResponseEntity(HttpStatus.CREATED);
@@ -72,10 +73,13 @@ public class QuestionController {
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
-        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers);
+        String astr = answerService.timestamp(answers.get(0)); //TODO: answer를 찾아와야함, 0값을 넣어 둬서 (질문 + 답변)을 작성해야함
+//        String astr = answerService.timestamp(answers.);
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
         Member member = question.getMember();
-
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto)), HttpStatus.OK);
+        String str = questionService.timestamp(question);
+        String modified = questionService.timestampmodified(question);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto,str,modified)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}")
