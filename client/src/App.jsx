@@ -10,6 +10,10 @@ import ProfileDelete from "./Pages/ProfileDelete";
 import Signup from "./Pages/Signup";
 import Tags from "./Pages/Tags";
 import Users from "./Pages/Users";
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_URI;
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

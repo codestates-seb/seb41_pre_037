@@ -7,7 +7,8 @@ import Logo from "../icons/LogoGlyphMd.svg";
 import AlertCircle from "../icons/AlertCircle.svg";
 import Google from "../icons/Google.png";
 import { useNavigate } from "react-router-dom";
-import useInputStore, { inputs, setInputs } from "../store/loginstore";
+import { useInputStore, useErrorMessageStore, useIsLoginStore, useUserInfoStore } from "../store/loginstore";
+import axios from "axios";
 
 const Background = styled.div`
   background-color: #f6f6f6;
@@ -82,12 +83,12 @@ const LoginInput = styled.input`
   border: 1px solid #bababa;
   border-radius: 4px;
 
-  &.empty {
+  &.error {
     border: 1px solid rgb(222, 79, 84);
   }
 `;
 
-const Validation = styled.p`
+const ErrorMessage = styled.p`
   width: 80%;
   font-size: small;
   margin-top: 5px;
@@ -158,30 +159,51 @@ const SocialLoginText = styled.p`
 
 const Login = () => {
   const navigate = useNavigate();
-  const emailInput = useRef();
+  const usernameInput = useRef();
   const passwordInput = useRef();
 
   const { inputs, setInputs } = useInputStore((state) => state);
-  const [inputsEmptyCheck, setinputsEmptyCheck] = useState({ email: false, password: false });
+  const { errorMessage, setErrorMessage } = useErrorMessageStore();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const { userInfo, setUserInfo } = useUserInfoStore();
 
   const onChange = (e) => {
     const { name, value } = e.target;
     setInputs(name, value);
   };
 
-  const onEmptyCheck = () => {
-    if (inputs.email.length <= 0 && inputs.password.length <= 0) {
-      setinputsEmptyCheck({ email: true, password: true });
-    } else if (inputs.email.length <= 0 && inputs.password.length > 0) {
-      setinputsEmptyCheck({ email: true, password: false });
-    } else if (inputs.email.length > 0 && inputs.password.length <= 0) {
-      setinputsEmptyCheck({ email: false, password: true });
-    } else {
-      setinputsEmptyCheck({ email: false, password: false });
-    }
+  const loginHandler = (inputs) => {
+    const { username, password } = inputs;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}users/login`, { username, password }).then((response) => {
+      console.log(response);
+    });
+
+    // if (!username || !password) {
+    //   setErrorMessage("Email or password cannot be empty.");
+    //   return;
+    // } else {
+    //   setErrorMessage("");
+    // }
+
+    // return axios
+    //   .post(`${process.env.REACT_APP_SERVER_URI}users/login`, inputs)
+    //   .then((response) => {
+    //     const { accessToken } = response.data;
+    //     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    //     setUserInfo(response.data);
+    //     setIsLogin(true);
+    //   })
+    //   .then(navigate("/"))
+    //   .catch((err) => {
+    //     if (err.response.status === 401) {
+    //       setErrorMessage("The email or password is incorrect.");
+    //     }
+    //   });
   };
 
-  console.log(inputsEmptyCheck);
+  console.log(inputs);
+  console.log(isLogin);
 
   return (
     <>
@@ -205,7 +227,7 @@ const Login = () => {
               <LoginInputContainer>
                 <LoginLabel>Email</LoginLabel>
                 <LoginInputInnerContainer>
-                  {inputsEmptyCheck.email ? (
+                  {errorMessage ? (
                     <img
                       src={AlertCircle}
                       css={`
@@ -216,19 +238,19 @@ const Login = () => {
                     />
                   ) : null}
                   <LoginInput
-                    className={inputsEmptyCheck.email ? "empty" : null}
-                    name="email"
-                    value={inputs.email}
+                    className={errorMessage ? "error" : null}
+                    name="username"
+                    value={inputs.username}
                     onChange={onChange}
-                    ref={emailInput}
+                    ref={usernameInput}
                   />
                 </LoginInputInnerContainer>
-                {inputsEmptyCheck.email ? <Validation>Email cannot be empty.</Validation> : null}
+                <ErrorMessage>{errorMessage}</ErrorMessage>
               </LoginInputContainer>
               <LoginInputContainer>
                 <LoginLabel>Password</LoginLabel>
                 <LoginInputInnerContainer>
-                  {inputsEmptyCheck.password ? (
+                  {errorMessage ? (
                     <img
                       src={AlertCircle}
                       css={`
@@ -239,16 +261,15 @@ const Login = () => {
                     />
                   ) : null}
                   <LoginInput
-                    className={inputsEmptyCheck.password ? "empty" : null}
+                    className={errorMessage ? "error" : null}
                     name="password"
                     value={inputs.password}
                     onChange={onChange}
                     ref={passwordInput}
                   />
                 </LoginInputInnerContainer>
-                {inputsEmptyCheck.password ? <Validation>Password cannot be empty.</Validation> : null}
               </LoginInputContainer>
-              <LoginButton onClick={onEmptyCheck}>Log in</LoginButton>
+              <LoginButton onClick={loginHandler}>Log in</LoginButton>
             </LoginForm>
             <p
               css={`

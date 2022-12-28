@@ -6,12 +6,13 @@ import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
 import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
 import { useLeftNavStore, useSearchPopUpStore, useMobileSearchPopUpStore } from "../../store/store";
+import { useIsLoginStore, useUserInfoStore } from "../../store/loginstore";
 import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
-
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -200,7 +201,7 @@ const LoginOutButton = styled.button`
   }
 `;
 
-const SignUPButton = styled(LoginOutButton)`
+const SignUpButton = styled(LoginOutButton)`
   background-color: rgb(10, 149, 255);
   width: 65px;
   color: rgb(255, 255, 255);
@@ -245,6 +246,21 @@ const Header = () => {
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const { userInfo, setUserInfo } = useUserInfoStore();
+
+  const logoutHandler = () => {
+    return axios
+      .post(`${process.env.REACT_APP_SERVER_URI}/users/logout`)
+      .then((res) => {
+        setUserInfo(null);
+        setIsLogin(false);
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <>
@@ -254,12 +270,12 @@ const Header = () => {
             <MobileMenuButton onClick={handleLeftNav}>
               <img src={MobileMenuIcon} />
             </MobileMenuButton>
-            <MobileHomeButton onClick={() => navigate('/')}>
+            <MobileHomeButton onClick={() => navigate("/")}>
               <img src={MobileLogo} />
             </MobileHomeButton>
           </MobileLeftButtonContainer>
           <ButtonArea>
-            <HomeButton onClick={() => navigate('/')}>
+            <HomeButton onClick={() => navigate("/")}>
               <img src={Logo} />
             </HomeButton>
           </ButtonArea>
@@ -269,39 +285,40 @@ const Header = () => {
           </SearchBar>
           <SearchPopUp />
           <ButtonArea>
-            <LoggedOutButtonContainer>
-              <MobileSearchBarButton onClick={handleMobilePopUp}>
-                <img src={MobileSearchBarIcon} />
-              </MobileSearchBarButton>
-              <LoginOutButton
-                css={`
-                  margin-right: 5px;
-                `}
-                onClick={() => navigate('/login')}
-              >
-                Log in
-              </LoginOutButton>
-              <SignUPButton
-              onClick={() => navigate('/signup')}
-              >Sign up</SignUPButton>
-            </LoggedOutButtonContainer>
-            {/* <LoggedInButtonContainer>
-              <MobileSearchBarButton onClick={handleMobilePopUp}>
-                <img src={MobileSearchBarIcon} />
-              </MobileSearchBarButton>
-              <ProfileButtonAria>
-                <button
+            {isLogin ? (
+              <LoggedInButtonContainer>
+                <MobileSearchBarButton onClick={handleMobilePopUp}>
+                  <img src={MobileSearchBarIcon} />
+                </MobileSearchBarButton>
+                <ProfileButtonAria>
+                  <button
+                    css={`
+                      all: unset;
+                      width: 24px;
+                      height: 24px;
+                    `}
+                  >
+                    <img src={DummyProfileIcon} />
+                  </button>
+                </ProfileButtonAria>
+                <LoginOutButton>Log out</LoginOutButton>
+              </LoggedInButtonContainer>
+            ) : (
+              <LoggedOutButtonContainer>
+                <MobileSearchBarButton onClick={handleMobilePopUp}>
+                  <img src={MobileSearchBarIcon} />
+                </MobileSearchBarButton>
+                <LoginOutButton
                   css={`
-                    all: unset;
-                    width: 24px;
-                    height: 24px;
+                    margin-right: 5px;
                   `}
+                  onClick={() => navigate("/login")}
                 >
-                  <img src={DummyProfileIcon} />
-                </button>
-              </ProfileButtonAria>
-              <LoginOutButton>Log out</LoginOutButton>
-            </LoggedInButtonContainer> */}
+                  Log in
+                </LoginOutButton>
+                <SignUpButton onClick={() => navigate("/signup")}>Sign up</SignUpButton>
+              </LoggedOutButtonContainer>
+            )}
           </ButtonArea>
         </HeaderContainer>
       </HeaderComponent>
