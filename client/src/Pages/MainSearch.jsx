@@ -138,24 +138,23 @@ const PaginationContainer = styled.div`
   margin-left: 20px;
 `;
 
-export default function Main() {
+export default function MainSearch() {
   const navigate = useNavigate();
-
   const [questionData, setQuestionData] = useState();
   const [pageInfo, setPageInfo] = useState();
   const [currentTab, setCurrentTab] = useState('Newest');
-
-
   const [searchParams, setSearchParams] = useSearchParams();
+
+
+  const query = searchParams.get("q");
   const page = searchParams.get("page");
 
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   }, [questionData]);
 
-  const fetchQuestion = () => {
-    console.log(page, currentTab);
-
+  const fetchSearchedQuestion = () => {
+    console.log(query, page, currentTab);
     if(currentTab === 'Unanswered') {
       if(!!page) {
         console.log('page and tab')
@@ -167,25 +166,24 @@ export default function Main() {
       }
     } 
 
-    if(!!page) {
-      return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?page=${page}`);
-    } 
-    else {
-      return axios.get(`${process.env.REACT_APP_SERVER_URI}questions`);
+    if (!!page) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/search?q=${query}&page=${page}`);
+    } else {
+      console.log("with query", page);
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/search?q=${query}`);
     }
   };
 
-
-  const fetchQuestionOnSuccess = (response) => {
+  const fetchSearchedQuestionOnSuccess = (response) => {
     setQuestionData(response.data.data);
     setPageInfo(response.data.pageInfo);
   };
 
   const { isLoading, refetch } = useQuery({
-    queryKey: ["fetchQuestion", page, currentTab],
-    queryFn: fetchQuestion,
+    queryKey: ["fetchSearchedQuestion", query, currentTab],
+    queryFn: fetchSearchedQuestion,
     keepPreviousData: true,
-    onSuccess: fetchQuestionOnSuccess,
+    onSuccess: fetchSearchedQuestionOnSuccess,
   });
 
 

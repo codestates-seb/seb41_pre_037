@@ -13,6 +13,7 @@ import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -262,6 +263,14 @@ const Header = () => {
       });
   };
 
+  const [searchInput, setSearchInput] = useState("");
+
+  const searchBarInputKeyUpHandler = (e) => {
+    if (e.key === "Enter") {
+      navigate(`./search?q=${searchInput}`);
+    }
+  };
+
   return (
     <>
       <HeaderComponent>
@@ -281,7 +290,13 @@ const Header = () => {
           </ButtonArea>
           <SearchBar className={showPopUp ? "input-actived" : null}>
             <img src={SearchBarIcon} />
-            <SearchBarInput placeholder="Search..." onFocus={handlePopUp} />
+            <SearchBarInput
+              placeholder="Search..."
+              onFocus={handlePopUp}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyUp={searchBarInputKeyUpHandler}
+            />
           </SearchBar>
           <SearchPopUp />
           <ButtonArea>
