@@ -14,8 +14,9 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tags")
 @RequiredArgsConstructor
+@CrossOrigin
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;

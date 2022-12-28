@@ -35,6 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RestController
+@CrossOrigin
 @RequestMapping("/questions")
 public class QuestionController {
     private final MemberService memberService;

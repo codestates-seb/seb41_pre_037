@@ -21,11 +21,12 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 
-@RestController
-@RequestMapping("/users")
-@Validated
 @Slf4j
+@RestController
+@Validated
+@CrossOrigin
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;

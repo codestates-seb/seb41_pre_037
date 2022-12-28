@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/answers")
 @RequiredArgsConstructor
+@CrossOrigin
+@RequestMapping("/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
