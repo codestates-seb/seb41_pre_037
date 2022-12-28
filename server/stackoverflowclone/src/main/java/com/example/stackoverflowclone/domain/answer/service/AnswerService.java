@@ -7,10 +7,8 @@ import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -26,4 +24,5 @@ public class AnswerService {
         return findAnswer.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
+
 }

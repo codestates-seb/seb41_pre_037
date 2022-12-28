@@ -19,6 +19,8 @@ import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.domain.vote.service.QuestionVoteService;
+import com.example.stackoverflowclone.global.time.AnswerTimeStamp;
+import com.example.stackoverflowclone.global.time.QuestionTimeStamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +46,8 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionVoteService questionVoteService;
     private final AnswerService answerService;
+    private final QuestionTimeStamp questionTimeStamp;
+    private final AnswerTimeStamp answerTimeStamp;
     @GetMapping("/test")
     private ResponseEntity getTest() {
         return new ResponseEntity(HttpStatus.CREATED);
@@ -67,11 +71,12 @@ public class QuestionController {
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
-        String astr = answerService.timestamp(answers.get(0)); //TODO: answer를 찾아와야함, 0값을 넣어 둬서 (질문 + 답변)을 작성해야함
+        String astr = answerTimeStamp
+                .timestamp(answers);
         List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
         Member member = question.getMember();
-        String str = questionService.timestamp(question);
-        String modified = questionService.timestampmodified(question);
+        String str = questionTimeStamp.timestamp(question);
+        String modified = questionTimeStamp.timestampmodified(question);
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto,str,modified)), HttpStatus.OK);
     }
 
