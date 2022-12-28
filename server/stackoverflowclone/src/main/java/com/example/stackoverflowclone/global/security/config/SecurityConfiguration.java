@@ -23,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -35,13 +36,15 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
 
+    private final CorsFilter corsFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .cors(Customizer.withDefaults()) // corsConfigurationSource라는 이름으로 등록된 Bean을 사용한다고 정의
+//                .cors(Customizer.withDefaults()) // corsConfigurationSource라는 이름으로 등록된 Bean을 사용한다고 정의
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 정책 추가 (JWT사용으로 STATELESS로 설정)
                 .and()
                 .formLogin().disable() // CSR 방식사용으로 formLogin 비활성화
@@ -110,7 +113,9 @@ public class SecurityConfiguration {
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
             // Spring Security FilterChain에 추가
-            builder.addFilter(jwtAuthenticationFilter)  // 우리가만든 jwtAuthenticationFilter 필터추가
+            builder
+                    .addFilter(corsFilter)
+                    .addFilter(jwtAuthenticationFilter)  // 우리가만든 jwtAuthenticationFilter 필터추가
 //                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); //  jwtVerificationFilter 필터추가, 뒤에 클래스는 어느클래스 다음에 실행할지 설정
                     .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }

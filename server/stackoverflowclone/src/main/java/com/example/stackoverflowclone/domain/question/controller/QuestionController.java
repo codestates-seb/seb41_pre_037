@@ -35,7 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@CrossOrigin
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/questions")
 public class QuestionController {
     private final MemberService memberService;

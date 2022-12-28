@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @Validated
-@CrossOrigin
+//@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class MemberController {
