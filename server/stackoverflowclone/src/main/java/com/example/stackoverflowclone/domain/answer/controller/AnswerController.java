@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+//@CrossOrigin
 @RequestMapping("/answers")
 public class AnswerController {
 
