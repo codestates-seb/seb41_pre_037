@@ -6,7 +6,7 @@ import quillModule from "../quillModule"
 import '../quillEditor.css'
 import BREAKPOINT from "../breakpoint"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useMutation } from "@tanstack/react-query"
@@ -272,6 +272,11 @@ const ButtonBlinder = styled.div`
     margin : 10px;
     margin-top: 20px;
     display: ${props => props.isHidden && 'none'};
+
+    &:hover {
+      cursor: pointer;
+      color: red;
+    }
  `
 
  const QuestionTipContainer = styled.div`
@@ -361,6 +366,16 @@ export default function AskQuestions() {
   const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData});
 
 
+  useEffect(() => {
+    if(tagsArr.length >= 1) {
+      setTagsValid(true);
+    } else {
+      setTagsValid(false);
+    }
+
+  },[tagsArr]);
+
+
   //----------------------------event handlers-----------------------------------------------------
 
   const titleOnChangeHandler = e => {
@@ -394,17 +409,13 @@ export default function AskQuestions() {
   }
 
   const tagsOnChangeHandler = e => {
-    setTagsInput(e.target.value);
-    if(tagsInput.length >= 15) {
-      setTagsValid(true);
-    } else {
-      setTagsValid(false);
-    }
+    const tagsText = (e.target.value.trim()).replace(',', '');
+    setTagsInput(tagsText);
   }
 
   const tagsOnKeyUpHandler = e => {
     console.log(e.key);
-    if(e.key === ',' || e.keyCode === 32) {
+    if((e.key === ',' || e.keyCode === 32) && tagsInput.length > 0) {
       setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length - 1)]);
       setTagsInput('');
     }
@@ -521,7 +532,7 @@ export default function AskQuestions() {
         </QuestionContainer>
         <QuestionButtonContainer>
           <Button isDisabled={true} onClick={postQuestionOnClickHandler}>
-            <ButtonBlinder isValid={titleValid && contentValid && extraContentValid &&tagsValid}/>
+            <ButtonBlinder isValid={titleValid && contentValid && extraContentValid && tagsValid}/>
             Post your question
           </Button>
           <QuestionDiscardButton isHidden={!titleValid} onClick={() => {navigate('/')}}>Discard draft</QuestionDiscardButton>
