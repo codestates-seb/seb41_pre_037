@@ -34,7 +34,7 @@ public class AnswerTimeStamp {
         }else if (hour%24 != 0){
             str += hour%24 + " hour";
         }else{
-            str += min%60+" ago";
+            str += min%60+"min ago";
         }
 
         return str;

@@ -10,8 +10,6 @@ public class MemberTimeStamp {
     public String timestamp(Member member){
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime date = member.getCreatedAt();
-    System.out.println("현재시간 = "+now);
-    System.out.println("생성시간 = "+date);
     long days = ChronoUnit.DAYS.between(date, now);
     long months = ChronoUnit.MONTHS.between(date, now);
     long years = ChronoUnit.YEARS.between(date, now);

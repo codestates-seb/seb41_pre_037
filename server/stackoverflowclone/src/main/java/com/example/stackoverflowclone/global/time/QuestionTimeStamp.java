@@ -29,7 +29,7 @@ public class QuestionTimeStamp {
         if (hour%24 != 0){
             str += hour%24 + "hour, ";
         }
-        str += min%60+"ago";
+        str += min%60+"min ago";
         return str;
     }
     public String timestampmodified(Question question){
