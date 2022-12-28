@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/stackover?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
-    username: root # 유저네임
+    username: ${MYSQL_ID} # 유저네임
     password: ${MYSQL_PASSWORD} # 비밀번호
   jpa:
     hibernate:
