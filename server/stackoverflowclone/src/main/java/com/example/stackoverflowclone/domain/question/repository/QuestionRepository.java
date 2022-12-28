@@ -6,7 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    Page<Question> findAllByQuestionTitleContainsOrQuestionProblemBodyContains(String title, String bodyMain, Pageable pageable);
+    Page<Question> findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(String title, String bodyMain, Pageable pageable);
     Page<Question> findAllByAnswersEmpty(Pageable pageable);
-    Page<Question> findAllByQuestionTagListContains(String tagName, Pageable pageable);
+//    Page<Question> findAllByQuestionTagListContainingIgnoreCase(String tagName, Pageable pageable);
+    Page<Question> findAllByMemberMemberId(Long memberId, Pageable pageable);
 }

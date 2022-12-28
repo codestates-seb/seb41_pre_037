@@ -1,9 +1,7 @@
 package com.example.stackoverflowclone.domain.question.service;
 
-import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.repository.QuestionRepository;
-import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import java.util.Optional;
 @Slf4j
 public class QuestionService {
     private final QuestionRepository questionRepository;
-    private final TagService tagService;
 
     public Question postQuestion(Question question) {
         return questionRepository.save(question);
@@ -62,13 +59,19 @@ public class QuestionService {
 
     public Page<Question> findAllQuestionsRelatedToUserSearch(String q, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
-        return questionRepository.findAllByQuestionTitleContainsOrQuestionProblemBodyContains(q,q,pageable);
+        return questionRepository.findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(q,q,pageable);
     }
 
-    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return questionRepository.findAllByQuestionTagListContains(tagName, pageable);
+//    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return questionRepository.findAllByQuestionTagListContainingIgnoreCase(tagName, pageable);
+//    }
+
+    public Page<Question> findAllQuestionsSortedByUserId(Long memberId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
+        return questionRepository.findAllByMemberMemberId(memberId, pageable);
     }
+
     public String timestamp(Question question){
         // 질문
         LocalDateTime now = LocalDateTime.now(); // 현재시간
