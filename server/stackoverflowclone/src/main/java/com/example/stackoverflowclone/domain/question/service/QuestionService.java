@@ -1,9 +1,7 @@
 package com.example.stackoverflowclone.domain.question.service;
 
-import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.repository.QuestionRepository;
-import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import java.util.Optional;
 @Slf4j
 public class QuestionService {
     private final QuestionRepository questionRepository;
-    private final TagService tagService;
 
     public Question postQuestion(Question question) {
         return questionRepository.save(question);

@@ -134,17 +134,22 @@ public class QuestionController {
                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
         Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
         List<Question> content = allQuestionsRelatedToUserSearch.getContent();
-        if (q.length() > 4) {
-            String userExpect = q.substring(0, 5);
-            if (!(q.equalsIgnoreCase("user:")) && userExpect.equalsIgnoreCase("user:")) {
-                Long userId = Long.parseLong(q.substring(5));
-                Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestionsSortedByUserId(userId, page - 1, 15);
+//        log.info("q?? {}", q);
+        if (q.contains(":")) {
+            int index = q.indexOf(":");
+            String expect = q.substring(0, index + 1);
+//            log.info("expect?? {}", expect);
+            if (!(q.equalsIgnoreCase("user:")) && expect.equalsIgnoreCase("user:")) {
+                Long id = Long.parseLong(q.substring(index + 1));
+                Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestionsSortedByUserId(id, page - 1, 15);
                 List<Question> questions = allQuestionsSortedByUserId.getContent();
                 return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByUserId, questions);
-            } else {
-                //answers
-                return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
-            }
+            } else if (!(q.equalsIgnoreCase("answers:")) && expect.equalsIgnoreCase("answers:")) {
+                Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+                List<Question> questions = allQuestionsSortedByAnswerCount.getContent();
+                return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByAnswerCount, questions);
+            } else
+            return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
         } else {
             return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
         }
@@ -158,30 +163,6 @@ public class QuestionController {
 //        List<Question> content = allQuestionsSortedByTagged.getContent();
 //        return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByTagged, content);
 //    }
-
-
-    @GetMapping("/search/answers")
-    public ResponseEntity findAuthor(@Positive @RequestParam(defaultValue = "1", required = false) int page,
-                                     @RequestParam(defaultValue = "", required = false) String q) {
-        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
-        List<Question> content = allQuestionsRelatedToUserSearch.getContent();
-        log.info("q?? {}", q);
-        if (q.length() > 7) {
-            String answersExpect = q.substring(0, 8);
-            log.info("answersExpect?? {}", answersExpect);
-            if (!(q.equalsIgnoreCase("answers:")) && answersExpect.equalsIgnoreCase("answers:")) {
-                Long answerCount = Long.parseLong(q.substring(8));
-                log.info("answerCount?? {}", answerCount);
-                Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
-                List<Question> questions = allQuestionsSortedByAnswerCount.getContent();
-                return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByAnswerCount, questions);
-            } else {
-                return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
-            }
-        } else {
-            return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
-        }
-    }
 
 
     private ResponseEntity<MultiResponseDto<QuestionHomeDto>> getMultiResponseDtoFromResponseEntity(Page<Question> allQuestionsByPageNation, List<Question> questions) {

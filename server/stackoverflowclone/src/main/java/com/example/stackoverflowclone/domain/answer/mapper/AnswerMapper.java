@@ -26,6 +26,7 @@ public class AnswerMapper {
                 .answerId(answer.getAnswerId())
                 .answerContent(answer.getAnswerContent())
                 .build();
+
     }
 
     public AnswerVoteResponseDto answerToAnswerVoteResponseDto(Answer answer){
