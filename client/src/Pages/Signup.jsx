@@ -2,6 +2,7 @@ import styled from "styled-components/macro"
 import BREAKPOINT from "../breakpoint"
 import Google from '../icons/Google.png'
 
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Background = styled.div`
@@ -92,7 +93,7 @@ const SignupForm = styled.div`
   border-radius: 8px;
   border: 1px solid #e4e4e4;
   width: 320px;
-  height: 500px;
+  height: max-content;
   background-color: white;
   box-shadow: 0 0 5px 5px #e4e4e4;
   margin-left: 25px;
@@ -115,11 +116,23 @@ const SignupLabel = styled.label`
   font-weight: 600;
 `
 
-const SignupInput = styled.input`
+const SignupInputBox = styled.div`
   width: 100%;
   height: 30px;
-  border: 1px solid #bababa;
+  border: ${props => props.isValid ? '1px solid #bababa' : '1px solid #b90101;'};
   border-radius: 4px;
+  display: flex;
+`
+
+const SignupInput = styled.input`
+  width: 100%;
+  padding-left: 10px;
+  border: none;
+  border-radius: 4px;
+  
+  &:focus-within {
+    outline: none;
+  }
 `
 
 const PasswordValidation = styled.p`
@@ -127,6 +140,7 @@ const PasswordValidation = styled.p`
   font-size: small;
   margin: 0 auto;
   margin-top: 10px;
+  margin-bottom: 10px;
   color: gray;
 `
 const SignupButton = styled.button`
@@ -138,6 +152,13 @@ const SignupButton = styled.button`
   border: 1px solid #0a95ff;
   border-radius: 4px;
   box-shadow: inset 0 1px 0 0 #6fc0ff;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #236ba2;
+    color: #c0c0c0;
+    border-color: #c0c0c0;
+  }
 `
 
 const SignupAgreeInfo = styled.p`
@@ -196,8 +217,67 @@ const SocialLoginText = styled.p`
   padding-top: 5px;
 `
 
+const SignupValidationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  margin-top: 5px;
+  color: #b90101;
+`
+
+const SignupWarningIconContainer = styled.div`
+  display: flex;
+  padding-top: 5px;
+  margin-right: 5px;
+`
+
 export default function Signup() {
   const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState('');
+  const [displayNameValid, setDisplayNameValid] = useState(false);
+  const [displayNameOnFocus, setDisplayNameOnFocus] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [userEmailValid, setUserEmailValid] = useState(false);
+  const [userEmailOnFocus, setUserEmailOnFocus] = useState(false);
+  const [userPassword, setUserPassword] = useState('');
+  const [userPasswordValid, setUserPasswordValid] = useState(false);
+  const [userPasswordOnFocus, setUserPasswordeOnFocus] = useState(false);
+  const [passwordLegnthValid, setPasswordLengthValid] = useState(false);
+  const [passwordRegexValid, setPasswordRegexValid] = useState(false);
+
+  // 실시간 유효성 검사
+  useEffect(() => {
+    if(displayName.length > 0 ) {
+      setDisplayNameValid(true);
+    } else {
+      setDisplayNameValid(false);
+    }
+  }, [displayName]);
+
+  useEffect(() => {
+    if(userEmail.length > 0 && /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(userEmail)) {
+      setUserEmailValid(true);
+    } else {
+      setUserEmailValid(false);
+    }
+  }, [userEmail]);
+
+  useEffect(() => {
+    if(userPassword.length > 8 && userPassword.length < 20) {
+      setPasswordLengthValid(true);
+    } else {
+      setPasswordLengthValid(false);
+    }
+
+    if(/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/.test(userPassword)) {
+      setPasswordRegexValid(true);
+    } else {
+      setPasswordRegexValid(false);
+    }
+  }, [userPassword]);
+
+  const signupClickHandler = () => {
+  }
 
   return (
     <Background>
@@ -245,21 +325,69 @@ export default function Signup() {
               <SocialLoginText>Sign up with Google</SocialLoginText>
               </GoogleLogin>
           </SocialLoginContainer>
+
           <SignupForm>
             <SignupInputContainer>
               <SignupLabel>Display Name</SignupLabel>
-              <SignupInput/>
+              <SignupInputBox isValid={!displayNameValid && !displayNameOnFocus}>
+                <SignupInput value={displayName} onChange={e => {setDisplayName(e.target.value)}} onFocus={() => {setDisplayNameOnFocus(true)}} onBlur={() => {setDisplayNameOnFocus(false)}}/>
+                {
+                !displayNameValid && displayNameOnFocus &&
+                <SignupWarningIconContainer>
+                  <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#b90101" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+                </SignupWarningIconContainer>
+                } 
+              </SignupInputBox>
+              {
+                !displayNameValid && displayNameOnFocus &&
+                <SignupValidationContainer>
+                  Display name cannot be empty.
+                </SignupValidationContainer>
+              }
             </SignupInputContainer>
             <SignupInputContainer>
               <SignupLabel>Email</SignupLabel>
-              <SignupInput/>
+              <SignupInputBox isValid={userEmailValid}>
+                <SignupInput type="email" value={userEmail} onChange={e => {setUserEmail(e.target.value)}}/>
+                {
+                !userEmailValid &&
+                <SignupWarningIconContainer>
+                  <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#b90101" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+                </SignupWarningIconContainer>
+                } 
+              </SignupInputBox>
+              {
+                !userEmailValid &&
+                <SignupValidationContainer>
+                Email must have valid email form.
+              </SignupValidationContainer>
+              }
             </SignupInputContainer>
             <SignupInputContainer>
               <SignupLabel>Password</SignupLabel>
-              <SignupInput/>
+              <SignupInputBox isValid={userPasswordValid}>
+                <SignupInput type="password" value={userPassword} onChange={e => {setUserPassword(e.target.value)}}/>
+                {
+                !userPasswordValid &&
+                <SignupWarningIconContainer>
+                  <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#b90101" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zm32 224c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+                </SignupWarningIconContainer>
+                }
+                </SignupInputBox>
+                {
+                  ! (passwordLegnthValid && passwordRegexValid) &&
+                  <SignupValidationContainer>
+                    Password must follow valid rules.
+                    <ul css={`padding: 0; padding-left: 20px;`}>
+                      {!passwordLegnthValid && <li css={`margin-top: 5px;`}>Password must be 8 ~ 20 characters.</li>}
+                      {!passwordRegexValid && <li css={`margin-top: 5px;`}>Password must have one or more number and character</li>}
+                      {!passwordRegexValid && <li css={`margin-top: 5px;`}>Password cannot use special characters other than !@#$%^&*</li>}
+                    </ul>
+                  </SignupValidationContainer>
+                } 
             </SignupInputContainer>
             <PasswordValidation>Passwords must contain at least eight characters, including at least 1 letter and 1 number.</PasswordValidation>
-            <SignupButton>Sign up</SignupButton>
+            <SignupButton onClick={signupClickHandler}>Sign up</SignupButton>
             <SignupAgreeInfo>By clicking “Sign up”, you agree to our <Linker>terms of service</Linker>, <Linker>privacy policy</Linker> and <Linker>cookie policy</Linker></SignupAgreeInfo>
           </SignupForm>
           <p css={`font-size: small;`}>Already have a account? <Linker onClick={() => navigate('/login')}>Log in</Linker></p>
