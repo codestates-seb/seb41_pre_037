@@ -90,7 +90,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refreshToken = delegateRefreshToken(member);
 
         // Token을 토대로 URI를 만들어서 String으로 변환
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI(request, accessToken, refreshToken).toString();
 
         // 헤더에 전송해보기
         String headerValue = "Bearer "+ accessToken;
@@ -120,15 +120,17 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
     }
 
-    private URI createURI(String accessToken, String refreshToken){
+    private URI createURI(HttpServletRequest request, String accessToken, String refreshToken){
 //        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 //        queryParams.add("access_token", accessToken);
 //        queryParams.add("refresh_token", refreshToken);
 
+        String serverName = request.getServerName();
+
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
+                .host(serverName)
 //                .port(80) // 기본 포트가 80이기 때문에 괜찮다
                 .path("/questions")
 //                .queryParams(queryParams)

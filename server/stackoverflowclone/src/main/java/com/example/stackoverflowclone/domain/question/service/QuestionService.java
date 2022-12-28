@@ -83,7 +83,7 @@ public class QuestionService {
         long months = ChronoUnit.MONTHS.between(date, now);
         long years = ChronoUnit.YEARS.between(date, now);
 
-        System.out.println("================= 질문 =================");
+        // System.out.println("================= 질문 =================");
         String str = "";
         if (years%100 != 0){
             str += years%100+"years, ";
@@ -98,14 +98,14 @@ public class QuestionService {
             str += hour%24 + "hour, ";
         }
         str += min%60+"ago";
-        System.out.println("질문 단 시간 = "+str);
-        System.out.println("========================================");
+        // System.out.println("질문 단 시간 = "+str);
+        // System.out.println("========================================");
         return str;
     }
     public String timestampmodified(Question question){
         // 질문
         LocalDateTime now = LocalDateTime.now(); // 현재시간
-//        LocalDateTime date = LocalDateTime.of(2022,12,25,23,0,0); // 생성시간 테스트
+        // LocalDateTime date = LocalDateTime.of(2022,12,25,23,0,0); // 생성시간 테스트
         LocalDateTime date =  question.getModifiedAt(); //실제 생성시간
         long min = ChronoUnit.MINUTES.between(date, now);
         long hour = ChronoUnit.HOURS.between(date, now);
@@ -113,7 +113,7 @@ public class QuestionService {
         long months = ChronoUnit.MONTHS.between(date, now);
         long years = ChronoUnit.YEARS.between(date, now);
 
-        System.out.println("================= 질문 수정 =================");
+        // System.out.println("================= 질문 수정 =================");
         String str = "";
         if (years%100 != 0){
             str += years%100+"years,";
@@ -128,8 +128,8 @@ public class QuestionService {
             str += hour%24 + "hour,";
         }
         str += min%60+" ago";
-        System.out.println("질문 단 시간 = "+str);
-        System.out.println("========================================");
+        // System.out.println("질문 단 시간 = "+str);
+        // System.out.println("========================================");
         return str;
     }
 }

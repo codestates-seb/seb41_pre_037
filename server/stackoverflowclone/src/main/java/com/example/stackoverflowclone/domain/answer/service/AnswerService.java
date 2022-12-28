@@ -38,7 +38,7 @@ public class AnswerService {
         long months = ChronoUnit.MONTHS.between(date, now);
         long years = ChronoUnit.YEARS.between(date, now);
 
-        System.out.println("================= 답변 =================");
+        // System.out.println("================= 답변 =================");
         String str = "asked ";
         if (years%100 != 0){
             str += years%100+" years";
@@ -51,7 +51,7 @@ public class AnswerService {
         }else{
             str += min%60+" ago";
         }
-        System.out.println("답변 단 시간 = "+str);
+        // System.out.println("답변 단 시간 = "+str);
         return str;
     }
 }
