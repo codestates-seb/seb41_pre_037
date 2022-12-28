@@ -194,7 +194,7 @@ const SocialLoginContainer = styled.div`
 `
 
 
-const GoogleLogin = styled.div`
+const GoogleLogin = styled.a`
   width: 310px;
   margin-bottom: 10px;
   height: max-content;
@@ -258,7 +258,12 @@ export default function Signup() {
       password: userPassword,
     }
 
-    return axios.post(`${process.env.REACT_APP_SERVER_URI}users/signup`, data);
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    }
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}users/signup`, data, headers);
   }
 
   const {mutate:createUser} = useMutation({mutationKey:['postSignupData'], mutationFn:postSignupData});
@@ -297,7 +302,7 @@ export default function Signup() {
   const signupClickHandler = () => {
     if(displayNameValid && userEmailValid && passwordLegnthValid && passwordRegexValid) {
       try{
-        createUser({onSuccess: navigate('/')});
+        createUser();
       } catch {
         navigate('/error');
       }
@@ -347,7 +352,7 @@ export default function Signup() {
         </SignupDetailContainer>
         <SignupFormContainer>
           <SocialLoginContainer>
-            <GoogleLogin>
+            <GoogleLogin href={`/oauth2/authorization/google`}>
               <SocialLoginIcon src={Google}/>
               <SocialLoginText>Sign up with Google</SocialLoginText>
               </GoogleLogin>
