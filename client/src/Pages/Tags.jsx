@@ -6,6 +6,9 @@ import Footer from "../Components/Footer/Footer"
 import BREAKPOINT from "../breakpoint";
 import Pagination from "../Components/Pagination/Pagination"
 
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 
 const Container = styled.div`
   display: flex;
@@ -76,6 +79,23 @@ const PaginationContainer = styled.div`
 
 
 export default function Tags() {
+  const [tagsData, setTagsData] = useState('');
+  const [pageInfo, setPageInfo] = useState('');
+  
+  const fetchTags = () => {
+    return axios.get('http://localhost:8000/tags');
+  }
+
+  const fetchTagsOnSuccess = (data) => {
+    setTagsData(data.data.data);
+    setPageInfo(data.data.pageInfo);
+  }
+
+
+  const {isLoading} = useQuery({queryKey: ['fetchTags'], queryFn: fetchTags, keepPreviousData: true, onSuccess: fetchTagsOnSuccess});
+
+
+
   return (
     <>
     <Header/>
@@ -87,26 +107,15 @@ export default function Tags() {
           <MainbarTitleDetail>A tag is a keyword or label that categorizes your question with other, similar questions. <br/>Using the right tags makes it easier for others to find and answer your question.</MainbarTitleDetail>
         </MainbarTitleContainer>
         <MainbarTagsContainer>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
-          <Tag/>
+          {isLoading 
+          ? <div>Loading...</div> 
+          : tagsData && tagsData.map((tag) => {
+            return <Tag data={tag} key={tag.tagId}/>
+          })
+        }
         </MainbarTagsContainer>
         <PaginationContainer>
-          <Pagination pageinfo={{
-          "page" : 1,
-          "size" : 30,
-          "totalElements" : 30,
-          "totalPages" : 30,
-      }}/>
+          <Pagination pageinfo={pageInfo}/>
         </PaginationContainer>
       </MainbarContainer>
     </Container>

@@ -7,7 +7,9 @@ import BREAKPOINT from "../breakpoint"
 import SearchBarIcon from "../icons/Search.svg";
 import Pagination from "../Components/Pagination/Pagination"
 
-
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 
 const Container = styled.div`
   display: flex;
@@ -97,6 +99,23 @@ const PaginationContainer = styled.div`
 
 export default function Tags() {
 
+  const [usersData, setUsersData] = useState('');
+  const [pageInfo, setPageInfo] = useState('');
+  
+  const fetchUsers = () => {
+    return axios.get('http://localhost:8000/users');
+  }
+
+  const fetchUsersOnSuccess = (data) => {
+    setUsersData(data.data.data);
+    setPageInfo(data.data.pageInfo);
+  }
+
+
+  const {isLoading} = useQuery({queryKey: ['fetchUsers'], queryFn: fetchUsers, keepPreviousData: true, onSuccess: fetchUsersOnSuccess});
+
+
+
   return (
     <>
     <Header/>
@@ -111,34 +130,14 @@ export default function Tags() {
           </SearchBar>
         </MainbarTitleContainer>
         <MainbarUsersContainer>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
-          <User/>
+          {isLoading 
+          ? <div>loading ...</div>
+          : usersData && usersData.map((user) => {
+            return <User data={user} key={user.memberId}/>
+          })}
         </MainbarUsersContainer>
         <PaginationContainer>
-          <Pagination pageinfo={{
-          "page" : 1,
-          "size" : 30,
-          "totalElements" : 30,
-          "totalPages" : 30,
-      }}/>
+          <Pagination pageinfo={pageInfo}/>
         </PaginationContainer>
       </MainbarContainer>
     </Container>

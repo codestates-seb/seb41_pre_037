@@ -6,6 +6,11 @@ import quillModule from "../quillModule"
 import '../quillEditor.css'
 import BREAKPOINT from "../breakpoint"
 
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { useMutation } from "@tanstack/react-query"
+
 const Background = styled.div`
   width: 100vw;
   height: max-content;
@@ -108,7 +113,24 @@ const QuestionRuleUl = styled.ul`
   padding-left: 30px;
   margin-top: 10px;
 `
+const QuestionBlinder = styled.div`
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #d1d1d1df;
+  position: absolute;
+  z-index: 10;
+  background-color: #ffffffc6;
+  display: ${props => props.isValid && 'none'};
+  
+  &:hover{
+    cursor: not-allowed;
+  }
+`
+
 const QuestionContainer = styled.div`
+  position: relative;
   width: 70%;
   min-width: 390px;
   display: flex;
@@ -142,6 +164,57 @@ const QuestionInput = styled.input`
   border: 1px solid #cacaca;
   border-radius: 4px;
 `
+const TagsInputContainer = styled.div`
+  width: 100%;
+  height: 35px;
+  border: 1px solid #cacaca;
+  border-radius: 4px;
+  display: flex;
+`
+
+const TagsInput = styled.input`
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: transparent;
+  border: none;
+  padding-top: 3px;
+
+  &:focus-within{
+    outline: none;
+  }
+`
+const Tag = styled.div`
+  width: max-content;
+  padding: 5px 8px;
+  height: 15px;
+  border: 1px #e1ecf4;
+  border-radius: 5px;
+  background-color: #e1ecf4;
+  color: #39739d;
+  font-size: small;
+  margin: 5px 3px 0 3px;
+  display: flex;
+  align-items: center;
+`;
+
+const TagDeleteButton = styled.div`
+  width: 12px;
+  height: 12px;
+  color: #39739d;
+  display: flex;
+  border-radius: 4px;
+  justify-content: center;
+  margin-left: 5px;
+  padding: 4px;
+
+  &:hover {
+    background-color: #85b5d7;
+    cursor: pointer;
+  }
+`
+
 const QuestionEditorContainer = styled.div`
   margin-top: 10px;
   height: 300px;
@@ -154,6 +227,7 @@ const QuestionButtonContainer = styled.div`
   box-sizing: border-box;
 `
 const Button = styled.button`
+  position: relative;
   margin: auto 0;
   margin-top: 10px;
   width: max-content;
@@ -165,6 +239,7 @@ const Button = styled.button`
   border-radius: 4px;
   box-shadow: inset 0 1px 0 0 #6fc0ff;
   box-sizing: border-box;
+  display: ${props => props.isHidden ? 'none' : 'flex'};
 
   &:hover {
     background-color: #306fa0;
@@ -175,11 +250,28 @@ const Button = styled.button`
   }
 `;
 
+const ButtonBlinder = styled.div`
+  position: absolute;
+  width: 104%;
+  height: 106%;
+  top: -1px;
+  left: -1px;
+  background-color: #ffffffac;
+  border: 1px solid #ffffffac;
+  border-radius: 4px;
+  z-index: 10;
+  display: ${props => props.isValid && 'none'};
+  &:hover {
+    cursor: not-allowed;
+  }
+`;
+
  const QuestionDiscardButton = styled.p`
     color: #a00000;
     font-size: small;
     margin : 10px;
     margin-top: 20px;
+    display: ${props => props.isHidden && 'none'};
  `
 
  const QuestionTipContainer = styled.div`
@@ -237,7 +329,110 @@ const QuestionTipText = styled.div`
   padding: 20px 10px;
 `
 
+
+
 export default function AskQuestions() {
+  const [titleInput, setTitleInput] = useState('');
+  const [contentValue, setContentValue] = useState('');
+  const [extraContentValue, setExtraContentValue] = useState('');
+  const [tagsInput, setTagsInput] = useState('');
+  const [tagsArr, setTagsArr] = useState([]);
+  const [titleValid, setTitleValid] = useState(false);
+  const [isTitleNextClicked, setIsTitleNextClicked] = useState(false);
+  const [contentValid, setContentValid] = useState(false);
+  const [isContentNextClicked, setIsContentNextClicked] = useState(false);
+  const [extraContentValid, setExtraContentValid] = useState(false);
+  const [tagsValid, setTagsValid] = useState(false);
+  const [isTagsNextClicked, setIsTagsNextClicked] = useState(false);
+
+  const navigate = useNavigate();
+
+  const postQuestionData = () => {
+    const data = {
+      quesstionTitle : titleInput,
+      questionProblemBody : contentValue,
+      questionTryOrExpectingBody : extraContentValue,
+      tag : tagsArr.map((tag) => {return {tagName : tag}}),
+    }
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data);
+  }
+
+  const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData});
+
+
+  //----------------------------event handlers-----------------------------------------------------
+
+  const titleOnChangeHandler = e => {
+    setTitleInput(e.target.value);
+    if(titleInput.length >= 15) {
+      setTitleValid(true);
+    } else {
+      setTitleValid(false);
+    }
+  
+  }
+
+  const contentOnChangeHandler = content => {
+    const rawText = content.replaceAll(/<[^>]*>/g, '');
+    setContentValue(content);
+    if(rawText.length >= 22) {
+      setContentValid(true);
+    } else {
+      setContentValid(false);
+    }
+  }
+
+  const extraContentOnChangeHandler = content => {
+    const rawText = content.replaceAll(/<[^>]*>/g, '');
+    setExtraContentValue(content);
+    if(rawText.length >= 22) {
+      setExtraContentValid(true);
+    } else {
+      setExtraContentValid(false);
+    }
+  }
+
+  const tagsOnChangeHandler = e => {
+    setTagsInput(e.target.value);
+    if(tagsInput.length >= 15) {
+      setTagsValid(true);
+    } else {
+      setTagsValid(false);
+    }
+  }
+
+  const tagsOnKeyUpHandler = e => {
+    console.log(e.key);
+    if(e.key === ',' || e.keyCode === 32) {
+      setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length - 1)]);
+      setTagsInput('');
+    }
+  }
+
+  const tagDeleteButtonClickHandler = index => {
+    console.log(index);
+
+    if(index === 0) {
+      const newTagsArr = [...tagsArr.slice(1)];
+      setTagsArr(newTagsArr);
+    }
+    else if(index === tagsArr.length - 1) {
+      const newTagsArr = [...tagsArr.slice(0, index)];
+      setTagsArr(newTagsArr);
+    } 
+    else {
+      const newTagsArr = [...tagsArr.slice(0, index), ...tagsArr.slice(index + 1)];
+      setTagsArr(newTagsArr);
+    }
+  }
+
+  const postQuestionOnClickHandler = () => {
+    const createQuestionOnSuccess = () => {
+      navigate('/');
+    }
+    createQuestion({onSuccess : createQuestionOnSuccess});
+  }
 
   return (
     <>
@@ -280,36 +475,56 @@ export default function AskQuestions() {
         </QuestionTipContainer>
         <QuestionContainer height={125}>
           <QuestionLabel>Title</QuestionLabel>
-          <QuestionLabelDetail>Be specific and imagine you’re asking a question to another person.</QuestionLabelDetail>
-          <QuestionInput/>
-          <Button>Next</Button>
+          <QuestionLabelDetail>Be specific and imagine you’re asking a question to another person. Minimum 15 characters.</QuestionLabelDetail>
+          <QuestionInput value={titleInput} onChange={titleOnChangeHandler}/>
+          <Button isHidden={false} isDisabled={true} onClick={() => {setIsTitleNextClicked(true)}}>
+            <ButtonBlinder isValid={titleValid}/>
+            Next
+          </Button>
         </QuestionContainer>
         </div>
         <QuestionContainer height={'max-content'}>
+          <QuestionBlinder isValid={isTitleNextClicked}/>
           <QuestionLabel>What are the details of your problem?</QuestionLabel>
           <QuestionLabelDetail>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</QuestionLabelDetail>
           <QuestionEditorContainer>
-            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}}/>
+            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}} value={contentValue} onChange={contentOnChangeHandler}/>
           </QuestionEditorContainer>
-          <Button>Next</Button>
+          <Button isHidden={!contentValid} onClick={() => {setIsContentNextClicked(true)}}>Next</Button>
         </QuestionContainer>
         <QuestionContainer height={'max-content'}>
+          <QuestionBlinder isValid={isContentNextClicked}/>
           <QuestionLabel>What did you try and what were you expecting?</QuestionLabel>
           <QuestionLabelDetail>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</QuestionLabelDetail>
           <QuestionEditorContainer>
-            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}}/>
+            <ReactQuill theme="snow" modules={quillModule} style={{height : '250px'}} value={extraContentValue} onChange={extraContentOnChangeHandler}/>
           </QuestionEditorContainer>
-          <Button>Next</Button>
+          <Button isHidden={!extraContentValid} onClick={() => {setIsTagsNextClicked(true)}}>Next</Button>
         </QuestionContainer>
         <QuestionContainer height={125}>
+          <QuestionBlinder isValid={isTagsNextClicked}/>
           <QuestionLabel>Tags</QuestionLabel>
           <QuestionLabelDetail>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</QuestionLabelDetail>
-          <QuestionInput/>
-          <Button>Next</Button>
+          <TagsInputContainer>
+            {tagsArr.map((tag, index) => {
+              return (             
+              <Tag key={index}>
+                {tag}
+                <TagDeleteButton onClick={() => {tagDeleteButtonClickHandler(index)}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill='#306fa0' d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/></svg>
+                </TagDeleteButton>
+              </Tag>
+              )
+            })}
+            <TagsInput value={tagsInput} onChange={tagsOnChangeHandler} onKeyUp={tagsOnKeyUpHandler}/>
+          </TagsInputContainer>
         </QuestionContainer>
         <QuestionButtonContainer>
-          <Button>Review your question</Button>
-          <QuestionDiscardButton>Discard draft</QuestionDiscardButton>
+          <Button isDisabled={true} onClick={postQuestionOnClickHandler}>
+            <ButtonBlinder isValid={titleValid && contentValid && extraContentValid &&tagsValid}/>
+            Post your question
+          </Button>
+          <QuestionDiscardButton isHidden={!titleValid} onClick={() => {navigate('/')}}>Discard draft</QuestionDiscardButton>
         </QuestionButtonContainer>
       </Container>
       </Background>

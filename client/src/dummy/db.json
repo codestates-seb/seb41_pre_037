@@ -1,0 +1,114 @@
+{ "questions" : { 
+  "data": [
+      {
+        "totalQuestions": 100,
+        "qusetions": [
+          {
+            "questionId": 1234,
+            "memberId": 1,
+            "username": "team 37",
+            "image": "src/usericons/user1.png",
+            "questionTitle": "Dummy Questions",
+            "questionCreatedAt": "2022-03-16",
+            "questionVoteCount": "128",
+            "questionViewCount": "20300",
+            "questionAnswerCount": "20",
+            "question_problem_body": "Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like.",
+            "question_try_or_expecting_body": "",
+            "questionAnswers": "",
+            "tags": [
+              {
+                "tagId": 1,
+                "tagName": "java",
+                "tagBody": "",
+                "tagUrl": ""
+              },
+              {
+                "tagId": 2,
+                "tagName": "javascript",
+                "tagBody": "",
+                "tagUrl": ""
+              }
+            ]
+          },
+          {
+            "questionId": 2234,
+            "memberId": 2,
+            "username": "dummy 2",
+            "image": "src/usericons/user2.png",
+            "questionTitle": "dummy question title 2",
+            "questionCreatedAt": "2021-02-06",
+            "questionVoteCount": "33",
+            "questionViewCount": "2222",
+            "question_problem_body": "Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like.",
+            "question_try_or_expecting_body": "",
+            "tags": [
+              {
+                "tagId": 1,
+                "tagName": "java",
+                "tagBody": "",
+                "tagUrl": ""
+              },
+              {
+                "tagId": 2,
+                "tagName": "javascript",
+                "tagBody": "",
+                "tagUrl": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "pageInfo": {
+      "page": 1,
+      "size": 30,
+      "totalElements": 30,
+      "totalPages": 10
+    }
+  },
+
+  "tags" : {
+    "data" : [ {
+         "tagId" : 1,
+         "questionAmount" : 100,
+         "tagName" : "java",
+         "tagBody" : "",
+         "tagUrl" : ""
+     }, {
+         "tagId" : 2,
+         "questionAmount" : 100,
+         "tagName" : "javascript",
+         "tagBody" : "",
+         "tagUrl" : ""
+     } ],
+    
+     "pageInfo" : {
+         "page" : 1,
+         "size" : 30,
+         "totalElements" : 30,
+         "totalPages" : 10
+      }
+    },
+
+  "users" : {
+    "data" : [ {
+        "memberId" : 1,
+        "username" : "dummy",
+        "image" : "https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921",
+        "location" : "Incheon"
+    }, {
+        "memberId" : 2,
+        "username" : "dummy2",
+        "image" : "src/usericons/user2.png",
+        "location" : "seoul"
+    } ],
+    
+    "pageInfo" : {
+        "page" : 1,
+        "size" : 30,
+        "totalElements" : 30,
+        "totalPages" : 10
+    }
+  }
+}

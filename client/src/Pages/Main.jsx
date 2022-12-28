@@ -7,7 +7,10 @@ import Footer from "../Components/Footer/Footer";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Pagination from "../Components/Pagination/Pagination";
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.div`
   display: flex;
@@ -130,44 +133,56 @@ const PaginationContainer = styled.div`
  margin-left: 20px;
 `
 
+
 export default function Main() {
   const navigate = useNavigate();
+  const [questionData, setQuestionData] = useState('');
+  const [pageInfo, setPageInfo] = useState('');
+  
+  const fetchQuestion = () => {
+    return axios.get('http://localhost:8000/questions');
+  }
+
+  const fetchQuestionOnSuccess = (data) => {
+    setQuestionData(data.data.data[0]);
+    setPageInfo(data.data.pageInfo);
+  }
+
+
+  const {isLoading} = useQuery({queryKey: ['fetchQuestion'], queryFn: fetchQuestion, keepPreviousData: true, onSuccess: fetchQuestionOnSuccess});
 
   return (
     <>
       <Header />
       <Container>
         <LeftNav />
-        <MainbarContainer>
-          <MainbarTopHeader>
-            <Title>All Questions</Title>
-            <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
-          </MainbarTopHeader>
-          <MainbarBottomHeader>
-            <QuestionCount>2,400,239 questions</QuestionCount>
-            <MainbarSortButtonContainer>
-              <SortButton isLeft={true}>Latest</SortButton>
-              <SortButton isLeft={false}>Unanswered</SortButton>
-            </MainbarSortButtonContainer>
-          </MainbarBottomHeader>
-          <Question />
-          <Question />
-          <Question />
-          <Question />
-          <Question />
-          <Question />
-          <Question />
-          <Question />
-          <Question isLast={true} />
+        { isLoading
+        ? <div>Loading....</div> 
+        : <MainbarContainer>
+            <MainbarTopHeader>
+              <Title>All Questions</Title>
+              <AskQuestionButton onClick={() => {navigate('/askquestions')}}>Ask Questions</AskQuestionButton>
+            </MainbarTopHeader>
+            <MainbarBottomHeader>
+              <QuestionCount>{`${questionData?.totalQuestions} questions`}</QuestionCount>
+              <MainbarSortButtonContainer>
+                <SortButton isLeft={true}>Latest</SortButton>
+                <SortButton isLeft={false}>Unanswered</SortButton>
+              </MainbarSortButtonContainer>
+            </MainbarBottomHeader>
+            {
+              questionData && questionData.qusetions.map((question, index, questions) => {
+                if(index === questions.length - 1) {
+                  return <Question data={question} isLast={true} key={question.questionId}/>
+                }
+                return <Question data={question} key={question.questionId}/>
+              })
+            }
           <PaginationContainer>
-          <Pagination pageinfo={{
-            "page" : 1,
-            "size" : 30,
-            "totalElements" : 30,
-            "totalPages" : 30,
-          }}/>
-          </PaginationContainer>
-        </MainbarContainer>
+            <Pagination pageinfo={pageInfo}/>
+            </PaginationContainer>
+          </MainbarContainer>
+        }
         <RightSidebarContainer>
           <RightSidebar />
         </RightSidebarContainer>
