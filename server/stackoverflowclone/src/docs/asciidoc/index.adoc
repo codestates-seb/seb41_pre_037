@@ -21,24 +21,24 @@ include::{snippets}/post-question/http-response.adoc[]
 include::{snippets}/post-question/response-fields.adoc[]
 
 
-// === 질문 조회
-// .curl-request
-// include::{snippets}/get-findquestion/curl-request.adoc[]
-//
-// .http-request
-// include::{snippets}/get-findquestion/http-request.adoc[]
-//
-// .request-fields
-// include::{snippets}/get-findquestion/request-fields.adoc[]
-//
-// .path-parameters
-// include::{snippets}/get-findquestion/path-parameters.adoc[]
-//
-// .http-response
-// include::{snippets}/get-findquestion/http-response.adoc[]
-//
-// .response-fields
-// include::{snippets}/get-findquestion/response-fields.adoc[]
+=== 질문 조회
+.curl-request
+include::{snippets}/get-findquestion/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-findquestion/http-request.adoc[]
+
+.request-fields
+include::{snippets}/get-findquestion/request-fields.adoc[]
+
+.path-parameters
+include::{snippets}/get-findquestion/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-findquestion/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-findquestion/response-fields.adoc[]
 
 
 

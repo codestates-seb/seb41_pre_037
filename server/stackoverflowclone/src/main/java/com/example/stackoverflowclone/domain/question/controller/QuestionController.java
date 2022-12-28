@@ -11,6 +11,7 @@ import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
+import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberEmail;
 import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
@@ -49,13 +50,6 @@ public class QuestionController {
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody @Valid QuestionPostDto questionPostDto) {
-
-        log.info("getQuestionTitle = {}", questionPostDto.getQuestionTitle());
-        log.info("getQuestionProblemBody = {}", questionPostDto.getQuestionProblemBody());
-        log.info("getQuestionTryOrExpectingBody = {}", questionPostDto.getQuestionTryOrExpectingBody());
-        log.info("getTag = ");
-        questionPostDto.getTag().stream().forEach(i -> System.out.println(i));
-
         List<Tag> tagList = tagService.findTags(questionPostDto);
         Member member = memberService.findByMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
@@ -64,8 +58,7 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}/{question-title}")
-    public ResponseEntity<DataResponseDto> findQuestion(@LoginMemberId Long memberId,
-                                                        @PathVariable("question-id") Long questionId,
+    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
                                                         @PathVariable("question-title") String questionTitle) {
         Question question = questionService.findQuestion(questionId);
         questionService.addViewCount(question);

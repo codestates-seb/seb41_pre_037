@@ -1,12 +1,16 @@
 package com.example.stackoverflowclone.domain.question.controller;
 
+import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
+import com.example.stackoverflowclone.domain.question.dto.QuestionFindResponseDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
+import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import com.example.stackoverflowclone.domain.tag.service.TagService;
 import com.example.stackoverflowclone.domain.vote.service.QuestionVoteService;
@@ -94,29 +98,29 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
     void createQuestion() throws Exception {
 
         QuestionPostDto questionPostDto = (QuestionPostDto) StubData.MockQuestion.getRequestBody(HttpMethod.POST);
-        Question question = StubData.MockQuestion.getSingleResponseBody(1L);
+        Question question = StubData.MockQuestion.getSingleResponseBody();
         List<Tag> tagList = StubData.MockTag.getSingleResponseBody();
-        Member member = StubData.MockMember.getSingleResponseBody(1L);
-        QuestionPostResponseDto questionTagListToQuestionPostResponseDto = StubData.MockQuestion.getQuestionTagListToQuestionPostResponseDto(question, tagList);
+        Member member = StubData.MockMember.getSingleResponseBody();
+        QuestionPostResponseDto questionPostResponseDto = StubData.MockQuestion.getQuestionPostResponseDto(question, tagList);
 
         given(tagService.findTags(Mockito.any(QuestionPostDto.class))).willReturn(tagList);
         given(memberService.findByMember(Mockito.anyLong())).willReturn(member);
         given(questionService.postQuestion(Mockito.any())).willReturn(question);
-        given(questionMapper.questionTagListToQuestionPostResponseDto(Mockito.any(),Mockito.any())).willReturn(questionTagListToQuestionPostResponseDto);
+        given(questionMapper.questionTagListToQuestionPostResponseDto(Mockito.any(),Mockito.any())).willReturn(questionPostResponseDto);
 
         String content = toJsonContent(questionPostDto);
         ResultActions actions = mockMvc.perform(postRequestBuilder(getUrlCreateQuestion(), content));
 
         actions
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.questionId").value(questionTagListToQuestionPostResponseDto.getQuestionId()))
-                .andExpect(jsonPath("$.data.questionTitle").value(questionTagListToQuestionPostResponseDto.getQuestionTitle()))
-                .andExpect(jsonPath("$.data.questionProblemBody").value(questionTagListToQuestionPostResponseDto.getQuestionProblemBody()))
-                .andExpect(jsonPath("$.data.questionTryOrExpectingBody").value(questionTagListToQuestionPostResponseDto.getQuestionTryOrExpectingBody()))
-                .andExpect(jsonPath("$.data.tag.[0].tagId").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagId()))
-                .andExpect(jsonPath("$.data.tag.[0].tagName").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagName()))
-                .andExpect(jsonPath("$.data.tag.[0].tagBody").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagBody()))
-                .andExpect(jsonPath("$.data.tag.[0].tagUrl").value(questionTagListToQuestionPostResponseDto.getTag().get(0).getTagUrl()))
+                .andExpect(jsonPath("$.data.questionId").value(questionPostResponseDto.getQuestionId()))
+                .andExpect(jsonPath("$.data.questionTitle").value(questionPostResponseDto.getQuestionTitle()))
+                .andExpect(jsonPath("$.data.questionProblemBody").value(questionPostResponseDto.getQuestionProblemBody()))
+                .andExpect(jsonPath("$.data.questionTryOrExpectingBody").value(questionPostResponseDto.getQuestionTryOrExpectingBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagId").value(questionPostResponseDto.getTag().get(0).getTagId()))
+                .andExpect(jsonPath("$.data.tag.[0].tagName").value(questionPostResponseDto.getTag().get(0).getTagName()))
+                .andExpect(jsonPath("$.data.tag.[0].tagBody").value(questionPostResponseDto.getTag().get(0).getTagBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagUrl").value(questionPostResponseDto.getTag().get(0).getTagUrl()))
                 .andDo(document( "post-question",
                         ApiDocumentUtils.getRequestPreProcessor(),
                         ApiDocumentUtils.getResponsePreProcessor(),
@@ -151,12 +155,42 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
     @WithMockCustomUser
     void findQuestion()throws Exception {
 
-        given(questionService.findQuestion(Mockito.anyLong())).willReturn();
-        given(tagService.findTags(Mockito.anyList())).willReturn();
+        Question question = StubData.MockQuestion.getSingleResponseBody();
+        List<Tag> tagList = StubData.MockTag.getSingleResponseBody();
+        List<QuestionFindAnswerDto> questionFindAnswerDto = StubData.MockQuestion.getQuestionFindAnswerDto();
+        QuestionFindResponseDto questionFindResponseDto = StubData.MockQuestion.getQuestionPostResponseDto();
 
+        given(questionService.findQuestion(Mockito.anyLong())).willReturn(question);
+        given(tagService.findTags(Mockito.anyList())).willReturn(tagList);
+        given(questionMapper.answersToQuestionFindAnswerDto(Mockito.anyList())).willReturn(questionFindAnswerDto);
+        given(questionMapper.questionInfoToQuestionFindResponseDto(Mockito.any(),Mockito.any(),Mockito.anyList(),Mockito.anyList())).willReturn(questionFindResponseDto);
 
         ResultActions actions = mockMvc.perform(getRequestBuilder(getUriFindQuestion(),1L,"제목입니다"));
 
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.questionId").value(questionFindResponseDto.getQuestionId()))
+                .andExpect(jsonPath("$.data.memberId").value(questionFindResponseDto.getMemberId()))
+                .andExpect(jsonPath("$.data.username").value(questionFindResponseDto.getUsername()))
+                .andExpect(jsonPath("$.data.image").value(questionFindResponseDto.getImage()))
+                .andExpect(jsonPath("$.data.questionTitle").value(questionFindResponseDto.getQuestionTitle()))
+                .andExpect(jsonPath("$.data.questionCreatedAt").value(questionFindResponseDto.getQuestionCreatedAt()))
+                .andExpect(jsonPath("$.data.questionModifiedAt").value(questionFindResponseDto.getQuestionModifiedAt()))
+                .andExpect(jsonPath("$.data.questionVoteCount").value(questionFindResponseDto.getQuestionVoteCount()))
+                .andExpect(jsonPath("$.data.questionViewCount").value(questionFindResponseDto.getQuestionViewCount()))
+                .andExpect(jsonPath("$.data.questionProblemBody").value(questionFindResponseDto.getQuestionProblemBody()))
+                .andExpect(jsonPath("$.data.questionTryOrExpectingBody").value(questionFindResponseDto.getQuestionTryOrExpectingBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagId").value(questionFindResponseDto.getTag().get(0).getTagId()))
+                .andExpect(jsonPath("$.data.tag.[0].tagName").value(questionFindResponseDto.getTag().get(0).getTagName()))
+                .andExpect(jsonPath("$.data.tag.[0].tagBody").value(questionFindResponseDto.getTag().get(0).getTagBody()))
+                .andExpect(jsonPath("$.data.tag.[0].tagUrl").value(questionFindResponseDto.getTag().get(0).getTagUrl()))
+                .andExpect(jsonPath("$.data.answers.[0].answerId").value(questionFindResponseDto.getAnswers().get(0).getAnswerId()))
+                .andExpect(jsonPath("$.data.answers.[0].answerCreatedAt").value(questionFindResponseDto.getAnswers().get(0).getAnswerCreatedAt()))
+                .andExpect(jsonPath("$.data.answers.[0].answerContent").value(questionFindResponseDto.getAnswers().get(0).getAnswerContent()))
+                .andExpect(jsonPath("$.data.answers.[0].answerVoteCount").value(questionFindResponseDto.getAnswers().get(0).getAnswerVoteCount()))
+                .andExpect(jsonPath("$.data.answers.[0].memberId").value(questionFindResponseDto.getAnswers().get(0).getMemberId()))
+                .andExpect(jsonPath("$.data.answers.[0].username").value(questionFindResponseDto.getAnswers().get(0).getUsername()))
+                .andExpect(jsonPath("$.data.answers.[0].image").value(questionFindResponseDto.getAnswers().get(0).getImage()));
     }
 
 }

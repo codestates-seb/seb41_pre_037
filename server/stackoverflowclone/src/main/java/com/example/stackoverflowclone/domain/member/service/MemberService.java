@@ -107,7 +107,7 @@ public class MemberService {
 
     public ProfileImage createProfileImage(Member member){
         ProfileImage[] randomImageList = ProfileImage.values();
-        Long profileImageIndex = Long.valueOf((int) (Math.random()*10)+1 % randomImageList.length);
+        Long profileImageIndex = Long.valueOf((int) (Math.random()*14)+1 % randomImageList.length);
 
         List<ProfileImage> profileImageList = Arrays.stream(randomImageList)
                 .filter(image -> image.getIndex() == profileImageIndex)
