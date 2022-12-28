@@ -1,16 +1,15 @@
 package com.example.stackoverflowclone.helper;
 
+import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostResponseDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionPostTagDto;
-import com.example.stackoverflowclone.domain.question.dto.QuestionTagResponseDto;
+import com.example.stackoverflowclone.domain.question.dto.*;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import org.springframework.http.HttpMethod;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StubData {
     private static Map<HttpMethod, Object> stubRequestBody;
@@ -21,7 +20,7 @@ public class StubData {
                         .questionTitle("질문 제목 입니다.")
                         .questionProblemBody("질문 내용 1")
                         .questionTryOrExpectingBody("질문 내용 2")
-                        .tag(new ArrayList<>())//new ArrayList<QuestionPostTagDto>(List.of(new QuestionPostTagDto("java")))
+                        .tag(new ArrayList<QuestionPostTagDto>(List.of(new QuestionPostTagDto("java")))) //)
                         .build());
     }
 
@@ -52,9 +51,9 @@ public class StubData {
             return stubRequestBody.get(method);
         }
 
-        public static Member getSingleResponseBody(Long memberId) {
+        public static Member getSingleResponseBody() {
             return Member.builder()
-                    .memberId(memberId)
+                    .memberId(1L)
                     .username("이재혁")
                     .email("dhfif718@naver.com")
                     .location("Seoul, KOREA")
@@ -74,9 +73,9 @@ public class StubData {
             return stubRequestBody.get(method);
         }
 
-        public static Question getSingleResponseBody(Long questionId){
+        public static Question getSingleResponseBody(){
             return Question.builder()
-                    .questionId(questionId)
+                    .questionId(1L)
                     .questionTitle("질문 제목 입니다.")
                     .questionProblemBody("질문 내용1 입니다.")
                     .questionTryOrExpectingBody("질문 내용2 입니다.")
@@ -88,7 +87,7 @@ public class StubData {
                     .build();
         }
 
-        public static QuestionPostResponseDto getQuestionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList){
+        public static QuestionPostResponseDto getQuestionPostResponseDto(Question question, List<Tag> tagList){
             return QuestionPostResponseDto.builder()
                     .questionId(question.getQuestionId())
                     .questionTitle(question.getQuestionTitle())
@@ -98,6 +97,37 @@ public class StubData {
                     .build();
         }
 
+        public static List<QuestionFindAnswerDto> getQuestionFindAnswerDto(){
+            List<QuestionFindAnswerDto> list = new ArrayList<>();
+            QuestionFindAnswerDto questionFindAnswerDto = QuestionFindAnswerDto.builder()
+                    .answerId(1L)
+                    .answerCreatedAt("1 min ago")
+                    .answerContent("답변 내용입니다.")
+                    .answerVoteCount(15L)
+                    .memberId(1L)
+                    .username("이재혁")
+                    .image("https://")
+                    .build();
+            list.add(questionFindAnswerDto);
+            return list;
+        }
 
+        public static QuestionFindResponseDto getQuestionPostResponseDto(){
+            return QuestionFindResponseDto.builder()
+                    .questionId(1L)
+                    .memberId(1L)
+                    .username("이재혁")
+                    .image("https://")
+                    .questionTitle("질문 제목 입니다.")
+                    .questionCreatedAt("1 min ago")
+                    .questionModifiedAt("1 min ago")
+                    .questionVoteCount(200L)
+                    .questionViewCount(350L)
+                    .questionProblemBody("질문 내용1 입니다.")
+                    .questionTryOrExpectingBody("질문 내용2 입니다.")
+                    .tag(new ArrayList<>(List.of(new QuestionTagResponseDto(1L,"java","태그 내용 입니다.",""))))
+                    .answers(getQuestionFindAnswerDto())
+                    .build();
+        }
     }
 }
