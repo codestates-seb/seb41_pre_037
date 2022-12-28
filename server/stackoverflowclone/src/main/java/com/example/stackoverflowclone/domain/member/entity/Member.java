@@ -85,5 +85,4 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER)
 //    @CollectionTable(name = "", joinColumns = @JoinColumn(name ="")) //TODO: 추가 진행중
     private List<String> roles = new ArrayList<>();
-
 }
