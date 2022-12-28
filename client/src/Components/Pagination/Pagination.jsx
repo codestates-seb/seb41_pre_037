@@ -75,8 +75,8 @@ export default function Pagination({pageinfo, setPage, refetch}) {
           <p css={`margin: 0 2px;`}>...</p>
         </FirstPageSkipperGroup>
         {
-          pageNumArr.map((page) => {
-            return <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - page}/>
+          pageNumArr.map((page, index) => {
+            return <PageButton key={index} refetch={refetch} setPage={setPage} currentPage={currentPage} number={pageinfo.totalPages - page}/>
           })
         }
         <LastPageSkipperGroup isHidden={currentPage > pageinfo.totalPages - 5}>
@@ -121,8 +121,8 @@ export default function Pagination({pageinfo, setPage, refetch}) {
       <PaginationContainer>
         <PagePrevButton isFirst={currentPage === 1} onClick={() => {pageMovebuttonOnClickHandler('prev')}}>Prev</PagePrevButton>
         {
-          pageNumArr.map((page) => {
-            return <PageButton refetch={refetch} setPage={setPage} currentPage={currentPage} number={page}/>
+          pageNumArr.map((page, index) => {
+            return <PageButton key={index} refetch={refetch} setPage={setPage} currentPage={currentPage} number={page}/>
           })
         }
         <PageNextButton isLast={currentPage === pageinfo.totalPages} onClick={() => {pageMovebuttonOnClickHandler('next')}}>Next</PageNextButton>
