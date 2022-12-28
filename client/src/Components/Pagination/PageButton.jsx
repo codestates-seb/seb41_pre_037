@@ -1,5 +1,4 @@
 import styled from "styled-components/macro"
-import { useLocation, useNavigate } from "react-router-dom"
 
 const Button = styled.button`
   padding : 4px 7px;
