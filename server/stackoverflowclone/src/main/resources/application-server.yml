@@ -8,7 +8,7 @@ spring:
     password: ${MYSQL_PASSWORD} # 비밀번호
   jpa:
     hibernate:
-      ddl-auto: create  # If deploy server, have to change please
+      ddl-auto: none  # If deploy server, have to change please
 #    show-sql: true
 #    properties:
 #      hibernate:
