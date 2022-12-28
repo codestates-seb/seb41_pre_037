@@ -68,7 +68,6 @@ public class QuestionController {
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
         String astr = answerService.timestamp(answers.get(0)); //TODO: answer를 찾아와야함, 0값을 넣어 둬서 (질문 + 답변)을 작성해야함
-//        String astr = answerService.timestamp(answers.);
         List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
         Member member = question.getMember();
         String str = questionService.timestamp(question);
