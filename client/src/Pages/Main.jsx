@@ -154,15 +154,12 @@ export default function Main() {
   }, [questionData]);
 
   const fetchQuestion = () => {
-    console.log(page, currentTab);
 
     if(currentTab === 'Unanswered') {
       if(!!page) {
-        console.log('page and tab')
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}&page=${page}`);
       }
       else {
-        console.log('no page and tab')
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}`);
       }
     } 
