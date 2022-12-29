@@ -10,6 +10,9 @@ import ShareSheet from "../../Components/Post/ShareSheet";
 import { useShareSheetStore } from "../../store/store";
 import QuestionBottom from "../../Components/Post/QuestionBottom";
 import Tag from "../../Components/Tag/Tag";
+import { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } from "node-html-markdown";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -141,6 +144,11 @@ const onClick = () => {
 
 export default function Question({ postData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
+  let domParser = new DOMParser();
+  let doc = domParser.parseFromString(postData.questionTryOrExpectingBody, "text/html");
+  console.log(doc);
+  const nhm = NodeHtmlMarkdown.translate("");
+  console.log(nhm);
 
   return (
     <PostTopContainer>
@@ -157,14 +165,16 @@ export default function Question({ postData }) {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          {postData.questionProblemBody}
-          {postData.questionTryOrExpectingBody}
-          {/* <SyntaxHighlighter language="javascript" style={defaultStyle}>
-            {DUMMYMARKDOWNTEXT}
-          </SyntaxHighlighter> */}
+          <ReactQuill theme="bubble" style={{ height: "250px" }} value={postData.questionProblemBody} readOnly={true} />
+          <ReactQuill
+            theme="bubble"
+            style={{ height: "250px" }}
+            value={postData.questionTryOrExpectingBody}
+            readOnly={true}
+          />
         </QuestionTopContainer>
         <TagsContainer>
-          {postData && postData.map((postData) => <Tag tagData={postData.tag} key={postData.tag.tagId} />)}
+          {/* {postData && postData.map((postData) => <Tag tagData={postData.tag} key={postData.tag.tagId} />)} */}
         </TagsContainer>
         <QuestionBottom />
       </PostTopInnerContainer>

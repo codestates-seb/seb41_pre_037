@@ -118,10 +118,10 @@ const RightSidebarContainer = styled.div`
 export default function Post() {
   const navigate = useNavigate();
   const [post, setPost] = useState();
-  const { questionId, questionTitle } = useParams();
+  const params = useParams();
 
   const fetchPost = () => {
-    return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/${questionId}/${questionTitle}`);
+    return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/${params.id}/${params.title}`);
   };
 
   const fetchPostOnSuccess = (response) => {
@@ -146,7 +146,7 @@ export default function Post() {
           <InnerContainer>
             <PostHeader>
               <PostHeaderTop>
-                <Title> {post.questionId} </Title>
+                <Title> {post.questionTitle} </Title>
                 <AskQuestionButton
                   onClick={() => {
                     navigate("/askquestions");
@@ -174,7 +174,7 @@ export default function Post() {
             >
               <PostContentContainer>
                 <Question postData={post} />
-                <AnswerList answersData={post.answers} />
+                {/* <AnswerList answersData={post.answers} /> */}
                 <PostAnswer />
               </PostContentContainer>
               <RightSidebarContainer>
