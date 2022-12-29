@@ -7,7 +7,8 @@ import Logo from "../icons/LogoGlyphMd.svg";
 import AlertCircle from "../icons/AlertCircle.svg";
 import Google from "../icons/Google.png";
 import { useNavigate } from "react-router-dom";
-import useInputStore, { inputs, setInputs } from "../store/loginstore";
+import { useInputStore, useErrorMessageStore, useIsLoginStore, useUserInfoStore } from "../store/loginstore";
+import axios from "axios";
 
 const Background = styled.div`
   background-color: #f6f6f6;
@@ -82,12 +83,12 @@ const LoginInput = styled.input`
   border: 1px solid #bababa;
   border-radius: 4px;
 
-  &.empty {
+  &.error {
     border: 1px solid rgb(222, 79, 84);
   }
 `;
 
-const Validation = styled.p`
+const ErrorMessage = styled.p`
   width: 80%;
   font-size: small;
   margin-top: 5px;
@@ -127,7 +128,7 @@ const SocialLoginContainer = styled.div`
   }
 `;
 
-const GoogleLogin = styled.div`
+const GoogleLogin = styled.a`
   width: 320px;
   margin-bottom: 10px;
   height: max-content;
@@ -158,30 +159,48 @@ const SocialLoginText = styled.p`
 
 const Login = () => {
   const navigate = useNavigate();
-  const emailInput = useRef();
+  const usernameInput = useRef();
   const passwordInput = useRef();
 
   const { inputs, setInputs } = useInputStore((state) => state);
-  const [inputsEmptyCheck, setinputsEmptyCheck] = useState({ email: false, password: false });
+  const { errorMessage, setErrorMessage } = useErrorMessageStore();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const { userInfo, setUserInfo } = useUserInfoStore();
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(name, value);
-  };
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
-  const onEmptyCheck = () => {
-    if (inputs.email.length <= 0 && inputs.password.length <= 0) {
-      setinputsEmptyCheck({ email: true, password: true });
-    } else if (inputs.email.length <= 0 && inputs.password.length > 0) {
-      setinputsEmptyCheck({ email: true, password: false });
-    } else if (inputs.email.length > 0 && inputs.password.length <= 0) {
-      setinputsEmptyCheck({ email: false, password: true });
+  const loginHandler = () => {
+    axios.defaults.withCredentials = true;
+
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    };
+
+    if (!username || !password) {
+      setErrorMessage("Email or password cannot be empty.");
+      return;
     } else {
-      setinputsEmptyCheck({ email: false, password: false });
+      setErrorMessage("");
     }
-  };
 
-  console.log(inputsEmptyCheck);
+    return axios
+      .post(`${process.env.REACT_APP_SERVER_URI}users/login`, { username, password }, { headers })
+      .then((response) => {
+        const accessToken = response.headers.get("Authorization").split(" ")[1];
+        sessionStorage.setItem("accesstoken", accessToken);
+        axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
+        setUserInfo(response.data);
+        setIsLogin(true);
+      })
+      .then(navigate("/"))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setErrorMessage("The email or password is incorrect.");
+        }
+      });
+  };
 
   return (
     <>
@@ -195,9 +214,9 @@ const Login = () => {
             `}
           />
           <SocialLoginContainer>
-            <GoogleLogin>
+            <GoogleLogin href={`/oauth2/authorization/google`}>
               <SocialLoginIcon src={Google} />
-              <SocialLoginText>Log in with Google</SocialLoginText>
+              <SocialLoginText>Sign up with Google</SocialLoginText>
             </GoogleLogin>
           </SocialLoginContainer>
           <LoginFormContainer>
@@ -205,7 +224,7 @@ const Login = () => {
               <LoginInputContainer>
                 <LoginLabel>Email</LoginLabel>
                 <LoginInputInnerContainer>
-                  {inputsEmptyCheck.email ? (
+                  {errorMessage ? (
                     <img
                       src={AlertCircle}
                       css={`
@@ -216,19 +235,20 @@ const Login = () => {
                     />
                   ) : null}
                   <LoginInput
-                    className={inputsEmptyCheck.email ? "empty" : null}
-                    name="email"
-                    value={inputs.email}
-                    onChange={onChange}
-                    ref={emailInput}
+                    className={errorMessage ? "error" : null}
+                    name="username"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
                   />
                 </LoginInputInnerContainer>
-                {inputsEmptyCheck.email ? <Validation>Email cannot be empty.</Validation> : null}
+                <ErrorMessage>{errorMessage}</ErrorMessage>
               </LoginInputContainer>
               <LoginInputContainer>
                 <LoginLabel>Password</LoginLabel>
                 <LoginInputInnerContainer>
-                  {inputsEmptyCheck.password ? (
+                  {errorMessage ? (
                     <img
                       src={AlertCircle}
                       css={`
@@ -239,16 +259,17 @@ const Login = () => {
                     />
                   ) : null}
                   <LoginInput
-                    className={inputsEmptyCheck.password ? "empty" : null}
+                    className={errorMessage ? "error" : null}
+                    type="password"
                     name="password"
-                    value={inputs.password}
-                    onChange={onChange}
-                    ref={passwordInput}
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </LoginInputInnerContainer>
-                {inputsEmptyCheck.password ? <Validation>Password cannot be empty.</Validation> : null}
               </LoginInputContainer>
-              <LoginButton onClick={onEmptyCheck}>Log in</LoginButton>
+              <LoginButton onClick={loginHandler}>Log in</LoginButton>
             </LoginForm>
             <p
               css={`
