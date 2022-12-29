@@ -83,6 +83,5 @@ public class Member extends Auditable {
 
     @Builder.Default
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name ="member"))
     private List<String> roles = new ArrayList<>();
 }
