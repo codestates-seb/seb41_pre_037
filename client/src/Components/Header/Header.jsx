@@ -11,7 +11,7 @@ import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 
@@ -243,12 +243,17 @@ const ProfileButtonAria = styled.div`
 `;
 
 const Header = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q");
+
   const navigate = useNavigate();
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const { userInfo, setUserInfo } = useUserInfoStore();
+  const {pathname} = useLocation();
+  const [searchInput, setSearchInput] = useState(query);
 
   const logoutHandler = () => {
     setUserInfo(null);
@@ -257,11 +262,16 @@ const Header = () => {
     window.location.reload();
   };
 
-  const [searchInput, setSearchInput] = useState("");
 
   const searchBarInputKeyUpHandler = (e) => {
     if (e.key === "Enter") {
-      navigate(`./search?q=${searchInput}`);
+      if(pathname === '/search') {
+        navigate(`/search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      } else {
+        navigate(`./search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      }
     }
   };
 

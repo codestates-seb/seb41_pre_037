@@ -3,7 +3,7 @@ import { useMobileSearchPopUpStore } from "../../store/store";
 import SearchBarIcon from "../../icons/Search.svg";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const SearchPopUpBackdrop = styled.div`
@@ -101,10 +101,17 @@ const MobileSearchPopUp = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
+  const { pathname } = useLocation;
 
   const searchBarInputKeyUpHandler = e => {
-    if(e.key === 'Enter') {
-      navigate(`./search?q=${searchInput}`);
+    if (e.key === "Enter") {
+      if(pathname === '/search') {
+        navigate(`/search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      } else {
+        navigate(`./search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      }
     }
   }
 

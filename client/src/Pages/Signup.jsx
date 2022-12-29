@@ -302,7 +302,10 @@ export default function Signup() {
   const signupClickHandler = () => {
     if(displayNameValid && userEmailValid && passwordLegnthValid && passwordRegexValid) {
       try{
-        createUser();
+        createUser({onSuccess: () => {
+          window.alert('Successfully created');
+          navigate('/login');
+        }});
       } catch {
         navigate('/error');
       }

@@ -10,6 +10,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useMutation } from "@tanstack/react-query"
+import { useIsLoginStore } from "../store/loginstore"
 
 const Background = styled.div`
   width: 100vw;
@@ -350,7 +351,15 @@ export default function AskQuestions() {
   const [tagsValid, setTagsValid] = useState(false);
   const [isTagsNextClicked, setIsTagsNextClicked] = useState(false);
 
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!isLogin) {
+      navigate('/login');
+    }
+  },[])
 
 
   const postQuestionData = () => {

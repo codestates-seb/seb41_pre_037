@@ -33,6 +33,18 @@ const Title = styled.h1`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const SearchedInfo = styled.p`
+  margin: 0;
+  margin-left: 20px;
+  font-size: 14px;
+  color: #7e7e7e;
+`
+
 const QuestionCount = styled.h2`
   font-size: 18px;
   font-weight: 500;
@@ -154,14 +166,11 @@ export default function MainSearch() {
   }, [questionData]);
 
   const fetchSearchedQuestion = () => {
-    console.log(query, page, currentTab);
     if(currentTab === 'Unanswered') {
       if(!!page) {
-        console.log('page and tab')
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}&page=${page}`);
       }
       else {
-        console.log('no page and tab')
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}`);
       }
     } 
@@ -169,7 +178,6 @@ export default function MainSearch() {
     if (!!page) {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/search?q=${query}&page=${page}`);
     } else {
-      console.log("with query", page);
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/search?q=${query}`);
     }
   };
@@ -201,7 +209,10 @@ export default function MainSearch() {
         ) : (
           <MainbarContainer>
             <MainbarTopHeader>
-              <Title>All Questions</Title>
+              <TitleContainer>
+                <Title>Searched Questions</Title>
+                <SearchedInfo>{`Results for ${query}`}</SearchedInfo>
+              </TitleContainer>
               <AskQuestionButton
                 onClick={() => {
                   navigate("/askquestions");
