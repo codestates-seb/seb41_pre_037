@@ -175,7 +175,7 @@ export default function Post() {
               <PostContentContainer>
                 <Question postData={post} />
                 {/* <AnswerList answersData={post.answers} /> */}
-                <PostAnswer />
+                <PostAnswer postData={post} />
               </PostContentContainer>
               <RightSidebarContainer>
                 <RightSidebar />

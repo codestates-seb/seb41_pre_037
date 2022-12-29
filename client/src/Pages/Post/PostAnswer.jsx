@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -100,26 +100,39 @@ const BottomNoticeLinker = styled.a`
   }
 `;
 
-export default function PostAnswer() {
+export default function PostAnswer({ postData }) {
   const navigate = useNavigate();
+  const [answerInput, setAnswerInput] = useState();
 
   return (
     <PostBottomContainer>
       <Title>Your Answer</Title>
       <AnswerEditorContainer>
-        <ReactQuill theme="snow" modules={quillModule} style={{ height: "250px" }} />
+        <ReactQuill
+          theme="snow"
+          modules={quillModule}
+          style={{ height: "250px" }}
+          value={answerInput}
+          onChange={(e) => setAnswerInput(e.target.value)}
+        />
       </AnswerEditorContainer>
       <PostAnswerButton>Post Your Answer</PostAnswerButton>
       <BottomNotice>
         Browse other questions tagged
         <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
+          {postData &&
+            postData.tag.map((tag) => {
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+            })}
         </TagsContainer>
-        or <BottomNoticeLinker onClick={() => {navigate('/askquestions')}}>ask your own question.</BottomNoticeLinker>
+        or
+        <BottomNoticeLinker
+          onClick={() => {
+            navigate("/askquestions");
+          }}
+        >
+          ask your own question.
+        </BottomNoticeLinker>
       </BottomNotice>
     </PostBottomContainer>
   );

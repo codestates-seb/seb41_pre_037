@@ -179,6 +179,8 @@ const Login = () => {
     };
 
     if (!username || !password) {
+      setUsername("");
+      setPassword("");
       setErrorMessage("Email or password cannot be empty.");
       return;
     } else {
@@ -191,13 +193,16 @@ const Login = () => {
         const accessToken = response.headers.get("Authorization").split(" ")[1];
         sessionStorage.setItem("accesstoken", accessToken);
         axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
-        setUserInfo(response.data);
+        // console.log(response.data.data);
+        sessionStorage.setItem("userInfoStorage", JSON.stringify(response.data.data));
         setIsLogin(true);
+        navigate("/");
       })
-      .then(navigate("/"))
       .catch((err) => {
         if (err.response.status === 401) {
           setErrorMessage("The email or password is incorrect.");
+          setUsername("");
+          setPassword("");
         }
       });
   };

@@ -162,12 +162,12 @@ export default function Question({ postData }) {
             readOnly={true}
           />
         </QuestionTopContainer>
-
-        {postData &&
-          postData.tag.map((tag) => {
-            return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
-          })}
-
+        <TagsContainer>
+          {postData &&
+            postData.tag.map((tag) => {
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+            })}
+        </TagsContainer>
         <QuestionBottom postData={postData} />
       </PostTopInnerContainer>
     </PostTopContainer>

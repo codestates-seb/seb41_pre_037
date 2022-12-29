@@ -16,22 +16,9 @@ const useIsLoginStore = create((set) => ({
   setIsLogin: (loginstate) => set(() => ({ isLogin: loginstate })),
 }));
 
-// const useUserInfoStore = create((set) => ({
-//   userInfo: null,
-//   setUserInfo: (data) => set(() => ({ userInfo: data })),
-// }));
-
-const useUserInfoStore = create(
-  persist(
-    (set, get) => ({
-      userInfo: null,
-      setUserInfo: (data) => set(() => ({ userInfo: get().data })),
-    }),
-    {
-      name: "userInfoStorage",
-      getStorage: () => sessionStorage,
-    }
-  )
-);
+const useUserInfoStore = create((set) => ({
+  userInfo: null,
+  setUserInfo: (data) => set(() => ({ userInfo: data })),
+}));
 
 export { useInputStore, useErrorMessageStore, useIsLoginStore, useUserInfoStore };
