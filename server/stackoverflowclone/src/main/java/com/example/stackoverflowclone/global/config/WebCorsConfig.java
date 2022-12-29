@@ -12,9 +12,12 @@ public class WebCorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowCredentials(true)
-                .allowedOriginPatterns("http://3.35.50.33:8080/")
+                .allowedOriginPatterns("http://43.201.34.152:8080")
                 .allowedOriginPatterns("http://localhost:3000")
+                .allowedOriginPatterns("http://stackoverflowpre.p-e.kr")
                 .allowedHeaders("*")
-                .allowedMethods("*");
+                .allowedMethods("*")
+                .exposedHeaders("Authorization");
+//                .exposedHeaders("*");
      }
 }

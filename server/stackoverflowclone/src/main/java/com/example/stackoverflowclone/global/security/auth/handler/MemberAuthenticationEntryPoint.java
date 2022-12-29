@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.util.StreamUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -18,6 +21,20 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         Exception exception = (Exception) request.getAttribute("exception");
         ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+
+        // log.info("request.getMethod() = {}", request.getMethod()); //GET
+        // log.info("request.getProtocol() = {}", request.getProtocol()); // HTTP/1.1
+        // log.info("request.getScheme() = {}", request.getScheme()); //http
+        // log.info("request.getRequestURL() = {}", request.getRequestURL());
+
+        // ServletInputStream inputStream = request.getInputStream();
+        // String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+
+        // log.info("messageBody = {}", messageBody);
+
+        // log.info("==== Header 정보 시작 ====");
+        // request.getHeaderNames().asIterator()
+        //         .forEachRemaining(headerName -> System.out.println(headerName + " : " + headerName));
 
         logExceptionMessage(authException, exception);
     }

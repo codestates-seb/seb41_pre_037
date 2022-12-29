@@ -48,10 +48,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String email = (String) oAuth2User.getAttributes().get("email");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
-//        log.info("# getPrincipal : " + oAuth2User);
-//        log.info("# name : "+ name);
-//        log.info("# email : "+ email);
-//        log.info("# picture : "+ picture);
+        // log.info("# getPrincipal : " + oAuth2User);
+        log.info("# name : "+ name);
+        log.info("# email : "+ email);
+        log.info("# picture : "+ picture);
 
         // email을 토대로 Member 객체 만들어서 DB에 저장
         Member member = buildOAuth2Member(name, email, picture);
@@ -126,12 +126,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 //        queryParams.add("refresh_token", refreshToken);
 
         String serverName = request.getServerName();
+        log.info("# serverName = {}",serverName);
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host(serverName)
-//                .port(80) // 기본 포트가 80이기 때문에 괜찮다
+//                .port(3000) // 기본 포트가 80이기 때문에 괜찮다
                 .path("/questions")
 //                .queryParams(queryParams)
                 .build()

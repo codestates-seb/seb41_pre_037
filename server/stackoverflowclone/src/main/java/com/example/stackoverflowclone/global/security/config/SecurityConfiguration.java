@@ -90,7 +90,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*")); // 스크림트 기반의 HTTP 통신을 허용
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE")); // HTTP Method에 대한 HTTP 통신 허용
-
+//        configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // CorsConfigurationSource 구현체 생성
         source.registerCorsConfiguration("/**", configuration); // 모든 URL에 정책 적용
         return source;
