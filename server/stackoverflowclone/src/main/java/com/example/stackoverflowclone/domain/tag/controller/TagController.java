@@ -25,7 +25,7 @@ public class TagController {
 
     @GetMapping
     public ResponseEntity findTags(@Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        System.out.println(page);
+        // System.out.println(page);
         Page<Tag> pageTags = tagService.findTags(page - 1, 16);
         List<Tag> tags = pageTags.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.tagToResponseDto(tags), pageTags),
