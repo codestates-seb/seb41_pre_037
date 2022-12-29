@@ -27,7 +27,7 @@ spring:
           github:
             clientId: ${H_CLIENT_ID}
             clientSecret: ${H_CLIENT_SECRET}
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/google)
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/github)
             authorization-grant-type: authorization_code
             client-name: GitHub
             scope:

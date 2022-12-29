@@ -48,6 +48,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String email = (String) oAuth2User.getAttributes().get("email");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
+
+
         // log.info("# getPrincipal : " + oAuth2User);
         log.info("# name : "+ name);
         log.info("# email : "+ email);
@@ -96,6 +98,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String headerValue = "Bearer "+ accessToken;
         response.setHeader("Authorization",headerValue); // Header에 등록
         response.setHeader("Refresh",refreshToken); // Header에 등록
+        response.setHeader("Access-Control-Allow-Credentials:", "true");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
         // 만든 URI로 리다이렉트 보냄
         getRedirectStrategy().sendRedirect(request,response,uri);
