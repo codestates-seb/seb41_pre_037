@@ -16,7 +16,7 @@ public class SecurityCorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("http://43.201.34.152:8080"); //특정패턴의 origin만 허용
+//        config.addAllowedOriginPattern("http://43.201.34.152:8080"); //특정패턴의 origin만 허용
         config.addAllowedOriginPattern("http://localhost:3000");
         config.addAllowedOriginPattern("http://stackoverflowpre.p-e.kr");
         config.addAllowedHeader("*"); //특정 header만 허용
