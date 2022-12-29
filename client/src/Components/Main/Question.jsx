@@ -141,11 +141,7 @@ export default function Question({ data, isLast }) {
         <QuestionInfo isVote={false}>{`${data.questionViewCount} views`}</QuestionInfo>
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
-        <QuestionTitle
-          onClick={() => {
-            navigate("/post/postid");
-          }}
-        >{`${data.questionTitle}`}</QuestionTitle>
+        <QuestionTitle onClick={() => {navigate(`/post/${data.questionId}/${data.questionTitle.replaceAll('&nbsp', '-')}`)}}>{`${data.questionTitle}`}</QuestionTitle>
         <QuestionPreview>{data.questionProblemBody}</QuestionPreview>
         <QuestionFooter>
           {data.tags.map((tag) => {

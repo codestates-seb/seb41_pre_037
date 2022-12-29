@@ -6,7 +6,7 @@ import quillModule from "../quillModule"
 import '../quillEditor.css'
 import BREAKPOINT from "../breakpoint"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useMutation } from "@tanstack/react-query"
@@ -272,6 +272,11 @@ const ButtonBlinder = styled.div`
     margin : 10px;
     margin-top: 20px;
     display: ${props => props.isHidden && 'none'};
+
+    &:hover {
+      cursor: pointer;
+      color: red;
+    }
  `
 
  const QuestionTipContainer = styled.div`
@@ -347,18 +352,36 @@ export default function AskQuestions() {
 
   const navigate = useNavigate();
 
+
   const postQuestionData = () => {
     const data = {
-      quesstionTitle : titleInput,
+      questionTitle : titleInput,
       questionProblemBody : contentValue,
       questionTryOrExpectingBody : extraContentValue,
       tag : tagsArr.map((tag) => {return {tagName : tag}}),
     }
 
-    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data);
+    const headers = {
+      'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIyODIxMTEsImV4cCI6MTY3MjI4MzkxMX0.wBMnifyOZ4YPtf5zRcUh6ZlbZj8f-OycJa7uc3JiHPY',
+      'Content-Type' : 'Application/json',
+      'Accept' : '*/*'
+    }
+
+    axios.defaults.withCredentials = true;
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, {headers});
   }
 
   const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData});
+
+
+  useEffect(() => {
+    if(tagsArr.length >= 1) {
+      setTagsValid(true);
+    } else {
+      setTagsValid(false);
+    }
+
+  },[tagsArr]);
 
 
   //----------------------------event handlers-----------------------------------------------------
@@ -394,18 +417,14 @@ export default function AskQuestions() {
   }
 
   const tagsOnChangeHandler = e => {
-    setTagsInput(e.target.value);
-    if(tagsInput.length >= 15) {
-      setTagsValid(true);
-    } else {
-      setTagsValid(false);
-    }
+    const tagsText = (e.target.value.trim()).replace(',', '');
+    setTagsInput(tagsText);
   }
 
   const tagsOnKeyUpHandler = e => {
     console.log(e.key);
-    if(e.key === ',' || e.keyCode === 32) {
-      setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length - 1)]);
+    if((e.key === ',' || e.keyCode === 32) && tagsInput.length > 0) {
+      setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length)]);
       setTagsInput('');
     }
   }
@@ -428,10 +447,22 @@ export default function AskQuestions() {
   }
 
   const postQuestionOnClickHandler = () => {
+
     const createQuestionOnSuccess = () => {
-      navigate('/');
+
     }
-    createQuestion({onSuccess : createQuestionOnSuccess});
+    createQuestion({onSuccess : createQuestionOnSuccess });
+  }
+
+  const testHandler = () => {
+    const data = {
+      quesstionTitle : titleInput,
+      questionProblemBody : contentValue,
+      questionTryOrExpectingBody : extraContentValue,
+      tag : tagsArr.map((tag) => {return {tagName : tag}}),
+    }
+
+    console.log(JSON.stringify(data));
   }
 
   return (
@@ -521,7 +552,7 @@ export default function AskQuestions() {
         </QuestionContainer>
         <QuestionButtonContainer>
           <Button isDisabled={true} onClick={postQuestionOnClickHandler}>
-            <ButtonBlinder isValid={titleValid && contentValid && extraContentValid &&tagsValid}/>
+            <ButtonBlinder isValid={titleValid && contentValid && extraContentValid && tagsValid}/>
             Post your question
           </Button>
           <QuestionDiscardButton isHidden={!titleValid} onClick={() => {navigate('/')}}>Discard draft</QuestionDiscardButton>
