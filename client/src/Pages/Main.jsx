@@ -201,26 +201,15 @@ export default function Main() {
           <MainbarContainer>
             <MainbarTopHeader>
               <Title>All Questions</Title>
-              <AskQuestionButton
-                onClick={() => {
-                  navigate("/askquestions");
-                }}
-              >
+              <AskQuestionButton onClick={() => { navigate("/askquestions")}}>
                 Ask Questions
               </AskQuestionButton>
             </MainbarTopHeader>
             <MainbarBottomHeader>
-              {pageInfo ? (
-                <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount>
-              ) : (
-                <p
-                  css={`
-                    margin-left: 20px;
-                  `}
-                >
-                  loading...
-                </p>
-              )}
+              {pageInfo 
+              ? <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount>
+              : <p css={`margin-left: 20px;`}> loading...</p>
+              }
               <MainbarSortButtonContainer>
                 <SortButton className={currentTab === 'Newest' ? 'selected' : ''} value={'Newest'} isLeft={true} onClick={sortButtonClickHandler}>Newest</SortButton>
                 <SortButton className={currentTab === 'Unanswered' ? 'selected' : ''} value={'Unanswered'} isLeft={false} onClick={sortButtonClickHandler}>Unanswered</SortButton>
