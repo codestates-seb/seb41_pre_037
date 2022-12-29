@@ -361,13 +361,17 @@ export default function AskQuestions() {
       tag : tagsArr.map((tag) => {return {tagName : tag}}),
     }
 
+    const accessToken = sessionStorage.getItem('accesstoken');
+
     const headers = {
-      'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIyODIxMTEsImV4cCI6MTY3MjI4MzkxMX0.wBMnifyOZ4YPtf5zRcUh6ZlbZj8f-OycJa7uc3JiHPY',
+      'Authorization' : `Bearer ${accessToken}`,
       'Content-Type' : 'Application/json',
       'Accept' : '*/*'
     }
 
     axios.defaults.withCredentials = true;
+    
+    console.log(data, {headers}, accessToken);
     return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, {headers});
   }
 
