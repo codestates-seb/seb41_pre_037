@@ -12,6 +12,7 @@ const FooterComponent = styled.footer`
   padding-top: 10px;
   padding-bottom: 0px;
   .footerContainer {
+    margin: 0;
     display: flex;
     justify-content: space-between;
     @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {

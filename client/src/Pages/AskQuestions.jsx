@@ -352,19 +352,22 @@ export default function AskQuestions() {
 
   const navigate = useNavigate();
 
+
   const postQuestionData = () => {
     const data = {
-      quesstionTitle : titleInput,
+      questionTitle : titleInput,
       questionProblemBody : contentValue,
       questionTryOrExpectingBody : extraContentValue,
       tag : tagsArr.map((tag) => {return {tagName : tag}}),
     }
 
     const headers = {
-      'Authroization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxMDcsInN1YiI6ImNvZGVzdGF0ZXNAY29kZXN0YXRlcy5jb20iLCJpYXQiOjE2NzIyNDYzNTEsImV4cCI6MTY3MjI0ODE1MX0.F5spWuwMWY5-03V284EJNwiXF61hVCKlXOFzzC9i3BU',
-      'Content-Type' : 'Application/json '
+      'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIyODIxMTEsImV4cCI6MTY3MjI4MzkxMX0.wBMnifyOZ4YPtf5zRcUh6ZlbZj8f-OycJa7uc3JiHPY',
+      'Content-Type' : 'Application/json',
+      'Accept' : '*/*'
     }
 
+    axios.defaults.withCredentials = true;
     return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, {headers});
   }
 
@@ -421,7 +424,7 @@ export default function AskQuestions() {
   const tagsOnKeyUpHandler = e => {
     console.log(e.key);
     if((e.key === ',' || e.keyCode === 32) && tagsInput.length > 0) {
-      setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length - 1)]);
+      setTagsArr([...tagsArr, tagsInput.slice(0, tagsInput.length)]);
       setTagsInput('');
     }
   }
@@ -444,10 +447,11 @@ export default function AskQuestions() {
   }
 
   const postQuestionOnClickHandler = () => {
+
     const createQuestionOnSuccess = () => {
 
     }
-    createQuestion({onSuccess : createQuestionOnSuccess});
+    createQuestion({onSuccess : createQuestionOnSuccess });
   }
 
   const testHandler = () => {
@@ -458,8 +462,7 @@ export default function AskQuestions() {
       tag : tagsArr.map((tag) => {return {tagName : tag}}),
     }
 
-
-    console.log(data);
+    console.log(JSON.stringify(data));
   }
 
   return (
