@@ -117,11 +117,11 @@ export default function ShareSheet() {
         <ShareSheetContainer>
           <ShareSheetInnerContainer>
             <Label>Share a link to this question</Label>
-            <ShareLinkInput value={DUMMYURL} />
+            <ShareLinkInput value={window.location.href} />
             <ShareSheetBottomContainer>
-              <Linker onClick={() => handleCopyClipBoard(DUMMYURL)}>Copy Link</Linker>
+              <Linker onClick={() => handleCopyClipBoard(window.location.href)}>Copy Link</Linker>
               <SNSContainer>
-                <FacebookShareButton url={DUMMYURL}>
+                <FacebookShareButton url={window.location.href}>
                   <FacebookIcon
                     size={18}
                     css={`
@@ -129,7 +129,7 @@ export default function ShareSheet() {
                     `}
                   ></FacebookIcon>
                 </FacebookShareButton>
-                <TwitterShareButton style={{ marginLeft: "10px" }} url={"https://www.naver.com/"}>
+                <TwitterShareButton style={{ marginLeft: "10px" }} url={window.location.href}>
                   <TwitterIcon
                     size={18}
                     css={`

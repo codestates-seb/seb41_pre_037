@@ -59,7 +59,7 @@ const AuthorProfileLinker = styled.a`
   }
 `;
 
-export default function QuestionBottom() {
+export default function QuestionBottom({ postData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
   return (
     <AnswerBottomContainer>
@@ -82,7 +82,7 @@ export default function QuestionBottom() {
       </div>
       <AuthorInfoContainer>
         <AuthorProfileImageArea />
-        <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
+        <AuthorProfileLinker>{postData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );
