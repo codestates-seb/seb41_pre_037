@@ -251,16 +251,10 @@ const Header = () => {
   const { userInfo, setUserInfo } = useUserInfoStore();
 
   const logoutHandler = () => {
-    return axios
-      .post(`${process.env.REACT_APP_SERVER_URI}/users/logout`)
-      .then((res) => {
-        setUserInfo(null);
-        setIsLogin(false);
-        navigate("/");
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    setUserInfo(null);
+    setIsLogin(false);
+    sessionStorage.clear();
+    window.location.reload();
   };
 
   const [searchInput, setSearchInput] = useState("");
@@ -313,10 +307,10 @@ const Header = () => {
                       height: 24px;
                     `}
                   >
-                    <img src={DummyProfileIcon} />
+                    {/* <img src={sessionStorage.getItem("userInfoStorage").image} width="24px" height="24px" /> */}
                   </button>
                 </ProfileButtonAria>
-                <LoginOutButton>Log out</LoginOutButton>
+                <LoginOutButton onClick={logoutHandler}>Log out</LoginOutButton>
               </LoggedInButtonContainer>
             ) : (
               <LoggedOutButtonContainer>

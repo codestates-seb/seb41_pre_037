@@ -1,4 +1,5 @@
 import create from "zustand";
+import { persist } from "zustand/middleware";
 
 const useInputStore = create((set) => ({
   inputs: { username: "", password: "" },
@@ -15,9 +16,21 @@ const useIsLoginStore = create((set) => ({
   setIsLogin: (loginstate) => set(() => ({ isLogin: loginstate })),
 }));
 
-const useUserInfoStore = create((set) => ({
-  userInfo: null,
-  setUserInfo: (data) => set(() => ({ userInfo: data })),
-}));
+// const useUserInfoStore = create((set) => ({
+//   userInfo: null,
+//   setUserInfo: (data) => set(() => ({ userInfo: data })),
+// }));
+
+const useUserInfoStore = create(
+  persist(
+    (set, get) => ({
+      userInfo: null,
+      setUserInfo: (data) => set(() => ({ userInfo: get().data })),
+    }),
+    {
+      name: "userInfoStorage",
+    }
+  )
+);
 
 export { useInputStore, useErrorMessageStore, useIsLoginStore, useUserInfoStore };

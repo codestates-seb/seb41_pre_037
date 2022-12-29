@@ -128,7 +128,7 @@ const SocialLoginContainer = styled.div`
   }
 `;
 
-const GoogleLogin = styled.div`
+const GoogleLogin = styled.a`
   width: 320px;
   margin-bottom: 10px;
   height: max-content;
@@ -167,43 +167,40 @@ const Login = () => {
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const { userInfo, setUserInfo } = useUserInfoStore();
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(name, value);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+
+  const loginHandler = () => {
+    axios.defaults.withCredentials = true;
+
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    };
+
+    if (!username || !password) {
+      setErrorMessage("Email or password cannot be empty.");
+      return;
+    } else {
+      setErrorMessage("");
+    }
+
+    return axios
+      .post(`${process.env.REACT_APP_SERVER_URI}users/login`, { username, password }, { headers })
+      .then((response) => {
+        const accessToken = response.headers.get("Authorization").split(" ")[1];
+        sessionStorage.setItem("accesstoken", accessToken);
+        axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
+        setUserInfo(response.data);
+        setIsLogin(true);
+      })
+      .then(navigate("/"))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setErrorMessage("The email or password is incorrect.");
+        }
+      });
   };
-
-  const loginHandler = (inputs) => {
-    const { username, password } = inputs;
-
-    return axios.post(`${process.env.REACT_APP_SERVER_URI}users/login`, { username, password }).then((response) => {
-      console.log(response);
-    });
-
-    // if (!username || !password) {
-    //   setErrorMessage("Email or password cannot be empty.");
-    //   return;
-    // } else {
-    //   setErrorMessage("");
-    // }
-
-    // return axios
-    //   .post(`${process.env.REACT_APP_SERVER_URI}users/login`, inputs)
-    //   .then((response) => {
-    //     const { accessToken } = response.data;
-    //     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    //     setUserInfo(response.data);
-    //     setIsLogin(true);
-    //   })
-    //   .then(navigate("/"))
-    //   .catch((err) => {
-    //     if (err.response.status === 401) {
-    //       setErrorMessage("The email or password is incorrect.");
-    //     }
-    //   });
-  };
-
-  console.log(inputs);
-  console.log(isLogin);
 
   return (
     <>
@@ -217,9 +214,9 @@ const Login = () => {
             `}
           />
           <SocialLoginContainer>
-            <GoogleLogin>
+            <GoogleLogin href={`/oauth2/authorization/google`}>
               <SocialLoginIcon src={Google} />
-              <SocialLoginText>Log in with Google</SocialLoginText>
+              <SocialLoginText>Sign up with Google</SocialLoginText>
             </GoogleLogin>
           </SocialLoginContainer>
           <LoginFormContainer>
@@ -240,9 +237,10 @@ const Login = () => {
                   <LoginInput
                     className={errorMessage ? "error" : null}
                     name="username"
-                    value={inputs.username}
-                    onChange={onChange}
-                    ref={usernameInput}
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
                   />
                 </LoginInputInnerContainer>
                 <ErrorMessage>{errorMessage}</ErrorMessage>
@@ -262,10 +260,12 @@ const Login = () => {
                   ) : null}
                   <LoginInput
                     className={errorMessage ? "error" : null}
+                    type="password"
                     name="password"
-                    value={inputs.password}
-                    onChange={onChange}
-                    ref={passwordInput}
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </LoginInputInnerContainer>
               </LoginInputContainer>
