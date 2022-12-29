@@ -29,6 +29,7 @@ const useUserInfoStore = create(
     }),
     {
       name: "userInfoStorage",
+      getStorage: () => sessionStorage,
     }
   )
 );
