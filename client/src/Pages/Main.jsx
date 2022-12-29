@@ -95,7 +95,7 @@ const SortButton = styled.button`
   }
 
   &.selected {
-    background-color: #777777;
+    background-color: #b2b2b2;
     color: #3a3a3a;
   }
 `;
