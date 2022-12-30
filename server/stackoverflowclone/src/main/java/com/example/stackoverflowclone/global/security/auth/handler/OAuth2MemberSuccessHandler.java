@@ -1,10 +1,13 @@
 package com.example.stackoverflowclone.global.security.auth.handler;
 
 
+import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -39,12 +42,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String email = (String) oAuth2User.getAttributes().get("email");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
-
-
         // log.info("# getPrincipal : " + oAuth2User);
-        log.info("# name : "+ name);
-        log.info("# email : "+ email);
-        log.info("# picture : "+ picture);
+        // log.info("# name : "+ name);
+        // log.info("# email : "+ email);
+        // log.info("# picture : "+ picture);
 
         // email을 토대로 Member 객체 만들어서 DB에 저장
         Member member = buildOAuth2Member(name, email, picture);
@@ -128,9 +129,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host(serverName)
-                //.host("localhost")
-                //.port(3000) // 기본 포트가 80이기 때문에 괜찮다
+                //.host(serverName)
+                .host("localhost")
+                .port(3000) // 기본 포트가 80이기 때문에 괜찮다
                 .path("/token")
                 .queryParams(queryParams)
                 .build()
