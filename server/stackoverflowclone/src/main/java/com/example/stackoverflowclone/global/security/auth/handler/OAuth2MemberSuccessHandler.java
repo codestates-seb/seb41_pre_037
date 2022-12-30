@@ -42,9 +42,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 
         // log.info("# getPrincipal : " + oAuth2User);
-        log.info("# name : "+ name);
-        log.info("# email : "+ email);
-        log.info("# picture : "+ picture);
+        // log.info("# name : "+ name);
+        // log.info("# email : "+ email);
+        // log.info("# picture : "+ picture);
 
         // email을 토대로 Member 객체 만들어서 DB에 저장
         Member member = buildOAuth2Member(name, email, picture);
