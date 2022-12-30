@@ -1,8 +1,10 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsLoginStore } from "../store/loginstore";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+
+//구글 로그인할 때도 세션 스토리지에 일반 로그인처럼 유저 정보 담기게 설정
 
 export default function Token() {
   const [searchParams] = useSearchParams();
@@ -10,28 +12,30 @@ export default function Token() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accessToken = searchParams.get('access_token');
-    if(accessToken) {
-      sessionStorage.setItem('accesstoken', accessToken);
-      // user/login 로 
+    const accessToken = searchParams.get("access_token");
+    if (accessToken) {
+      sessionStorage.setItem("accesstoken", accessToken);
       setIsLogin(true);
-      navigate('/');
+      navigate("/");
     }
   }, []);
 
   const fetchUserInfo = () => {
-    const accessToken = sessionStorage.getItem('accesstoken');
+    const accessToken = sessionStorage.getItem("accesstoken");
     const headers = {
-      'AUTHORIZATION' : `Bearer ${accessToken}`
-    }
-    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/token`, {headers});
-  }
+      AUTHORIZATION: `Bearer ${accessToken}`,
+    };
+    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/token`, { headers });
+  };
 
+  useQuery({
+    queryKey: ["getUserInfo"],
+    queryFn: fetchUserInfo,
+    enabled: isLogin,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
 
-  useQuery({queryKey:['getUserInfo'], queryFn:fetchUserInfo, enabled: isLogin, onSuccess:(data) => {console.log(data)}})
-
-  return (
-    <>
-    </>
-  )
+  return <></>;
 }

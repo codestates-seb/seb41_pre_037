@@ -17,7 +17,7 @@ const useIsLoginStore = create((set) => ({
 }));
 
 const useUserInfoStore = create((set) => ({
-  userInfo: null,
+  userInfo: "",
   setUserInfo: (data) => set(() => ({ userInfo: data })),
 }));
 

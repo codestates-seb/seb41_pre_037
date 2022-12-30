@@ -264,9 +264,9 @@ const Header = () => {
   }
 
   const logoutHandler = () => {
-    setUserInfo(null);
-    setIsLogin(false);
+    // setUserInfo();
     sessionStorage.clear();
+    setIsLogin(false);
     window.location.reload();
   };
 
