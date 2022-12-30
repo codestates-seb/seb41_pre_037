@@ -57,7 +57,7 @@ public class QuestionController {
 
     @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
-                                                          @PathVariable("question-id") Long questionId) {
+                                                          @Positive @PathVariable("question-id") Long questionId) {
         Member member = memberService.findByMember(memberId);
         Question question = questionService.findQuestion(questionId);
         questionVoteService.increaseVote(member, question);
@@ -67,7 +67,7 @@ public class QuestionController {
 
     @PostMapping("/{question-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
-                                                            @PathVariable("question-id") Long questionId) {
+                                                            @Positive @PathVariable("question-id") Long questionId) {
         Member member = memberService.findByMember(memberId);
         Question question = questionService.findQuestion(questionId);
         questionVoteService.decreaseVote(member, question);
@@ -81,7 +81,7 @@ public class QuestionController {
     }
 
     @GetMapping("/{question-id}/{question-title}")
-    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
+    public ResponseEntity<DataResponseDto> findQuestion(@Positive @PathVariable("question-id") Long questionId,
                                                         @PathVariable("question-title") String questionTitle) {
         Question question = questionService.findQuestion(questionId);
         questionService.addViewCount(question);
@@ -139,7 +139,7 @@ public class QuestionController {
 
     @DeleteMapping("/{question-id}")
     public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
-                                                          @PathVariable("question-id") Long questionId){
+                                                          @Positive @PathVariable("question-id") Long questionId){
         questionService.deleteQuestion(questionId, memberId);
 
         return new ResponseEntity<>(new DataResponseDto("question delete complete !!"),HttpStatus.NO_CONTENT);

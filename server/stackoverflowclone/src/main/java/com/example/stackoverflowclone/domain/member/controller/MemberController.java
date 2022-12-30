@@ -50,8 +50,7 @@ public class MemberController {
     }
 
     @GetMapping("/edit/{member-id}")
-    public ResponseEntity getMemberEdit(@PathVariable("member-id")
-                                        @Valid Long memberId) {
+    public ResponseEntity getMemberEdit(@Positive @PathVariable("member-id") Long memberId) {
         Member member = memberService.findByMember(memberId);
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
@@ -59,7 +58,7 @@ public class MemberController {
     }
 
     @GetMapping("/delete/{member-id}")
-    public ResponseEntity getDeleteMember(@PathVariable("member-id") @Valid Long memberId) {
+    public ResponseEntity getDeleteMember(@Positive @PathVariable("member-id") Long memberId) {
         Member member = memberService.findByMember(memberId);
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),

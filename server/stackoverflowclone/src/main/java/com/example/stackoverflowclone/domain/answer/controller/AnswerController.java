@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class AnswerController {
 
     @PostMapping("/{question-id}")
     public ResponseEntity<DataResponseDto> createAnswer(@LoginMemberId Long memberId,
-                                                        @PathVariable("question-id") Long questionId,
+                                                        @Positive @PathVariable("question-id") Long questionId,
                                                         @RequestBody @Valid AnswerPostDto answerPostDto){
 
         Member member = memberService.findByMember(memberId);
@@ -43,7 +44,7 @@ public class AnswerController {
 
     @PostMapping("/{answer-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
-                                                          @PathVariable("answer-id") Long answerId){
+                                                          @Positive @PathVariable("answer-id") Long answerId){
 
         Member member = memberService.findByMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
@@ -54,7 +55,7 @@ public class AnswerController {
 
     @PostMapping("/{answer-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
-                                                            @PathVariable("answer-id") Long answerId){
+                                                            @Positive @PathVariable("answer-id") Long answerId){
 
         Member member = memberService.findByMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
