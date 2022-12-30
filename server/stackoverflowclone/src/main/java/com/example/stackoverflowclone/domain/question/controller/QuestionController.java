@@ -2,7 +2,6 @@ package com.example.stackoverflowclone.domain.question.controller;
 
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
-import com.example.stackoverflowclone.domain.answer.service.AnswerService;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.domain.question.dto.QuestionFindAnswerDto;
@@ -13,7 +12,6 @@ import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.question.service.QuestionService;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
-import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberEmail;
 import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
@@ -37,7 +35,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/questions")
 public class QuestionController {
     private final MemberService memberService;
@@ -47,10 +44,6 @@ public class QuestionController {
     private final QuestionVoteService questionVoteService;
     private final QuestionTimeStamp questionTimeStamp;
     private final AnswerTimeStamp answerTimeStamp;
-    @GetMapping("/test")
-    private ResponseEntity getTest() {
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
@@ -61,33 +54,6 @@ public class QuestionController {
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
     }
-
-    @GetMapping("/{question-id}/{question-title}")
-    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
-                                                        @PathVariable("question-title") String questionTitle) {
-        Question question = questionService.findQuestion(questionId);
-        questionService.addViewCount(question);
-        List<QuestionTag> questionTagList = question.getQuestionTagList();
-        List<Tag> tagList = tagService.findTags(questionTagList);
-        List<Answer> answers = question.getAnswers();
-        String astr = answerTimeStamp.timestamp(answers);
-        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
-        Member member = question.getMember();
-        String str = questionTimeStamp.timestamp(question);
-        String modified = questionTimeStamp.timestampmodified(question);
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto,str,modified)), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{question-id}")
-    public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
-                                                          @PathVariable("question-id") Long questionId){
-
-        questionService.deleteQuestion(questionId, memberId);
-
-        return new ResponseEntity<>(new DataResponseDto("question delete complete !!"),HttpStatus.NO_CONTENT);
-    }
-
-
 
     @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
@@ -107,6 +73,27 @@ public class QuestionController {
         questionVoteService.decreaseVote(member, question);
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionToQuestionVoteResponseDto(question)), HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    private ResponseEntity getTest() {
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{question-id}/{question-title}")
+    public ResponseEntity<DataResponseDto> findQuestion(@PathVariable("question-id") Long questionId,
+                                                        @PathVariable("question-title") String questionTitle) {
+        Question question = questionService.findQuestion(questionId);
+        questionService.addViewCount(question);
+        List<QuestionTag> questionTagList = question.getQuestionTagList();
+        List<Tag> tagList = tagService.findTags(questionTagList);
+        List<Answer> answers = question.getAnswers();
+        String astr = answerTimeStamp.timestamp(answers);
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
+        Member member = question.getMember();
+        String str = questionTimeStamp.timestamp(question);
+        String modified = questionTimeStamp.timestampmodified(question);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto,str,modified)), HttpStatus.OK);
     }
 
     @GetMapping()
@@ -130,11 +117,9 @@ public class QuestionController {
                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
         Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
         List<Question> content = allQuestionsRelatedToUserSearch.getContent();
-//        log.info("q?? {}", q);
         if (q.contains(":")) {
             int index = q.indexOf(":");
             String expect = q.substring(0, index + 1);
-//            log.info("expect?? {}", expect);
             if (!(q.equalsIgnoreCase("user:")) && expect.equalsIgnoreCase("user:")) {
                 Long id = Long.parseLong(q.substring(index + 1));
                 Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestionsSortedByUserId(id, page - 1, 15);
@@ -144,22 +129,21 @@ public class QuestionController {
                 Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
                 List<Question> questions = allQuestionsSortedByAnswerCount.getContent();
                 return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByAnswerCount, questions);
-            } else
-            return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
+            } else {
+                return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
+            }
         } else {
             return getMultiResponseDtoFromResponseEntity(allQuestionsRelatedToUserSearch, content);
         }
     }
 
-//    @GetMapping("/tagged/{tag-name}")
-//    public ResponseEntity searchByTag(@Positive @RequestParam(defaultValue = "1", required = false) int page,
-//                                      @PathVariable("tag-name") String tagName) {
-//        log.info("tag-name : {}", tagName);
-//        Page<Question> allQuestionsSortedByTagged = questionService.findAllQuestionsSortedByTagged(tagName, page - 1, 15);
-//        List<Question> content = allQuestionsSortedByTagged.getContent();
-//        return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByTagged, content);
-//    }
+    @DeleteMapping("/{question-id}")
+    public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
+                                                          @PathVariable("question-id") Long questionId){
+        questionService.deleteQuestion(questionId, memberId);
 
+        return new ResponseEntity<>(new DataResponseDto("question delete complete !!"),HttpStatus.NO_CONTENT);
+    }
 
     private ResponseEntity<MultiResponseDto<QuestionHomeDto>> getMultiResponseDtoFromResponseEntity(Page<Question> allQuestionsByPageNation, List<Question> questions) {
         return new ResponseEntity<>(new MultiResponseDto<>(
@@ -167,5 +151,4 @@ public class QuestionController {
                 allQuestionsByPageNation),
                 HttpStatus.OK);
     }
-
 }

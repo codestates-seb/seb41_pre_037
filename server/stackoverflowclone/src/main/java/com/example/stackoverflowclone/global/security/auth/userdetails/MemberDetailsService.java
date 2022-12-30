@@ -51,10 +51,6 @@ public class MemberDetailsService implements UserDetailsService {
             return getEmail();
         }
 
-        // getPassword(); 가 오버라이딩 되어있지 않아도 되는 이유?
-        // Member 클래스에 getter로 구현되어있고
-        // 위에서 setPassword로 값을 넣어주고 있기 때문에
-
         @Override
         public boolean isAccountNonExpired() {
             return true;
