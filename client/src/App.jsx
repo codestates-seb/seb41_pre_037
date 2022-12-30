@@ -14,6 +14,7 @@ import axios from "axios";
 import MainSearch from "./Pages/MainSearch";
 import { useEffect } from "react";
 import { useIsLoginStore } from "./store/loginstore";
+import Token from "./Pages/Token";
 
 // axios.defaults.baseURL = process.env.REACT_APP_SERVER_URI;
 // axios.defaults.withCredentials = true;
@@ -42,6 +43,7 @@ function App() {
       <Route path="/profile">
         <Route path=":id/:username" element={<ProfileDefault />}></Route>
       </Route>
+      <Route path="/token" element={<Token/>}></Route>
     </Routes>
   );
 }
