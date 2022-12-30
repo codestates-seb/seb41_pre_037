@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.ServletException;
@@ -88,9 +89,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String headerValue = "Bearer "+ accessToken;
         response.setHeader("Authorization",headerValue); // Header에 등록
         response.setHeader("Refresh",refreshToken); // Header에 등록
-        response.setHeader("Access-Control-Allow-Credentials:", "true");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        // response.setHeader("Access-Control-Allow-Credentials:", "true");
+        // response.setHeader("Access-Control-Allow-Origin", "*");
+        // response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
         // 만든 URI로 리다이렉트 보냄
         getRedirectStrategy().sendRedirect(request,response,uri);
@@ -117,9 +118,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private URI createURI(HttpServletRequest request, String accessToken, String refreshToken){
         // 리다이렉트시 JWT를 URI로 보내는 방법
-        // MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        // queryParams.add("access_token", accessToken);
-        // queryParams.add("refresh_token", refreshToken);
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("access_token", accessToken);
+        queryParams.add("refresh_token", refreshToken);
 
         String serverName = request.getServerName();
         // log.info("# serverName = {}",serverName);
@@ -128,9 +129,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
                 .host(serverName)
-                // .port(3000) // 기본 포트가 80이기 때문에 괜찮다
-                .path("/questions")
-                // .queryParams(queryParams)
+                //.host("localhost")
+                //.port(3000) // 기본 포트가 80이기 때문에 괜찮다
+                .path("/token")
+                .queryParams(queryParams)
                 .build()
                 .toUri();
     }
