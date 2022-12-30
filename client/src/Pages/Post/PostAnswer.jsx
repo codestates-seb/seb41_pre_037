@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import quillModule from "../../quillModule";
 import "../../quillEditor.css";
 import BREAKPOINT from "../../breakpoint";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useIsLoginStore, useUserInfoStore } from "../../store/loginstore";
 
 const PostBottomContainer = styled.div`
   display: flex;
@@ -50,6 +52,13 @@ const PostAnswerButton = styled.button`
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     margin-right: 10px;
   }
+`;
+
+const ErrorMessage = styled.p`
+  width: 80%;
+  font-size: 15px;
+  margin-top: 5px;
+  color: #de4f54;
 `;
 
 const Tag = styled.div`
@@ -100,26 +109,71 @@ const BottomNoticeLinker = styled.a`
   }
 `;
 
-export default function PostAnswer() {
+export default function PostAnswer({ postData }) {
   const navigate = useNavigate();
+  const [answerInput, setAnswerInput] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+
+  const { userInfo, setUserInfo } = useUserInfoStore();
+  const params = useParams();
+
+  const postAnswerData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios
+      .post(`${process.env.REACT_APP_SERVER_URI}answers/${params.id}`, { answerContent: answerInput }, { headers })
+      .then(window.location.reload())
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setUserInfo(null);
+          setIsLogin(false);
+          sessionStorage.clear();
+          setErrorMessage("Please login first before writing a answer.");
+        }
+      });
+  };
 
   return (
     <PostBottomContainer>
       <Title>Your Answer</Title>
       <AnswerEditorContainer>
-        <ReactQuill theme="snow" modules={quillModule} style={{ height: "250px" }} />
+        <ReactQuill
+          theme="snow"
+          modules={quillModule}
+          style={{ height: "250px" }}
+          value={answerInput}
+          onChange={(content) => {
+            setAnswerInput(content);
+          }}
+        />
       </AnswerEditorContainer>
-      <PostAnswerButton>Post Your Answer</PostAnswerButton>
+      <PostAnswerButton onClick={postAnswerData}>Post Your Answer</PostAnswerButton>
+      <ErrorMessage>{errorMessage}</ErrorMessage>
       <BottomNotice>
         Browse other questions tagged
         <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
+          {postData &&
+            postData.tag.map((tag) => {
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+            })}
         </TagsContainer>
-        or <BottomNoticeLinker onClick={() => {navigate('/askquestions')}}>ask your own question.</BottomNoticeLinker>
+        or
+        <BottomNoticeLinker
+          onClick={() => {
+            navigate("/askquestions");
+          }}
+        >
+          ask your own question.
+        </BottomNoticeLinker>
       </BottomNotice>
     </PostBottomContainer>
   );

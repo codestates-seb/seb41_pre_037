@@ -41,10 +41,9 @@ const AuthorInfoContainer = styled.div`
   min-height: 65px;
 `;
 
-const AuthorProfileImageArea = styled.div`
+const AuthorProfileImage = styled.img`
   width: 32px;
   height: 32px;
-  background-color: green;
 `;
 
 const AuthorProfileLinker = styled.a`
@@ -59,7 +58,7 @@ const AuthorProfileLinker = styled.a`
   }
 `;
 
-export default function AnswerBottom() {
+export default function AnswerBottom({ answerData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
   return (
     <AnswerBottomContainer>
@@ -74,15 +73,15 @@ export default function AnswerBottom() {
             align-items: center;
           `}
         >
-          <ShareLinker onClick={handleShareSheet}>Share</ShareLinker>
+          {/* <ShareLinker onClick={handleShareSheet}>Share</ShareLinker> */}
           <DeleteButton>Delete</DeleteButton>
         </div>
 
-        <ShareSheet />
+        {/* <ShareSheet /> */}
       </div>
       <AuthorInfoContainer>
-        <AuthorProfileImageArea />
-        <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
+        <AuthorProfileImage src={answerData && answerData.image} />
+        <AuthorProfileLinker>{answerData && answerData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );

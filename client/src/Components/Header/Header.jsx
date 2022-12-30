@@ -252,8 +252,16 @@ const Header = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const { userInfo, setUserInfo } = useUserInfoStore();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const [searchInput, setSearchInput] = useState(query);
+
+  let username = "";
+  let id = "";
+
+  if (JSON.parse(sessionStorage.getItem("userInfoStorage"))) {
+    username = JSON.parse(sessionStorage.getItem("userInfoStorage")).email;
+    id = JSON.parse(sessionStorage.getItem("userInfoStorage")).memberId;
+  }
 
   const logoutHandler = () => {
     setUserInfo(null);
@@ -262,10 +270,9 @@ const Header = () => {
     window.location.reload();
   };
 
-
   const searchBarInputKeyUpHandler = (e) => {
     if (e.key === "Enter") {
-      if(pathname === '/search') {
+      if (pathname === "/search") {
         navigate(`/search?q=${searchInput}`);
         setSearchInput(searchInput);
       } else {
@@ -274,6 +281,8 @@ const Header = () => {
       }
     }
   };
+
+  console.log(id);
 
   return (
     <>
@@ -316,8 +325,11 @@ const Header = () => {
                       width: 24px;
                       height: 24px;
                     `}
+                    onClick={() => {
+                      navigate(`/profile/${id}/${username}`);
+                    }}
                   >
-                    {/* <img src={sessionStorage.getItem("userInfoStorage").image} width="24px" height="24px" /> */}
+                    <img src={JSON.parse(sessionStorage.getItem("userInfoStorage")).image} width="24px" height="24px" />
                   </button>
                 </ProfileButtonAria>
                 <LoginOutButton onClick={logoutHandler}>Log out</LoginOutButton>

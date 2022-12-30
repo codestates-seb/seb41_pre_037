@@ -25,7 +25,16 @@ export default function AnswerList({ answersData }) {
   //answersData === post.answers
   return (
     <AnswerListContainer>
-      <AnswerListHeader>{answersData.length + 1}Answers</AnswerListHeader>
+      <AnswerListHeader>
+        <span
+          css={`
+            margin-right: 5px;
+          `}
+        >
+          {answersData && answersData.length}
+        </span>
+        Answers
+      </AnswerListHeader>
       <AnswerListInnerContainer>
         {answersData &&
           answersData.map((answerData) => <AnswerItem answerData={answerData} key={answerData.answerId} />)}

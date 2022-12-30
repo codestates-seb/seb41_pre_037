@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "./ShareSheet";
+import { useState } from "react";
 import { useShareSheetStore } from "../../store/store";
 
 const AnswerBottomContainer = styled.div`
@@ -41,10 +42,9 @@ const AuthorInfoContainer = styled.div`
   min-height: 65px;
 `;
 
-const AuthorProfileImageArea = styled.div`
+const AuthorProfileImage = styled.img`
   width: 32px;
   height: 32px;
-  background-color: green;
 `;
 
 const AuthorProfileLinker = styled.a`
@@ -59,8 +59,13 @@ const AuthorProfileLinker = styled.a`
   }
 `;
 
-export default function QuestionBottom() {
-  const { handleShareSheet } = useShareSheetStore((state) => state);
+export default function QuestionBottom({ postData }) {
+  const [handleShareSheet, setHandleShareSheet] = useState(false);
+  const shareSheetHandler = (e) => {
+    setHandleShareSheet(!handleShareSheet);
+  };
+  console.log(handleShareSheet);
+
   return (
     <AnswerBottomContainer>
       <div
@@ -74,15 +79,15 @@ export default function QuestionBottom() {
             align-items: center;
           `}
         >
-          <ShareLinker onClick={handleShareSheet}>Share</ShareLinker>
+          <ShareLinker onClick={shareSheetHandler}>Share</ShareLinker>
+          <ShareSheet handleShareSheet={handleShareSheet} />
           <DeleteButton>Delete</DeleteButton>
         </div>
-
         <ShareSheet />
       </div>
       <AuthorInfoContainer>
-        <AuthorProfileImageArea />
-        <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
+        <AuthorProfileImage src={postData && postData.image} />
+        <AuthorProfileLinker>{postData && postData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );

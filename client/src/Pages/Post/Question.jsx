@@ -9,8 +9,6 @@ import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ShareSheet from "../../Components/Post/ShareSheet";
 import { useShareSheetStore } from "../../store/store";
 import QuestionBottom from "../../Components/Post/QuestionBottom";
-import Tag from "../../Components/Tag/Tag";
-import { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } from "node-html-markdown";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 
@@ -58,7 +56,9 @@ const VotingCounter = styled.div`
   color: #6a737c;
 `;
 
-const QuestionTopContainer = styled.div``;
+const QuestionTopContainer = styled.div`
+  min-height: 150px;
+`;
 
 const AuthorInfoContainer = styled.div`
   box-sizing: border-box;
@@ -122,34 +122,24 @@ const TagsContainer = styled.div`
   }
 `;
 
-const DUMMYMARKDOWNTEXT = `<script>
-export let audio;
+const Tag = styled.div`
+  width: max-content;
+  padding: 5px 8px;
+  height: 15px;
+  border: 1px #e1ecf4;
+  border-radius: 5px;
+  background-color: #e1ecf4;
+  color: #39739d;
+  font-size: small;
+  margin-right: 5px;
 
-let isPaused = true;
-
-const onClick = () => {
-    if (!audio) return;
-
-    isPaused = !isPaused;
-    if (isPaused) {
-        audio.pause();
-    } else {
-        audio.play();
-    }
-};
-</script>
-
-<button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: inline;
+    padding: 5px;
+  }
 `;
 
 export default function Question({ postData }) {
-  const { handleShareSheet } = useShareSheetStore((state) => state);
-  let domParser = new DOMParser();
-  let doc = domParser.parseFromString(postData.questionTryOrExpectingBody, "text/html");
-  console.log(doc);
-  const nhm = NodeHtmlMarkdown.translate("");
-  console.log(nhm);
-
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
@@ -157,7 +147,7 @@ export default function Question({ postData }) {
           <VotingButton>
             <img src={ArrowUpIcon} />
           </VotingButton>
-          <VotingCounter>{postData.questionVoteCount}</VotingCounter>
+          <VotingCounter>{postData && postData.questionVoteCount}</VotingCounter>
           <VotingButton>
             <img src={ArrowDownIcon} />
           </VotingButton>
@@ -165,18 +155,16 @@ export default function Question({ postData }) {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <ReactQuill theme="bubble" style={{ height: "250px" }} value={postData.questionProblemBody} readOnly={true} />
-          <ReactQuill
-            theme="bubble"
-            style={{ height: "250px" }}
-            value={postData.questionTryOrExpectingBody}
-            readOnly={true}
-          />
+          <ReactQuill theme="bubble" value={postData && postData.questionProblemBody} readOnly={true} />
+          <ReactQuill theme="bubble" value={postData && postData.questionTryOrExpectingBody} readOnly={true} />
         </QuestionTopContainer>
         <TagsContainer>
-          {/* {postData && postData.map((postData) => <Tag tagData={postData.tag} key={postData.tag.tagId} />)} */}
+          {postData &&
+            postData.tag.map((tag) => {
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+            })}
         </TagsContainer>
-        <QuestionBottom />
+        <QuestionBottom postData={postData && postData} />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

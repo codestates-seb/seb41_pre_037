@@ -179,6 +179,8 @@ const Login = () => {
     };
 
     if (!username || !password) {
+      setUsername("");
+      setPassword("");
       setErrorMessage("Email or password cannot be empty.");
       return;
     } else {
@@ -190,14 +192,16 @@ const Login = () => {
       .then((response) => {
         const accessToken = response.headers.get("Authorization").split(" ")[1];
         sessionStorage.setItem("accesstoken", accessToken);
-        axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
-        setUserInfo(response.data);
+        // axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
+        sessionStorage.setItem("userInfoStorage", JSON.stringify(response.data.data));
         setIsLogin(true);
+        navigate("/");
       })
-      .then(navigate("/"))
       .catch((err) => {
         if (err.response.status === 401) {
           setErrorMessage("The email or password is incorrect.");
+          setUsername("");
+          setPassword("");
         }
       });
   };
@@ -214,9 +218,9 @@ const Login = () => {
             `}
           />
           <SocialLoginContainer>
-            <GoogleLogin href={`/oauth2/authorization/google`}>
+            <GoogleLogin href={`${process.env.REACT_APP_SERVER_URI}oauth2/authorization/google`}>
               <SocialLoginIcon src={Google} />
-              <SocialLoginText>Sign up with Google</SocialLoginText>
+              <SocialLoginText>Login with Google</SocialLoginText>
             </GoogleLogin>
           </SocialLoginContainer>
           <LoginFormContainer>

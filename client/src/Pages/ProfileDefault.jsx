@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import { React, useState } from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../breakpoint";
 import Header from "../Components/Header/Header";
@@ -11,7 +11,9 @@ import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
 import PostsList from "../Components/Profile/PostsList";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const Container = styled.div`
   display: flex;
@@ -47,12 +49,11 @@ const ProfileHeaderContainer = styled.div`
   }
 `;
 
-const DummyProfileImage = styled.div`
+const ProfileImage = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  background-color: green;
   width: 128px;
   height: 128px;
   margin: 8px;
@@ -251,105 +252,129 @@ const Aboutdescription = styled.span`
 
 export default function ProfileDefault() {
   const navigate = useNavigate();
+  const [data, setData] = useState();
+  const params = useParams();
+
+  const fetchData = () => {
+    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
+  };
+
+  const fetchDataOnSuccess = (response) => {
+    response.data.data && setData(response.data.data);
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ["fetchData"],
+    queryFn: fetchData,
+    keepPreviousData: true,
+    onSuccess: fetchDataOnSuccess,
+  });
+
+  console.log(data);
+
   return (
     <>
       <Header />
       <Container>
         <LeftNav />
-        <ContentContainer>
-          <ProfileHeaderContainer>
-            <HeaderLeftContainer>
-              <DummyProfileImage />
-              <HeaderInfoContainer>
-                <UserDisplayName>UserDisplayName</UserDisplayName>
-                <HeaderInfoBottomContainer>
-                  <img src={CakeIcon} /> Member for 9 days
-                </HeaderInfoBottomContainer>
-              </HeaderInfoContainer>
-            </HeaderLeftContainer>
-            <ProfileHeaderButtonContainer>
-              <ProfileHeaderButton>
-                <img
-                  src={EditIcon}
-                  css={`
-                    margin-right: 3px;
-                  `}
-                />
-                Edit profile
-              </ProfileHeaderButton>
-              <ProfileHeaderButton>
-                <img
-                  src={ClearIcon}
-                  css={`
-                    margin-right: 3px;
-                  `}
-                />
-                Delete profile
-              </ProfileHeaderButton>
-            </ProfileHeaderButtonContainer>
-          </ProfileHeaderContainer>
-          <ProfileBottomContaner>
-            <BottomLeftContainer>
-              <BottomItemContainer>
-                <ItemLabel>Stats</ItemLabel>
-                <ItemCard>
-                  <StatsItemContainer>
-                    <StatsCountItem>0</StatsCountItem>
-                    <StatsCountLabel>answers</StatsCountLabel>
-                  </StatsItemContainer>
-                  <StatsItemContainer>
-                    <StatsCountItem>0</StatsCountItem>
-                    <StatsCountLabel>questions</StatsCountLabel>
-                  </StatsItemContainer>
-                </ItemCard>
-              </BottomItemContainer>
-              <BottomItemContainer>
-                <ItemLabel>Communities</ItemLabel>
-                <ItemCard
-                  css={`
-                    height: 55px;
-                  `}
-                >
-                  <CommunitiesInnerContainer>
-                    <div>
-                      <img src={SmallLogo} />
-                      <Linker onClick={() => navigate("/")}>Stack Overflow</Linker>
-                    </div>
-                    1
-                  </CommunitiesInnerContainer>
-                </ItemCard>
-              </BottomItemContainer>
-            </BottomLeftContainer>
-            <BottomRightContainer>
-              <BottomItemContainer>
-                <ItemLabel>About</ItemLabel>
-                <ItemCard
-                  css={`
-                    justify-content: center;
-                    background-color: #f8f9f9;
-                  `}
-                >
-                  <div
+        {isLoading ? (
+          <div>Loading....</div>
+        ) : (
+          <ContentContainer>
+            <ProfileHeaderContainer>
+              <HeaderLeftContainer>
+                <ProfileImage src={data && data.image} />
+                <HeaderInfoContainer>
+                  <UserDisplayName>{data && data.username}</UserDisplayName>
+                  <HeaderInfoBottomContainer>
+                    <img src={CakeIcon} /> {data && data.profileCreatedAt}
+                  </HeaderInfoBottomContainer>
+                </HeaderInfoContainer>
+              </HeaderLeftContainer>
+              <ProfileHeaderButtonContainer>
+                <ProfileHeaderButton>
+                  <img
+                    src={EditIcon}
                     css={`
-                      display: inline;
+                      margin-right: 3px;
+                    `}
+                  />
+                  Edit profile
+                </ProfileHeaderButton>
+                <ProfileHeaderButton>
+                  <img
+                    src={ClearIcon}
+                    css={`
+                      margin-right: 3px;
+                    `}
+                  />
+                  Delete profile
+                </ProfileHeaderButton>
+              </ProfileHeaderButtonContainer>
+            </ProfileHeaderContainer>
+            <ProfileBottomContaner>
+              <BottomLeftContainer>
+                <BottomItemContainer>
+                  <ItemLabel>Stats</ItemLabel>
+                  <ItemCard>
+                    <StatsItemContainer>
+                      <StatsCountItem>{data && data.answers}</StatsCountItem>
+                      <StatsCountLabel>answers</StatsCountLabel>
+                    </StatsItemContainer>
+                    <StatsItemContainer>
+                      <StatsCountItem>{data && data.questions}</StatsCountItem>
+                      <StatsCountLabel>questions</StatsCountLabel>
+                    </StatsItemContainer>
+                  </ItemCard>
+                </BottomItemContainer>
+                <BottomItemContainer>
+                  <ItemLabel>Communities</ItemLabel>
+                  <ItemCard
+                    css={`
+                      height: 55px;
                     `}
                   >
-                    <Aboutdescription>
-                      Your about me section is currently blank. Would you like to add one?
-                    </Aboutdescription>
-                    <Linker>Edit profile</Linker>
-                  </div>
-                </ItemCard>
-              </BottomItemContainer>
-              <BottomItemContainer>
-                <ItemLabel>All posts</ItemLabel>
-                <div>View all questions and answers</div>
-                {/* <EmptyPostBox /> */}
-                <PostsList />
-              </BottomItemContainer>
-            </BottomRightContainer>
-          </ProfileBottomContaner>
-        </ContentContainer>
+                    <CommunitiesInnerContainer>
+                      <div>
+                        <img src={SmallLogo} />
+                        <Linker onClick={() => navigate("/")}>Stack Overflow</Linker>
+                      </div>
+                      1
+                    </CommunitiesInnerContainer>
+                  </ItemCard>
+                </BottomItemContainer>
+              </BottomLeftContainer>
+              <BottomRightContainer>
+                <BottomItemContainer>
+                  <ItemLabel>About</ItemLabel>
+                  <ItemCard
+                    css={`
+                      justify-content: center;
+                      background-color: #f8f9f9;
+                    `}
+                  >
+                    <div
+                      css={`
+                        display: inline;
+                      `}
+                    >
+                      <Aboutdescription>
+                        Your about me section is currently blank. Would you like to add one?
+                      </Aboutdescription>
+                      <Linker>Edit profile</Linker>
+                    </div>
+                  </ItemCard>
+                </BottomItemContainer>
+                <BottomItemContainer>
+                  <ItemLabel>All posts</ItemLabel>
+                  <div>View all questions and answers</div>
+                  <EmptyPostBox />
+                  {/* <PostsList /> */}
+                </BottomItemContainer>
+              </BottomRightContainer>
+            </ProfileBottomContaner>
+          </ContentContainer>
+        )}
       </Container>
       <Footer />
     </>

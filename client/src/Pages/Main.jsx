@@ -143,8 +143,7 @@ export default function Main() {
 
   const [questionData, setQuestionData] = useState();
   const [pageInfo, setPageInfo] = useState();
-  const [currentTab, setCurrentTab] = useState('Newest');
-
+  const [currentTab, setCurrentTab] = useState("Newest");
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page");
@@ -154,24 +153,20 @@ export default function Main() {
   }, [questionData]);
 
   const fetchQuestion = () => {
-
-    if(currentTab === 'Unanswered') {
-      if(!!page) {
+    if (currentTab === "Unanswered") {
+      if (!!page) {
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}&page=${page}`);
-      }
-      else {
+      } else {
         return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?tab=${currentTab}`);
       }
-    } 
+    }
 
-    if(!!page) {
+    if (!!page) {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions?page=${page}`);
-    } 
-    else {
+    } else {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}questions`);
     }
   };
-
 
   const fetchQuestionOnSuccess = (response) => {
     setQuestionData(response.data.data);
@@ -185,10 +180,9 @@ export default function Main() {
     onSuccess: fetchQuestionOnSuccess,
   });
 
-
-  const sortButtonClickHandler = e => {
+  const sortButtonClickHandler = (e) => {
     setCurrentTab(e.target.value);
-  } 
+  };
 
   return (
     <>
@@ -211,8 +205,22 @@ export default function Main() {
               : <p css={`margin-left: 20px;`}> loading...</p>
               }
               <MainbarSortButtonContainer>
-                <SortButton className={currentTab === 'Newest' ? 'selected' : ''} value={'Newest'} isLeft={true} onClick={sortButtonClickHandler}>Newest</SortButton>
-                <SortButton className={currentTab === 'Unanswered' ? 'selected' : ''} value={'Unanswered'} isLeft={false} onClick={sortButtonClickHandler}>Unanswered</SortButton>
+                <SortButton
+                  className={currentTab === "Newest" ? "selected" : ""}
+                  value={"Newest"}
+                  isLeft={true}
+                  onClick={sortButtonClickHandler}
+                >
+                  Newest
+                </SortButton>
+                <SortButton
+                  className={currentTab === "Unanswered" ? "selected" : ""}
+                  value={"Unanswered"}
+                  isLeft={false}
+                  onClick={sortButtonClickHandler}
+                >
+                  Unanswered
+                </SortButton>
               </MainbarSortButtonContainer>
             </MainbarBottomHeader>
             {questionData?.map((question, index, questions) => {
