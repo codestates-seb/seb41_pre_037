@@ -59,7 +59,7 @@ public class MemberMapper {
     public MemberProfileResponseDto memberTomemberProfileResponse( Member member,String str){
         return MemberProfileResponseDto.builder()
                 .memberId(member.getMemberId())
-                .profileCreatedAt(str) //
+                .profileCreatedAt(str)
                 .username(member.getUsername())
                 .email(member.getEmail())
                 .location(member.getLocation())
@@ -89,5 +89,13 @@ public class MemberMapper {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    public MemberLoginResponseDto memberToMemberLoginResponseDto(Member member){
+        return MemberLoginResponseDto.builder()
+                .memberId(member.getMemberId())
+                .email(member.getEmail())
+                .image(member.getImage())
+                .build();
     }
 }

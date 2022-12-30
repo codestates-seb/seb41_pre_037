@@ -1,12 +1,14 @@
 package com.example.stackoverflowclone.domain.member.controller;
 
 import com.example.stackoverflowclone.domain.member.dto.MemberEditDto;
+import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
 import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
+import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.time.MemberTimeStamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +41,19 @@ public class MemberController {
                 new DataResponseDto<>(mapper.memberToMemberResponse(createMember)), HttpStatus.CREATED);
     }
 
+    @GetMapping("/token")
+    public ResponseEntity giveMemberInfo(@LoginMemberId Long memberId) {
+        Member member = memberService.findByMember(memberId);
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberLoginResponseDto(member)), HttpStatus.OK);
+    }
+
     @GetMapping("/{member-id}/{username}")
-    public ResponseEntity getMemberProfile(@PathVariable("member-id") @Valid Long memberId) {
+    public ResponseEntity getMemberProfile(@Positive @PathVariable("member-id") Long memberId) {
 
         Member member = memberService.findByMember(memberId);
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
                 HttpStatus.OK);
-
     }
 
     @GetMapping("/edit/{member-id}")
