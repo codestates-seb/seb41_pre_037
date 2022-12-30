@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,7 @@ public class QuestionService {
         Question question = findQuestion(questionId);
 
         Long compareMemberId = question.getMember().getMemberId();
-        if(memberId != compareMemberId) {
+        if (memberId != compareMemberId) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOW);
         }
         questionRepository.delete(question);
@@ -45,27 +46,23 @@ public class QuestionService {
         question.setQuestionViewCount(question.getQuestionViewCount() + 1);
     }
 
-    public Page<Question> findAllQuestionsByPage(int page, int size) {
-        return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
-    }
-
-    public Page<Question> findAllQuestionsSortedByUnanswered(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return questionRepository.findAllByAnswersEmpty(pageable);
-    }
-
-    public Page<Question> findAllQuestionsRelatedToUserSearch(String q, int page, int size) {
+    public Page<Question> findAllQuestions(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
-        return questionRepository.findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(q,q,pageable);
+        return questionRepository.findAll(pageable);
     }
 
-//    public Page<Question> findAllQuestionsSortedByTagged(String tagName, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return questionRepository.findAllByQuestionTagListContainingIgnoreCase(tagName, pageable);
-//    }
+    public Page<Question> findAllQuestions(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
+        return questionRepository.findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(search, search, pageable);
+    }
 
-    public Page<Question> findAllQuestionsSortedByUserId(Long memberId, int page, int size) {
+    public Page<Question> findAllQuestions(Long memberId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("questionId").descending());
         return questionRepository.findAllByMemberMemberId(memberId, pageable);
+    }
+
+    public Page<Question> findAllUnansweredQuestions(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return questionRepository.findAllByAnswersEmpty(pageable);
     }
 }

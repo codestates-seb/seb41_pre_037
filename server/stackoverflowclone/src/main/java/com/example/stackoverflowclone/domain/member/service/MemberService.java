@@ -3,11 +3,13 @@ package com.example.stackoverflowclone.domain.member.service;
 import com.example.stackoverflowclone.global.enums.ProfileImage;
 import com.example.stackoverflowclone.global.exception.BusinessLogicException;
 import com.example.stackoverflowclone.global.exception.ExceptionCode;
+import com.example.stackoverflowclone.global.response.PageInfo;
 import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 
 import com.example.stackoverflowclone.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -101,8 +103,15 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberId);
         memberRepository.delete(findMember);
     }
+
+
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
+    }
+
+    public Page<Member> findMembers(String memberName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return memberRepository.findAllByUsernameContainsIgnoreCase(memberName, pageable);
     }
 
     public ProfileImage createProfileImage(Member member){
@@ -117,4 +126,7 @@ public class MemberService {
         member.setImage(profileImage.getUrl());
         return profileImage;
     }
+
+
+
 }

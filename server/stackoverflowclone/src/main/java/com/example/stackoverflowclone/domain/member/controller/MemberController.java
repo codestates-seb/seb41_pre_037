@@ -1,7 +1,6 @@
 package com.example.stackoverflowclone.domain.member.controller;
 
 import com.example.stackoverflowclone.domain.member.dto.MemberEditDto;
-import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
 import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
@@ -72,12 +71,13 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity findUsers(@Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        Page<Member> pageUsers = memberService.findMembers(page - 1, 16);
+    @GetMapping()
+    public ResponseEntity findUsers(@Positive @RequestParam(defaultValue = "1", required = false) int page,
+                                    @RequestParam(defaultValue = "", required = false) String search) {
+        Page<Member> pageUsers = memberService.findMembers(search, page - 1, 16);
         List<Member> users = pageUsers.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(mapper.memberUserToResponseDto(users), pageUsers),
-                HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                mapper.memberUserToResponseDto(users), pageUsers), HttpStatus.OK);
     }
 
     @PatchMapping("/edit/{member-id}/patch")
@@ -85,8 +85,8 @@ public class MemberController {
         memberEditDto.setMemberId(memberId);
         Member member = memberService.updateMember(mapper.memberPatchToMember(memberEditDto));
         String str = memberTimeStamp.timestamp(member);
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str))
-                , HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto<>(
+                mapper.memberTomemberProfileResponse(member, str)), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{member-id}/confirm")

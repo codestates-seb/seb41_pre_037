@@ -89,22 +89,22 @@ public class QuestionController {
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
         String astr = answerTimeStamp.timestamp(answers);
-        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers,astr);
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers, astr);
         Member member = question.getMember();
         String str = questionTimeStamp.timestamp(question);
         String modified = questionTimeStamp.timestampmodified(question);
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto,str,modified)), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto, str, modified)), HttpStatus.OK);
     }
 
     @GetMapping()
     public ResponseEntity getHome(@RequestParam(defaultValue = "Latest", required = false) String tab,
                                   @Positive @RequestParam(defaultValue = "1", required = false) int page) {
         if (tab.equals("Latest")) {
-            Page<Question> listPage = questionService.findAllQuestionsByPage(page - 1, 15);
+            Page<Question> listPage = questionService.findAllQuestions(page - 1, 15);
             List<Question> allQuestion = listPage.getContent();
             return getMultiResponseDtoFromResponseEntity(listPage, allQuestion);
         } else if (tab.equals("Unanswered")) {
-            Page<Question> allQuestionsSortedByUnanswered = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+            Page<Question> allQuestionsSortedByUnanswered = questionService.findAllUnansweredQuestions(page - 1, 15);
             List<Question> content = allQuestionsSortedByUnanswered.getContent();
             return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByUnanswered, content);
         } else {
@@ -115,18 +115,18 @@ public class QuestionController {
     @GetMapping("/search")
     public ResponseEntity search(@RequestParam(defaultValue = "", required = false) String q,
                                  @Positive @RequestParam(defaultValue = "1", required = false) int page) {
-        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestionsRelatedToUserSearch(q, page - 1, 15);
+        Page<Question> allQuestionsRelatedToUserSearch = questionService.findAllQuestions(q, page - 1, 15);
         List<Question> content = allQuestionsRelatedToUserSearch.getContent();
         if (q.contains(":")) {
             int index = q.indexOf(":");
             String expect = q.substring(0, index + 1);
             if (!(q.equalsIgnoreCase("user:")) && expect.equalsIgnoreCase("user:")) {
                 Long id = Long.parseLong(q.substring(index + 1));
-                Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestionsSortedByUserId(id, page - 1, 15);
+                Page<Question> allQuestionsSortedByUserId = questionService.findAllQuestions(id, page - 1, 15);
                 List<Question> questions = allQuestionsSortedByUserId.getContent();
                 return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByUserId, questions);
             } else if (!(q.equalsIgnoreCase("answers:")) && expect.equalsIgnoreCase("answers:")) {
-                Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllQuestionsSortedByUnanswered(page - 1, 15);
+                Page<Question> allQuestionsSortedByAnswerCount = questionService.findAllUnansweredQuestions(page - 1, 15);
                 List<Question> questions = allQuestionsSortedByAnswerCount.getContent();
                 return getMultiResponseDtoFromResponseEntity(allQuestionsSortedByAnswerCount, questions);
             } else {
@@ -139,10 +139,9 @@ public class QuestionController {
 
     @DeleteMapping("/{question-id}")
     public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
-                                                          @Positive @PathVariable("question-id") Long questionId){
+                                                          @Positive @PathVariable("question-id") Long questionId) {
         questionService.deleteQuestion(questionId, memberId);
-
-        return new ResponseEntity<>(new DataResponseDto("question delete complete !!"),HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new DataResponseDto("question delete complete !!"), HttpStatus.NO_CONTENT);
     }
 
     private ResponseEntity<MultiResponseDto<QuestionHomeDto>> getMultiResponseDtoFromResponseEntity(Page<Question> allQuestionsByPageNation, List<Question> questions) {
