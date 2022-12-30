@@ -89,7 +89,7 @@ export default function QuestionBottom({ postData }) {
       </div>
       <AuthorInfoContainer>
         <AuthorProfileImageArea />
-        <AuthorProfileLinker>{postData.username}</AuthorProfileLinker>
+        <AuthorProfileLinker>{postData && postData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );

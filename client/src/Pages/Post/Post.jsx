@@ -135,6 +135,12 @@ export default function Post() {
     onSuccess: fetchPostOnSuccess,
   });
 
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0 });
+  }, []);
+
+  console.log(post);
+
   return (
     <>
       <Header />
@@ -146,7 +152,7 @@ export default function Post() {
           <InnerContainer>
             <PostHeader>
               <PostHeaderTop>
-                <Title> {post.questionTitle} </Title>
+                <Title> {post && post.questionTitle} </Title>
                 <AskQuestionButton
                   onClick={() => {
                     navigate("/askquestions");
@@ -164,7 +170,7 @@ export default function Post() {
                 >
                   Asked
                 </span>
-                <span>{post.questionCreatedAt}</span>
+                <span>{post && post.questionCreatedAt}</span>
               </PostHeaderBottom>
             </PostHeader>
             <div
@@ -173,9 +179,9 @@ export default function Post() {
               `}
             >
               <PostContentContainer>
-                <Question postData={post} />
-                <AnswerList answersData={post.answers} />
-                <PostAnswer postData={post} />
+                <Question postData={post && post} />
+                <AnswerList answersData={post && post.answers} />
+                <PostAnswer postData={post && post} />
               </PostContentContainer>
               <RightSidebarContainer>
                 <RightSidebar />

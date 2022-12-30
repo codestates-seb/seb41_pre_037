@@ -9,7 +9,6 @@ import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ShareSheet from "../../Components/Post/ShareSheet";
 import { useShareSheetStore } from "../../store/store";
 import QuestionBottom from "../../Components/Post/QuestionBottom";
-import { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } from "node-html-markdown";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 
@@ -148,7 +147,7 @@ export default function Question({ postData }) {
           <VotingButton>
             <img src={ArrowUpIcon} />
           </VotingButton>
-          <VotingCounter>{postData.questionVoteCount}</VotingCounter>
+          <VotingCounter>{postData && postData.questionVoteCount}</VotingCounter>
           <VotingButton>
             <img src={ArrowDownIcon} />
           </VotingButton>
@@ -156,8 +155,8 @@ export default function Question({ postData }) {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <ReactQuill theme="bubble" value={postData.questionProblemBody} readOnly={true} />
-          <ReactQuill theme="bubble" value={postData.questionTryOrExpectingBody} readOnly={true} />
+          <ReactQuill theme="bubble" value={postData && postData.questionProblemBody} readOnly={true} />
+          <ReactQuill theme="bubble" value={postData && postData.questionTryOrExpectingBody} readOnly={true} />
         </QuestionTopContainer>
         <TagsContainer>
           {postData &&
@@ -165,7 +164,7 @@ export default function Question({ postData }) {
               return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
             })}
         </TagsContainer>
-        <QuestionBottom postData={postData} />
+        <QuestionBottom postData={postData && postData} />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

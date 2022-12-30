@@ -31,7 +31,7 @@ export default function AnswerList({ answersData }) {
             margin-right: 5px;
           `}
         >
-          {answersData.length}
+          {answersData && answersData.length}
         </span>
         Answers
       </AnswerListHeader>

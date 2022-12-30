@@ -253,7 +253,6 @@ const Aboutdescription = styled.span`
 export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
-  // const username = JSON.parse(sessionStorage.getItem("userInfoStorage").email);
   const params = useParams();
 
   const fetchData = () => {
@@ -261,7 +260,7 @@ export default function ProfileDefault() {
   };
 
   const fetchDataOnSuccess = (response) => {
-    setData(response.data.data);
+    response.data.data && setData(response.data.data);
   };
 
   const { isLoading } = useQuery({
@@ -284,11 +283,11 @@ export default function ProfileDefault() {
           <ContentContainer>
             <ProfileHeaderContainer>
               <HeaderLeftContainer>
-                <ProfileImage src={data.image} />
+                <ProfileImage src={data && data.image} />
                 <HeaderInfoContainer>
-                  <UserDisplayName>{data.username}</UserDisplayName>
+                  <UserDisplayName>{data && data.username}</UserDisplayName>
                   <HeaderInfoBottomContainer>
-                    <img src={CakeIcon} /> {data.profileCreatedAt}
+                    <img src={CakeIcon} /> {data && data.profileCreatedAt}
                   </HeaderInfoBottomContainer>
                 </HeaderInfoContainer>
               </HeaderLeftContainer>
@@ -319,11 +318,11 @@ export default function ProfileDefault() {
                   <ItemLabel>Stats</ItemLabel>
                   <ItemCard>
                     <StatsItemContainer>
-                      <StatsCountItem>{data.answers}</StatsCountItem>
+                      <StatsCountItem>{data && data.answers}</StatsCountItem>
                       <StatsCountLabel>answers</StatsCountLabel>
                     </StatsItemContainer>
                     <StatsItemContainer>
-                      <StatsCountItem>{data.questions}</StatsCountItem>
+                      <StatsCountItem>{data && data.questions}</StatsCountItem>
                       <StatsCountLabel>questions</StatsCountLabel>
                     </StatsItemContainer>
                   </ItemCard>
@@ -369,8 +368,8 @@ export default function ProfileDefault() {
                 <BottomItemContainer>
                   <ItemLabel>All posts</ItemLabel>
                   <div>View all questions and answers</div>
-                  {/* <EmptyPostBox /> */}
-                  <PostsList />
+                  <EmptyPostBox />
+                  {/* <PostsList /> */}
                 </BottomItemContainer>
               </BottomRightContainer>
             </ProfileBottomContaner>
