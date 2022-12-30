@@ -2,6 +2,8 @@ import styled from "styled-components/macro"
 import BREAKPOINT from "../breakpoint"
 import Google from '../icons/Google.png'
 
+import Header from "../Components/Header/Header"
+
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -12,6 +14,7 @@ const Background = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
@@ -324,6 +327,7 @@ export default function Signup() {
 
   return (
     <Background>
+      <Header/>
       <Container>
         <SignupDetailContainer>
           <SignupDetailHead>Join the Stack Overflow Community</SignupDetailHead>
