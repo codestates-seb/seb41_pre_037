@@ -150,21 +150,26 @@ const RightSidebarContainer = styled.div`
   }
 `;
 
-
+// Main Component
 export default function Main() {
-  const navigate = useNavigate();
-
-  const [questionData, setQuestionData] = useState();
-  const [pageInfo, setPageInfo] = useState();
+  // React States
   const [currentTab, setCurrentTab] = useState("Newest");
-
+  const [pageInfo, setPageInfo] = useState();
+  const [questionData, setQuestionData] = useState();
+  
+  // Other Hooks
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Variables & Methods
   const page = searchParams.get("page");
 
+  // useEffect (페이지 리로드 시 페이지 탑으로 이동)
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   }, [questionData]);
 
+  // Ajax function (Axios)
   const fetchQuestion = () => {
     if (currentTab === "Unanswered") {
       if (!!page) {
@@ -181,11 +186,13 @@ export default function Main() {
     }
   };
 
+  // Ajax OnSuccess
   const fetchQuestionOnSuccess = (response) => {
     setQuestionData(response.data.data);
     setPageInfo(response.data.pageInfo);
   };
 
+  // Ajax Tanstack Query
   const { isLoading, refetch } = useQuery({
     queryKey: ["fetchQuestion", page, currentTab],
     queryFn: fetchQuestion,
@@ -193,7 +200,8 @@ export default function Main() {
     onSuccess: fetchQuestionOnSuccess,
   });
 
-  const sortButtonClickHandler = (e) => {
+  // Event Handlers
+  const sortButtonOnClickHandler = (e) => {
     setCurrentTab(e.target.value);
   };
 
@@ -202,13 +210,13 @@ export default function Main() {
       <Header />
       <Container>
         <LeftNav />
-        {isLoading ? (
-          <div>Loading....</div>
-        ) : (
+        {isLoading 
+        ? <div>Loading....</div>
+        : (
           <MainbarContainer>
             <MainbarTopHeader>
               <Title>All Questions</Title>
-              <AskQuestionButton onClick={() => { navigate("/askquestions")}}>
+              <AskQuestionButton onClick={() => {navigate("/askquestions")}}>
                 Ask Questions
               </AskQuestionButton>
             </MainbarTopHeader>
@@ -218,20 +226,10 @@ export default function Main() {
               : <p css={`margin-left: 20px;`}> loading...</p>
               }
               <MainbarSortButtonContainer>
-                <SortButton
-                  className={currentTab === "Newest" ? "selected" : ""}
-                  value={"Newest"}
-                  isLeft={true}
-                  onClick={sortButtonClickHandler}
-                >
+                <SortButton className={currentTab === "Newest" ? "selected" : ""} isLeft={true} onClick={sortButtonOnClickHandler} value={"Newest"}>
                   Newest
                 </SortButton>
-                <SortButton
-                  className={currentTab === "Unanswered" ? "selected" : ""}
-                  value={"Unanswered"}
-                  isLeft={false}
-                  onClick={sortButtonClickHandler}
-                >
+                <SortButton className={currentTab === "Unanswered" ? "selected" : ""} isLeft={false} onClick={sortButtonOnClickHandler} value={"Unanswered"}>
                   Unanswered
                 </SortButton>
               </MainbarSortButtonContainer>
@@ -243,7 +241,7 @@ export default function Main() {
               return <Question data={question} key={question.questionId} />;
             })}
             <PaginationContainer>
-              {pageInfo && <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch} />}
+              {pageInfo && <Pagination pageinfo={pageInfo} setPage={setSearchParams} refetch={refetch}/>}
             </PaginationContainer>
           </MainbarContainer>
         )}

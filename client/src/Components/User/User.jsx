@@ -1,15 +1,19 @@
+// 라이브러리 및 라이브러리 메소드
 import styled from "styled-components/macro"
 
+// Styled Component (html tree 계층 순) (CSS 속성은 a-z 순)
 const UserContainer = styled.div`
   display: flex;
-  width: max-content;
   height: max-content;
+  width: max-content;
 `
+
 const UserIMG = styled.div`
   display: flex;
-  width: 45px;
   height: 45px;
+  width: 45px;
 `
+
 const UserDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,9 +21,9 @@ const UserDetailContainer = styled.div`
 `
 
 const Username = styled.p`
-  margin: 0;
-  font-size: medium;
   color: #0074CC;
+  font-size: medium;
+  margin: 0;
 `
 
 export default function User({data}) {
