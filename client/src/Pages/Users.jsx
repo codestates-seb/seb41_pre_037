@@ -102,11 +102,12 @@ export default function Tags() {
 
   const [usersData, setUsersData] = useState('');
   const [pageInfo, setPageInfo] = useState('');
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page');
   
   const fetchUsers = () => {
-    console.log(page);
+
     if(!!page) {
       return axios.get(`${process.env.REACT_APP_SERVER_URI}users?page=${page}`);
     } else {
@@ -128,7 +129,6 @@ export default function Tags() {
   const {isLoading, refetch} = useQuery({queryKey: ['fetchUsers', page], queryFn: fetchUsers, keepPreviousData: true, onSuccess: fetchUsersOnSuccess});
 
 
-
   return (
     <>
     <Header/>
@@ -139,7 +139,9 @@ export default function Tags() {
           <MainbarTitle>Users</MainbarTitle>
           <SearchBar>
             <img src={SearchBarIcon} alt="icon"/>
-            <SearchBarInput placeholder="Filter by users"/>
+            <SearchBarInput 
+            placeholder="Filter by users" 
+            />
           </SearchBar>
         </MainbarTitleContainer>
         <MainbarUsersContainer>

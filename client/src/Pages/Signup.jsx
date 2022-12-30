@@ -127,6 +127,12 @@ const SignupInputBox = styled.div`
 
   &.focused {
     border: ${props => props.isValid ? '1px solid #bababa' : '1px solid #b90101;'};
+    
+  }
+  
+  &:focus-within{
+    box-shadow: 0 0 0 4px rgba(144, 203, 255, 0.4);
+    border: 1px solid rgba(0, 103, 194, 0.4);
   }
 `
 
@@ -266,7 +272,12 @@ export default function Signup() {
     return axios.post(`${process.env.REACT_APP_SERVER_URI}users/signup`, data, headers);
   }
 
-  const {mutate:createUser} = useMutation({mutationKey:['postSignupData'], mutationFn:postSignupData});
+  const createUserOnSuccess = () => {
+    window.alert('Successfully created');
+    navigate('/login');
+  }
+
+  const {mutate:createUser} = useMutation({mutationKey:['postSignupData'], mutationFn:postSignupData, onSuccess: createUserOnSuccess});
 
   // 실시간 유효성 검사
   useEffect(() => {
@@ -302,10 +313,7 @@ export default function Signup() {
   const signupClickHandler = () => {
     if(displayNameValid && userEmailValid && passwordLegnthValid && passwordRegexValid) {
       try{
-        createUser({onSuccess: () => {
-          window.alert('Successfully created');
-          navigate('/login');
-        }});
+        createUser();
       } catch {
         navigate('/error');
       }

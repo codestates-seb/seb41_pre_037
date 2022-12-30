@@ -1,12 +1,4 @@
 import styled from "styled-components/macro"
-import user1 from '../../usericons/user1.png'
-import user2 from '../../usericons/user2.png'
-import user3 from '../../usericons/user3.png'
-import user4 from '../../usericons/user4.png'
-
-import { useRef } from "react"
-const imgArr = [user1, user2, user3, user4];
-
 
 const UserContainer = styled.div`
   display: flex;
@@ -31,13 +23,11 @@ const Username = styled.p`
 `
 
 export default function User({data}) {
-  const imgSrc = useRef();
-  imgSrc.current = Math.floor(Math.random() * 4);
 
   return (
     <UserContainer>
       <UserIMG>
-        <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921" alt="profile"></img>
+        <img src={data.image} alt="profile"></img>
       </UserIMG>
       <UserDetailContainer>
         <Username>{data.username}</Username>

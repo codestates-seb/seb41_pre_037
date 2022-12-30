@@ -1,7 +1,7 @@
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import { useNavigate } from "react-router-dom";
-import {convert} from 'html-to-text';
+import { convert } from 'html-to-text';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -155,7 +155,7 @@ export default function Question({ data, isLast }) {
                   border-radius: 5px;
                 `}
                 alt="img"
-                src="https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921"
+                src={data.image}
               ></img>
             </ProfileImg>
             <ProfileName>{`${data.username}`}</ProfileName>

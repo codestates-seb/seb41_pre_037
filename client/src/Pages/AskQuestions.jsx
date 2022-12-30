@@ -164,6 +164,12 @@ const QuestionInput = styled.input`
   box-sizing: border-box;
   border: 1px solid #cacaca;
   border-radius: 4px;
+
+  &:focus-within{
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(144, 203, 255, 0.4);
+    border: 1px solid rgba(0, 103, 194, 0.4);
+  }
 `
 const TagsInputContainer = styled.div`
   width: 100%;
@@ -171,6 +177,11 @@ const TagsInputContainer = styled.div`
   border: 1px solid #cacaca;
   border-radius: 4px;
   display: flex;
+  
+  &:focus-within{
+    box-shadow: 0 0 0 4px rgba(144, 203, 255, 0.4);
+    border: 1px solid rgba(0, 103, 194, 0.4);
+  }
 `
 
 const TagsInput = styled.input`
@@ -384,7 +395,12 @@ export default function AskQuestions() {
     return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, {headers});
   }
 
-  const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData});
+  const createQuestionOnSuccess = () => {
+    window.alert('successfuly posted questions!');
+    navigate('/');
+  }
+
+  const {mutate:createQuestion} = useMutation({mutationKey:['createQuestion'], mutationFn: postQuestionData, onSuccess: createQuestionOnSuccess});
 
 
   useEffect(() => {
@@ -460,23 +476,19 @@ export default function AskQuestions() {
   }
 
   const postQuestionOnClickHandler = () => {
-
-    const createQuestionOnSuccess = () => {
-
-    }
-    createQuestion({onSuccess : createQuestionOnSuccess });
+    createQuestion();
   }
 
-  const testHandler = () => {
-    const data = {
-      quesstionTitle : titleInput,
-      questionProblemBody : contentValue,
-      questionTryOrExpectingBody : extraContentValue,
-      tag : tagsArr.map((tag) => {return {tagName : tag}}),
-    }
+  // const testHandler = () => {
+  //   const data = {
+  //     quesstionTitle : titleInput,
+  //     questionProblemBody : contentValue,
+  //     questionTryOrExpectingBody : extraContentValue,
+  //     tag : tagsArr.map((tag) => {return {tagName : tag}}),
+  //   }
 
-    console.log(JSON.stringify(data));
-  }
+  //   console.log(JSON.stringify(data));
+  // }
 
   return (
     <>
