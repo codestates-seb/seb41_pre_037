@@ -1,79 +1,113 @@
-import RightSidebar from "../Components/RightSidebar/RightSidebar";
-import styled from "styled-components/macro";
-import Question from "../Components/Main/Question";
-import BREAKPOINT from "../breakpoint";
-import Header from "../Components/Header/Header";
+// 페이지, 리액트 컴포넌트, 정적파일 
 import Footer from "../Components/Footer/Footer";
+import Header from "../Components/Header/Header";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Pagination from "../Components/Pagination/Pagination";
+import Question from "../Components/Main/Question";
+import RightSidebar from "../Components/RightSidebar/RightSidebar";
 
+//로컬 모듈
+import BREAKPOINT from "../breakpoint";
+
+// 라이브러리 및 라이브러리 메소드
 import { useState, useEffect } from "react";
+import styled from "styled-components/macro";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
+// Styled Component (html tree 계층 순) (CSS 속성은 a-z 순)
 const Container = styled.div`
   display: flex;
-  width: 100%;
   height: max-content;
-  max-width: 1260px;
   margin: 0 auto;
+  max-width: 1260px;
+  width: 100%;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     justify-content: flex-start;
-  }
-`;
-
-const Title = styled.h1`
-  font-weight: 400;
-  margin-left: 20px;
-  font-size: 28px;
-  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
-    font-size: x-large;
-    margin-left: 15px;
-  }
-`;
-
-const QuestionCount = styled.h2`
-  font-size: 18px;
-  font-weight: 500;
-  margin-left: 20px;
-  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
-    font-size: medium;
-    margin-left: 15px;
   }
 `;
 
 const MainbarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
   padding-bottom: 50px;
+  width: 70%;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     width: 100%;
   }
 `;
+
 const MainbarTopHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
   margin-top: 10px;
+  width: 100%;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     padding-right: 20px;
   }
 `;
 
+const Title = styled.h1`
+  font-size: 28px;
+  font-weight: 400;
+  margin-left: 20px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: x-large;
+    margin-left: 15px;
+  }
+`;
+
+const AskQuestionButton = styled.button`
+  background-color: #0a95ff;
+  border: 1px solid #0a95ff;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 0 #6fc0ff;
+  color: white;
+  height: 35px;
+  margin: auto 0;
+  width: 100px;
+
+  &:hover {
+    background-color: #306fa0;
+    border: 1px solid #306fa0;
+    box-shadow: inset 0 1px 0 0 #65869e;
+    color: #aeaeae;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    margin-right: 10px;
+  }
+`;
+
 const MainbarBottomHeader = styled.div`
-  width: 100%;
-  display: flex;
   align-items: end;
+  display: flex;
   justify-content: space-between;
+  width: 100%;
+`;
+
+const QuestionCount = styled.h2`
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 20px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    font-size: medium;
+    margin-left: 15px;
+  }
 `;
 
 const MainbarSortButtonContainer = styled.div`
   display: flex;
-  width: 200px;
   height: max-content;
   padding-bottom: 15px;
+  width: 200px;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
     margin-right: 10px;
@@ -81,46 +115,28 @@ const MainbarSortButtonContainer = styled.div`
 `;
 
 const SortButton = styled.button`
-  width: 50%;
-  height: 30px;
-  padding: 5px;
-  margin: 0;
   border: 1px solid gray;
   border-radius: ${(props) => (props.isLeft ? "5px 0 0 5px" : "0 5px 5px 0")};
   border-width: ${(props) => (props.isLeft ? "1px 0 1px 1px" : "1px")};
+  height: 30px;
+  margin: 0;
+  padding: 5px;
+  width: 50%;
+  
+  &.selected {
+    background-color: #b2b2b2;
+    color: #3a3a3a;
+  }
 
   &:hover {
     background-color: #a2a2a2;
     cursor: pointer;
   }
 
-  &.selected {
-    background-color: #b2b2b2;
-    color: #3a3a3a;
-  }
 `;
 
-const AskQuestionButton = styled.button`
-  margin: auto 0;
-  width: 100px;
-  height: 35px;
-  background-color: #0a95ff;
-  color: white;
-  border: 1px solid #0a95ff;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 0 #6fc0ff;
-
-  &:hover {
-    background-color: #306fa0;
-    color: #aeaeae;
-    border: 1px solid #306fa0;
-    box-shadow: inset 0 1px 0 0 #65869e;
-    cursor: pointer;
-  }
-
-  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
-    margin-right: 10px;
-  }
+const PaginationContainer = styled.div`
+  margin-left: 20px;
 `;
 
 const RightSidebarContainer = styled.div`
@@ -134,9 +150,6 @@ const RightSidebarContainer = styled.div`
   }
 `;
 
-const PaginationContainer = styled.div`
-  margin-left: 20px;
-`;
 
 export default function Main() {
   const navigate = useNavigate();

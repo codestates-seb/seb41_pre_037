@@ -140,6 +140,7 @@ const Tag = styled.div`
 `;
 
 export default function Question({ postData }) {
+
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
