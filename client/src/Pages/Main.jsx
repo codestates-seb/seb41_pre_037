@@ -95,7 +95,7 @@ const SortButton = styled.button`
   }
 
   &.selected {
-    background-color: #777777;
+    background-color: #b2b2b2;
     color: #3a3a3a;
   }
 `;
@@ -195,26 +195,15 @@ export default function Main() {
           <MainbarContainer>
             <MainbarTopHeader>
               <Title>All Questions</Title>
-              <AskQuestionButton
-                onClick={() => {
-                  navigate("/askquestions");
-                }}
-              >
+              <AskQuestionButton onClick={() => { navigate("/askquestions")}}>
                 Ask Questions
               </AskQuestionButton>
             </MainbarTopHeader>
             <MainbarBottomHeader>
-              {pageInfo ? (
-                <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount>
-              ) : (
-                <p
-                  css={`
-                    margin-left: 20px;
-                  `}
-                >
-                  loading...
-                </p>
-              )}
+              {pageInfo 
+              ? <QuestionCount>{`${pageInfo?.totalElements} questions`}</QuestionCount>
+              : <p css={`margin-left: 20px;`}> loading...</p>
+              }
               <MainbarSortButtonContainer>
                 <SortButton
                   className={currentTab === "Newest" ? "selected" : ""}

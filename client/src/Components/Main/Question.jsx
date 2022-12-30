@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import { useNavigate } from "react-router-dom";
+import { convert } from 'html-to-text';
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -142,7 +143,7 @@ export default function Question({ data, isLast }) {
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
         <QuestionTitle onClick={() => {navigate(`/post/${data.questionId}/${data.questionTitle.replaceAll(' ', '-')}`)}}>{`${data.questionTitle}`}</QuestionTitle>
-        <QuestionPreview>{data.questionProblemBody}</QuestionPreview>
+        <QuestionPreview>{convert(data.questionProblemBody, {wordwrap: 130})}</QuestionPreview>
         <QuestionFooter>
           {data.tags.map((tag) => {
             return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
@@ -154,7 +155,7 @@ export default function Question({ data, isLast }) {
                   border-radius: 5px;
                 `}
                 alt="img"
-                src="https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921"
+                src={data.image}
               ></img>
             </ProfileImg>
             <ProfileName>{`${data.username}`}</ProfileName>

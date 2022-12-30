@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PencilIcon from "../../icons/Pencil.svg";
 import LogoGraysm from "../../icons/LogoGraysm.svg";
 import Comment from "../../icons/Comment.svg";
+import { useState } from "react";
 
 import BREAKPOINT from "../../breakpoint";
 
@@ -106,13 +107,21 @@ const TagCount = styled.p`
 `;
 const TagLoader = styled.p`
   color: #0074cc;
+  display: ${(props) => props.isClicked ? 'none' : 'flex'};
   &:hover {
     color: #50b3ff;
     cursor: pointer;
   }
 `;
 
+const MoreRelatedTagsContainer = styled.div`
+  display: ${(props) => props.isClicked ? 'flex' : 'none'};
+  flex-direction: column;
+`
+
 export default function RightSidebar() {
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <Container>
       <BlogContainer>
@@ -183,30 +192,52 @@ export default function RightSidebar() {
       <RelatedTagsContainer>
         <RelateTagsHead>Related Tags</RelateTagsHead>
         <TagContainer>
-          <Tag>javascript</Tag>
-          <TagCount>x 246153</TagCount>
+          <Tag>Javascript</Tag>
+          <TagCount>x 2600</TagCount>
         </TagContainer>
         <TagContainer>
-          <Tag>java</Tag>
-          <TagCount>x 3000643</TagCount>
+          <Tag>Java</Tag>
+          <TagCount>x 3003</TagCount>
         </TagContainer>
         <TagContainer>
-          <Tag>java</Tag>
-          <TagCount>x 3000643</TagCount>
+          <Tag>CSS</Tag>
+          <TagCount>x 30</TagCount>
         </TagContainer>
         <TagContainer>
-          <Tag>java</Tag>
-          <TagCount>x 3000643</TagCount>
+          <Tag>Python</Tag>
+          <TagCount>x 1008</TagCount>
         </TagContainer>
         <TagContainer>
-          <Tag>java</Tag>
-          <TagCount>x 3000643</TagCount>
+          <Tag>C#</Tag>
+          <TagCount>x 3003</TagCount>
         </TagContainer>
         <TagContainer>
-          <Tag>java</Tag>
-          <TagCount>x 3000643</TagCount>
+          <Tag>C++</Tag>
+          <TagCount>x 540</TagCount>
         </TagContainer>
-        <TagLoader>more related tags</TagLoader>
+        <TagLoader isClicked={isClicked} onClick={() => {setIsClicked(true)}}>more related tags</TagLoader>
+        <MoreRelatedTagsContainer isClicked={isClicked}>
+        <TagContainer>
+        <Tag>Haksel</Tag>
+          <TagCount>x 3002</TagCount>
+        </TagContainer>
+        <TagContainer>
+          <Tag>Macdonalds</Tag>
+          <TagCount>x 3223</TagCount>
+        </TagContainer>
+        <TagContainer>
+          <Tag>BurgerKing</Tag>
+          <TagCount>x 1643</TagCount>
+        </TagContainer>
+        <TagContainer>
+          <Tag>Lotteria</Tag>
+          <TagCount>x 363</TagCount>
+        </TagContainer>
+        <TagContainer>
+          <Tag>ShakeShack</Tag>
+          <TagCount>x 290</TagCount>
+        </TagContainer>
+        </MoreRelatedTagsContainer>  
       </RelatedTagsContainer>
     </Container>
   );
