@@ -41,10 +41,9 @@ const AuthorInfoContainer = styled.div`
   min-height: 65px;
 `;
 
-const AuthorProfileImageArea = styled.div`
+const AuthorProfileImage = styled.img`
   width: 32px;
   height: 32px;
-  background-color: green;
 `;
 
 const AuthorProfileLinker = styled.a`
@@ -81,8 +80,8 @@ export default function AnswerBottom({ answerData }) {
         {/* <ShareSheet /> */}
       </div>
       <AuthorInfoContainer>
-        <AuthorProfileImageArea />
-        <AuthorProfileLinker>{answerData.username}</AuthorProfileLinker>
+        <AuthorProfileImage src={answerData && answerData.image} />
+        <AuthorProfileLinker>{answerData && answerData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );

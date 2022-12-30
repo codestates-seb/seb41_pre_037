@@ -218,9 +218,9 @@ const Login = () => {
             `}
           />
           <SocialLoginContainer>
-            <GoogleLogin href={`${process.env.REACT_APP_SERVER_URI}:8080/oauth2/authorization/google`}>
+            <GoogleLogin href={`${process.env.REACT_APP_SERVER_URI}oauth2/authorization/google`}>
               <SocialLoginIcon src={Google} />
-              <SocialLoginText>Sign up with Google</SocialLoginText>
+              <SocialLoginText>Login with Google</SocialLoginText>
             </GoogleLogin>
           </SocialLoginContainer>
           <LoginFormContainer>

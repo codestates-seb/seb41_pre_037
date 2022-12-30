@@ -42,10 +42,9 @@ const AuthorInfoContainer = styled.div`
   min-height: 65px;
 `;
 
-const AuthorProfileImageArea = styled.div`
+const AuthorProfileImage = styled.img`
   width: 32px;
   height: 32px;
-  background-color: green;
 `;
 
 const AuthorProfileLinker = styled.a`
@@ -61,7 +60,6 @@ const AuthorProfileLinker = styled.a`
 `;
 
 export default function QuestionBottom({ postData }) {
-  // const { handleShareSheet } = useShareSheetStore((state) => state);
   const [handleShareSheet, setHandleShareSheet] = useState(false);
   const shareSheetHandler = (e) => {
     setHandleShareSheet(!handleShareSheet);
@@ -88,7 +86,7 @@ export default function QuestionBottom({ postData }) {
         <ShareSheet />
       </div>
       <AuthorInfoContainer>
-        <AuthorProfileImageArea />
+        <AuthorProfileImage src={postData && postData.image} />
         <AuthorProfileLinker>{postData && postData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>

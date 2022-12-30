@@ -326,7 +326,7 @@ const Header = () => {
                       height: 24px;
                     `}
                     onClick={() => {
-                      navigate(`profile/${id}/${username}`);
+                      navigate(`/profile/${id}/${username}`);
                     }}
                   >
                     <img src={JSON.parse(sessionStorage.getItem("userInfoStorage")).image} width="24px" height="24px" />
