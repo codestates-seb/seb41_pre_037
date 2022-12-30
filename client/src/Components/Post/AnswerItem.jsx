@@ -6,6 +6,8 @@ import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
 import AnswerBottom from "./AnswerBottom";
 
 const AnswerItemContainer = styled.div`
@@ -52,7 +54,9 @@ const VotingCounter = styled.div`
   color: #6a737c;
 `;
 
-const AnswerTopContainer = styled.div``;
+const AnswerTopContainer = styled.div`
+  min-height: 150px;
+`;
 
 const markdown = `<script>
 export let audio;
@@ -75,6 +79,7 @@ const onClick = () => {
 `;
 
 export default function AnswerItem({ answerData }) {
+  console.log(answerData);
   return (
     <AnswerItemContainer>
       <VotingComponentConatiner>
@@ -90,12 +95,9 @@ export default function AnswerItem({ answerData }) {
       </VotingComponentConatiner>
       <AnswerItemInnerContainer>
         <AnswerTopContainer>
-          {answerData.answerContent}
-          {/* <SyntaxHighlighter language="javascript" style={defaultStyle}>
-            {markdown}
-          </SyntaxHighlighter> */}
+          <ReactQuill theme="bubble" value={answerData.answerContent} readOnly={true} />
         </AnswerTopContainer>
-        <AnswerBottom />
+        <AnswerBottom answerData={answerData} />
       </AnswerItemInnerContainer>
     </AnswerItemContainer>
   );

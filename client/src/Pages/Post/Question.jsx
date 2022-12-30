@@ -57,7 +57,9 @@ const VotingCounter = styled.div`
   color: #6a737c;
 `;
 
-const QuestionTopContainer = styled.div``;
+const QuestionTopContainer = styled.div`
+  min-height: 150px;
+`;
 
 const AuthorInfoContainer = styled.div`
   box-sizing: border-box;
@@ -154,13 +156,8 @@ export default function Question({ postData }) {
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <ReactQuill theme="bubble" style={{ height: "250px" }} value={postData.questionProblemBody} readOnly={true} />
-          <ReactQuill
-            theme="bubble"
-            style={{ height: "250px" }}
-            value={postData.questionTryOrExpectingBody}
-            readOnly={true}
-          />
+          <ReactQuill theme="bubble" value={postData.questionProblemBody} readOnly={true} />
+          <ReactQuill theme="bubble" value={postData.questionTryOrExpectingBody} readOnly={true} />
         </QuestionTopContainer>
         <TagsContainer>
           {postData &&

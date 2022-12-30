@@ -5,8 +5,8 @@ import Login from "./Pages/Login";
 import Main from "./Pages/Main";
 import Post from "./Pages/Post/Post";
 import ProfileDefault from "./Pages/ProfileDefault";
-import ProfileEdit from "./Pages/ProfileEdit";
-import ProfileDelete from "./Pages/ProfileDelete";
+// import ProfileEdit from "./Pages/ProfileEdit";
+// import ProfileDelete from "./Pages/ProfileDelete";
 import Signup from "./Pages/Signup";
 import Tags from "./Pages/Tags";
 import Users from "./Pages/Users";
@@ -39,10 +39,8 @@ function App() {
       <Route path="/askquestions" element={<AskQuestions />}></Route>
       <Route path="/tags" element={<Tags />}></Route>
       <Route path="/users" element={<Users />}></Route>
-      <Route path="/profile/:id">
-        <Route index element={<ProfileDefault />}></Route>
-        <Route path="edit" element={<ProfileEdit />}></Route>
-        <Route path="delete" element={<ProfileDelete />}></Route>
+      <Route path="/profile">
+        <Route path=":id/:username" element={<ProfileDefault />}></Route>
       </Route>
     </Routes>
   );

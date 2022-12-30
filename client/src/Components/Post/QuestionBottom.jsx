@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "./ShareSheet";
+import { useState } from "react";
 import { useShareSheetStore } from "../../store/store";
 
 const AnswerBottomContainer = styled.div`
@@ -60,7 +61,13 @@ const AuthorProfileLinker = styled.a`
 `;
 
 export default function QuestionBottom({ postData }) {
-  const { handleShareSheet } = useShareSheetStore((state) => state);
+  // const { handleShareSheet } = useShareSheetStore((state) => state);
+  const [handleShareSheet, setHandleShareSheet] = useState(false);
+  const shareSheetHandler = (e) => {
+    setHandleShareSheet(!handleShareSheet);
+  };
+  console.log(handleShareSheet);
+
   return (
     <AnswerBottomContainer>
       <div
@@ -74,10 +81,10 @@ export default function QuestionBottom({ postData }) {
             align-items: center;
           `}
         >
-          <ShareLinker onClick={handleShareSheet}>Share</ShareLinker>
+          <ShareLinker onClick={shareSheetHandler}>Share</ShareLinker>
+          <ShareSheet handleShareSheet={handleShareSheet} />
           <DeleteButton>Delete</DeleteButton>
         </div>
-
         <ShareSheet />
       </div>
       <AuthorInfoContainer>

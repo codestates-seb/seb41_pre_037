@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import styled from "styled-components/macro";
 import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from "react-share";
-import { useShareSheetStore } from "../../store/store";
 
 const ShareSheetContainer = styled.div`
   display: flex;
@@ -103,17 +102,14 @@ const SNSContainer = styled.div`
   justify-content: space-between;
 `;
 
-const DUMMYURL = "https://www.naver.com/";
-
 const handleCopyClipBoard = async (text) => {
   await navigator.clipboard.writeText(text);
 };
 
-export default function ShareSheet() {
-  const { showShareSheet, handleShareSheet } = useShareSheetStore((state) => state);
+export default function ShareSheet({ handleShareSheet }) {
   return (
     <>
-      {showShareSheet ? (
+      {handleShareSheet ? (
         <ShareSheetContainer>
           <ShareSheetInnerContainer>
             <Label>Share a link to this question</Label>

@@ -192,8 +192,7 @@ const Login = () => {
       .then((response) => {
         const accessToken = response.headers.get("Authorization").split(" ")[1];
         sessionStorage.setItem("accesstoken", accessToken);
-        axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
-        // console.log(response.data.data);
+        // axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
         sessionStorage.setItem("userInfoStorage", JSON.stringify(response.data.data));
         setIsLogin(true);
         navigate("/");
@@ -219,7 +218,7 @@ const Login = () => {
             `}
           />
           <SocialLoginContainer>
-            <GoogleLogin href={`/oauth2/authorization/google`}>
+            <GoogleLogin href={`${process.env.REACT_APP_SERVER_URI}:8080/oauth2/authorization/google`}>
               <SocialLoginIcon src={Google} />
               <SocialLoginText>Sign up with Google</SocialLoginText>
             </GoogleLogin>

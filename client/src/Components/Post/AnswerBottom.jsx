@@ -59,7 +59,7 @@ const AuthorProfileLinker = styled.a`
   }
 `;
 
-export default function AnswerBottom() {
+export default function AnswerBottom({ answerData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
   return (
     <AnswerBottomContainer>
@@ -74,15 +74,15 @@ export default function AnswerBottom() {
             align-items: center;
           `}
         >
-          <ShareLinker onClick={handleShareSheet}>Share</ShareLinker>
+          {/* <ShareLinker onClick={handleShareSheet}>Share</ShareLinker> */}
           <DeleteButton>Delete</DeleteButton>
         </div>
 
-        <ShareSheet />
+        {/* <ShareSheet /> */}
       </div>
       <AuthorInfoContainer>
         <AuthorProfileImageArea />
-        <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
+        <AuthorProfileLinker>{answerData.username}</AuthorProfileLinker>
       </AuthorInfoContainer>
     </AnswerBottomContainer>
   );

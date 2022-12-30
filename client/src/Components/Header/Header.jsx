@@ -255,6 +255,14 @@ const Header = () => {
   const { pathname } = useLocation();
   const [searchInput, setSearchInput] = useState(query);
 
+  let username = "";
+  let id = "";
+
+  if (JSON.parse(sessionStorage.getItem("userInfoStorage"))) {
+    username = JSON.parse(sessionStorage.getItem("userInfoStorage")).email;
+    id = JSON.parse(sessionStorage.getItem("userInfoStorage")).memberId;
+  }
+
   const logoutHandler = () => {
     setUserInfo(null);
     setIsLogin(false);
@@ -273,6 +281,8 @@ const Header = () => {
       }
     }
   };
+
+  console.log(id);
 
   return (
     <>
@@ -315,6 +325,9 @@ const Header = () => {
                       width: 24px;
                       height: 24px;
                     `}
+                    onClick={() => {
+                      navigate(`profile/${id}/${username}`);
+                    }}
                   >
                     <img src={JSON.parse(sessionStorage.getItem("userInfoStorage")).image} width="24px" height="24px" />
                   </button>
