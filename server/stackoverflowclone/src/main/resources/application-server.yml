@@ -6,6 +6,10 @@ spring:
     url: jdbc:mysql://localhost:3306/stackover?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
     username: ${MYSQL_ID} # 유저네임
     password: ${MYSQL_PASSWORD} # 비밀번호
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath*:db/h2/data.sql
   jpa:
     hibernate:
       ddl-auto: none  # If deploy server, have to change please
@@ -27,7 +31,7 @@ spring:
           github:
             clientId: ${H_CLIENT_ID}
             clientSecret: ${H_CLIENT_SECRET}
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/google)
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/github)
             authorization-grant-type: authorization_code
             client-name: GitHub
             scope:
