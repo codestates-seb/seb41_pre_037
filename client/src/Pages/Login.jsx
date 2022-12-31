@@ -157,6 +157,8 @@ const SocialLoginText = styled.p`
   padding-top: 5px;
 `;
 
+//30분 지나면 세션스토리지 자동으로 날아가게..?
+
 const Login = () => {
   const navigate = useNavigate();
   const usernameInput = useRef();

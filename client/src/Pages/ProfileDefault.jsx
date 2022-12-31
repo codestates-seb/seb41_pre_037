@@ -254,13 +254,21 @@ export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
   const params = useParams();
+  const token = sessionStorage.getItem("accesstoken");
 
+  //이거는 유효한 토큰만 요청할 수 있게 막아놓지 않으신 듯
   const fetchData = () => {
-    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
+    if (token) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
+    }
   };
 
   const fetchDataOnSuccess = (response) => {
     response.data.data && setData(response.data.data);
+  };
+
+  const fetchDataOnError = (err) => {
+    navigate("/login");
   };
 
   const { isLoading } = useQuery({
@@ -268,6 +276,7 @@ export default function ProfileDefault() {
     queryFn: fetchData,
     keepPreviousData: true,
     onSuccess: fetchDataOnSuccess,
+    onError: fetchDataOnError,
   });
 
   console.log(data);
