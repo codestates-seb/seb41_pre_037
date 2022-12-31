@@ -16,7 +16,6 @@ export default function Token() {
     if (accessToken) {
       sessionStorage.setItem("accesstoken", accessToken);
       setIsLogin(true);
-      navigate("/");
     }
   }, []);
 
@@ -33,7 +32,8 @@ export default function Token() {
     queryFn: fetchUserInfo,
     enabled: isLogin,
     onSuccess: (data) => {
-      console.log(data);
+      sessionStorage.setItem("userInfoStorage", JSON.stringify(data.data.data));
+      navigate("/");
     },
   });
 

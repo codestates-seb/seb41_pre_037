@@ -79,7 +79,13 @@ const SearchPopUpComponent = () => {
           </SearchPopUpTextContainer>
         </SearchPopUpInnerContainer>
         <SearchPopUpInnerContainer>
-          <Button onClick={() => {navigate('/askquestions')}}>Ask a question</Button>
+          <Button
+            onClick={() => {
+              navigate("/askquestions");
+            }}
+          >
+            Ask a question
+          </Button>
         </SearchPopUpInnerContainer>
       </SearchPopUpView>
     </>

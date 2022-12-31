@@ -129,17 +129,20 @@ export default function PostAnswer({ postData }) {
 
     axios.defaults.withCredentials = true;
 
-    return axios
-      .post(`${process.env.REACT_APP_SERVER_URI}answers/${params.id}`, { answerContent: answerInput }, { headers })
-      .then(window.location.reload())
-      .catch((err) => {
-        if (err.response.status === 401) {
-          setUserInfo(null);
-          setIsLogin(false);
-          sessionStorage.clear();
-          setErrorMessage("Please login first before writing a answer.");
-        }
-      });
+    return (
+      axios
+        .post(`${process.env.REACT_APP_SERVER_URI}answers/${params.id}`, { answerContent: answerInput }, { headers })
+        // .then(window.location.reload())
+        .catch((err) => {
+          if (err.response.status === 401) {
+            console.log(err);
+            setUserInfo(null);
+            setIsLogin(false);
+            sessionStorage.clear();
+            setErrorMessage("Please login first before writing a answer.");
+          }
+        })
+    );
   };
 
   return (
