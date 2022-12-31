@@ -6,8 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.Queue;
 
-public interface MemberRepository extends JpaRepository<Member,Long> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
+
+    Optional<Member> findAllByMemberIdAndUsername(Long id, String name);
+
     Page<Member> findAllByUsernameContainsIgnoreCase(String Name, Pageable pageable);
+
 }

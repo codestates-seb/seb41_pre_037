@@ -49,7 +49,7 @@ public class QuestionController {
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
                                                           @RequestBody @Valid QuestionPostDto questionPostDto) {
         List<Tag> tagList = tagService.findTags(questionPostDto);
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Question question = questionService.postQuestion(questionMapper.postQuestionDtoToQuestion(questionPostDto, tagList, member));
 
         return new ResponseEntity<>(new DataResponseDto(questionMapper.questionTagListToQuestionPostResponseDto(question, tagList)), HttpStatus.CREATED);
@@ -58,7 +58,7 @@ public class QuestionController {
     @PostMapping("/{question-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @Positive @PathVariable("question-id") Long questionId) {
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Question question = questionService.findQuestion(questionId);
         questionVoteService.increaseVote(member, question);
 
@@ -68,7 +68,7 @@ public class QuestionController {
     @PostMapping("/{question-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
                                                             @Positive @PathVariable("question-id") Long questionId) {
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Question question = questionService.findQuestion(questionId);
         questionVoteService.decreaseVote(member, question);
 

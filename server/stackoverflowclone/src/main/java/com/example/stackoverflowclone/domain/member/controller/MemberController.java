@@ -5,10 +5,12 @@ import com.example.stackoverflowclone.domain.member.dto.MemberPostDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
 import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.time.MemberTimeStamp;
+import com.example.stackoverflowclone.global.time.QuestionTimeStamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,8 +31,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class MemberController {
     private final MemberService memberService;
+
     private final MemberMapper mapper;
     private final MemberTimeStamp memberTimeStamp;
+
+
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
@@ -42,33 +47,45 @@ public class MemberController {
 
     @GetMapping("/token")
     public ResponseEntity giveMemberInfo(@LoginMemberId Long memberId) {
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberLoginResponseDto(member)), HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}/{username}")
-    public ResponseEntity getMemberProfile(@Positive @PathVariable("member-id") Long memberId) {
+    public ResponseEntity getMemberProfile(@LoginMemberId @PathVariable("member-id") Long memberId,
+                                           @PathVariable(value = "username", required = true) String username) {
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
+        List<Question> questions = member.getQuestionList();
         String str = memberTimeStamp.timestamp(member);
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
                 HttpStatus.OK);
     }
 
+//    @GetMapping("/{member-id}")
+//    public ResponseEntity getMemberProfile(@LoginMemberId @PathVariable("member-id") Long memberId) {
+//
+//        Member member = memberService.findMember(memberId);
+//        List<Question> questions = member.getQuestionList();
+//        String str = memberTimeStamp.timestamp(member);
+//        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
+//                HttpStatus.OK);
+//    }
+
     @GetMapping("/edit/{member-id}")
     public ResponseEntity getMemberEdit(@Positive @PathVariable("member-id") Long memberId) {
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         String str = memberTimeStamp.timestamp(member);
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
                 HttpStatus.OK);
     }
 
     @GetMapping("/delete/{member-id}")
     public ResponseEntity getDeleteMember(@Positive @PathVariable("member-id") Long memberId) {
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         String str = memberTimeStamp.timestamp(member);
-        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberTomemberProfileResponse(member, str)),
-                HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
+                HttpStatus.NO_CONTENT);
     }
 
     @GetMapping()
@@ -86,7 +103,7 @@ public class MemberController {
         Member member = memberService.updateMember(mapper.memberPatchToMember(memberEditDto));
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(
-                mapper.memberTomemberProfileResponse(member, str)), HttpStatus.OK);
+                mapper.memberToMemberProfileResponse(member, str)), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{member-id}/confirm")
