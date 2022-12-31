@@ -10,7 +10,6 @@ import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.response.MultiResponseDto;
 import com.example.stackoverflowclone.global.security.auth.loginresolver.LoginMemberId;
 import com.example.stackoverflowclone.global.time.MemberTimeStamp;
-import com.example.stackoverflowclone.global.time.QuestionTimeStamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,7 +54,7 @@ public class MemberController {
     public ResponseEntity getMemberProfile(@LoginMemberId @PathVariable("member-id") Long memberId,
                                            @PathVariable(value = "username", required = true) String username) {
 
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findMember(memberId, username);
         List<Question> questions = member.getQuestionList();
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
