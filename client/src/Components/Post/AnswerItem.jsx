@@ -1,16 +1,12 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
-import ArrowUpIcon from "../../icons/ArrowUpLg.svg";
-import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
-import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import AnswerBottom from "./AnswerBottom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useIsLoginStore } from "../../store/loginstore";
 
 const AnswerItemContainer = styled.div`
   display: flex;
@@ -62,6 +58,8 @@ const AnswerTopContainer = styled.div`
 
 export default function AnswerItem({ answerData }) {
   const queryClient = useQueryClient();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const navigate = useNavigate();
 
   const postUpVoteData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
@@ -87,8 +85,10 @@ export default function AnswerItem({ answerData }) {
 
   const postUpVoteOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
-      window.alert("Please login first before voting.");
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
     } else if (err.response.status === 405) {
       console.log(err);
       window.alert("You have already voted");
@@ -129,11 +129,13 @@ export default function AnswerItem({ answerData }) {
 
   const postDownVoteOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
-      window.alert("Please login first before voting.");
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
     } else if (err.response.status === 405) {
       console.log(err);
-      window.alert("You have already voted");
+      window.alert("You have already voted.");
     }
   };
 

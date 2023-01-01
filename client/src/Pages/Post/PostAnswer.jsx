@@ -112,7 +112,6 @@ const BottomNoticeLinker = styled.a`
 export default function PostAnswer({ postData }) {
   const navigate = useNavigate();
   const [answerInput, setAnswerInput] = useState();
-  const [errorMessage, setErrorMessage] = useState();
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const params = useParams();
   const queryClient = useQueryClient();
@@ -144,8 +143,7 @@ export default function PostAnswer({ postData }) {
     if (err.response.status === 401) {
       console.log(err);
       setIsLogin(false);
-      // sessionStorage.clear();
-      setErrorMessage("Please login first before writing a answer.");
+      sessionStorage.clear();
     }
   };
 
@@ -174,7 +172,7 @@ export default function PostAnswer({ postData }) {
         />
       </AnswerEditorContainer>
       <PostAnswerButton onClick={handlePostAnswerClick}>Post Your Answer</PostAnswerButton>
-      <ErrorMessage>{errorMessage}</ErrorMessage>
+      {isLogin ? null : <ErrorMessage>Please log in first before writing a answer.</ErrorMessage>}
       <BottomNotice>
         Browse other questions tagged
         <TagsContainer>

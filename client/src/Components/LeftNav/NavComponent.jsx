@@ -1,5 +1,4 @@
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import "../../index.css";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +26,7 @@ const LeftNavMenu = styled.li`
   background-color: rgb(255, 255, 255);
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif; //이거 그냥 index.css에 *로 넣으면 안될까
+    "Helvetica Neue", sans-serif;
 
   font-size: small;
   color: rgb(81, 81, 81);
@@ -56,7 +55,7 @@ const LeftNavMenuPublic = styled.li`
   background-color: rgb(255, 255, 255);
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif; //이거 그냥 index.css에 *로 넣으면 안될까
+    "Helvetica Neue", sans-serif;
 
   font-size: small;
   color: rgb(81, 81, 81);
@@ -73,7 +72,7 @@ const NavComponent = () => {
           css={`
             padding-left: 10px;
           `}
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
         >
           <span
             css={`
@@ -100,7 +99,7 @@ const NavComponent = () => {
           css={`
             padding-left: 30px;
           `}
-           onClick={() => navigate('/tags')}
+          onClick={() => navigate("/tags")}
         >
           <span>Tags</span>
         </LeftNavMenu>
@@ -108,7 +107,7 @@ const NavComponent = () => {
           css={`
             padding-left: 30px;
           `}
-           onClick={() => navigate('/users')}
+          onClick={() => navigate("/users")}
         >
           <span>Users</span>
         </LeftNavMenu>

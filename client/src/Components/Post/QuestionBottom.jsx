@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "./ShareSheet";
 import { useState } from "react";
-import { useShareSheetStore } from "../../store/store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useIsLoginStore } from "../../store/loginstore";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -65,6 +64,7 @@ const AuthorProfileLinker = styled.a`
 export default function QuestionBottom({ postData }) {
   const [handleShareSheet, setHandleShareSheet] = useState(false);
   const navigate = useNavigate();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
 
   const deleteQuestionData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
@@ -82,14 +82,16 @@ export default function QuestionBottom({ postData }) {
   };
 
   const deleteQuetionOnsuccess = () => {
-    window.alert("successfuly deleted questions!");
+    window.alert("successfuly deleted!");
     navigate("/");
   };
 
   const deleteQuestionOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
-      window.alert("Please login first before deleting a post.");
+      window.alert("Please log in first before deleting a post.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
     } else if (err.response.status === 405) {
       console.log(err);
       window.alert("You can only delete a post you wrote.");

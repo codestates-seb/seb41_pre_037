@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
-import ShareSheet from "../../Components/Post/ShareSheet";
-import { useShareSheetStore } from "../../store/store";
+import { useIsLoginStore } from "../../store/loginstore";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -12,15 +11,6 @@ const AnswerBottomContainer = styled.div`
   padding-top: 20px;
   justify-content: space-between;
   align-items: flex-start;
-`;
-
-const ShareLinker = styled.a`
-  color: #525960;
-
-  &:hover {
-    cursor: pointer;
-    color: #7f8a95;
-  }
 `;
 
 const DeleteButton = styled.span`
@@ -61,10 +51,10 @@ const AuthorProfileLinker = styled.a`
 `;
 
 export default function AnswerBottom({ answerData }) {
-  const { handleShareSheet } = useShareSheetStore((state) => state);
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  //api 구현하시면 한 번 더 점검하고 테스트해보기
   const deleteAnswerData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
 
@@ -81,11 +71,19 @@ export default function AnswerBottom({ answerData }) {
   };
 
   const deleteAnswerOnsuccess = () => {
+    window.alert("successfully deleted!");
     queryClient.invalidateQueries("fetchPost");
   };
 
   const deleteAnswerOnError = (err) => {
-    console.log(err);
+    if (err.response.status === 401) {
+      window.alert("Please log in first before deleting a answer.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("You can only delete a answer you wrote.");
+    }
   };
 
   const { mutate: deleteAnswer } = useMutation({
@@ -111,11 +109,8 @@ export default function AnswerBottom({ answerData }) {
             align-items: center;
           `}
         >
-          {/* <ShareLinker onClick={handleShareSheet}>Share</ShareLinker> */}
           <DeleteButton onClick={handleDeleteAnswerClick}>Delete</DeleteButton>
         </div>
-
-        {/* <ShareSheet /> */}
       </div>
       <AuthorInfoContainer>
         <AuthorProfileImage src={answerData && answerData.image} />

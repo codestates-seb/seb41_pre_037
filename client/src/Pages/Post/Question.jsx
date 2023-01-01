@@ -1,18 +1,13 @@
 import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
-import ArrowUpIcon from "../../icons/ArrowUpLg.svg";
-import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
-import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import ShareSheet from "../../Components/Post/ShareSheet";
-import { useShareSheetStore } from "../../store/store";
+import { useIsLoginStore } from "../../store/loginstore";
 import QuestionBottom from "../../Components/Post/QuestionBottom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -62,55 +57,6 @@ const QuestionTopContainer = styled.div`
   min-height: 150px;
 `;
 
-const AuthorInfoContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  background-color: #d9e9f7;
-  padding: 7px;
-  min-width: 200px;
-  min-height: 65px;
-`;
-
-const AuthorProfileImageArea = styled.div`
-  width: 32px;
-  height: 32px;
-  background-color: green;
-`;
-
-const AuthorProfileLinker = styled.a`
-  all: unset;
-  font-size: 14px;
-  margin-left: 10px;
-  color: #2880d1;
-  cursor: pointer;
-
-  &:hover {
-    color: #4293f8;
-  }
-`;
-
-const QuestionBottomContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-top: 10px;
-  justify-content: space-between;
-`;
-
-const ShareLinker = styled.a`
-  color: #525960;
-
-  &:hover {
-    cursor: pointer;
-    color: #7f8a95;
-  }
-`;
-
-const DeleteButton = styled.p`
-  color: #a00000;
-  margin-left: 10px;
-`;
-
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -143,6 +89,8 @@ const Tag = styled.div`
 
 export default function Question({ postData }) {
   const queryClient = useQueryClient();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const navigate = useNavigate();
 
   const postUpVoteData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
@@ -168,11 +116,12 @@ export default function Question({ postData }) {
 
   const postUpVoteOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
-      window.alert("Please login first before voting.");
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
-      window.alert("You have already voted");
+      window.alert("You have already voted.");
     }
   };
 
@@ -210,11 +159,13 @@ export default function Question({ postData }) {
 
   const postDownVoteOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
-      window.alert("Please login first before voting.");
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
     } else if (err.response.status === 405) {
       console.log(err);
-      window.alert("You have already voted");
+      window.alert("You have already voted.");
     }
   };
 

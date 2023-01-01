@@ -1,19 +1,22 @@
-import styled from "styled-components/macro";
+//페이지, 리액트 컴포넌트, 정적 파일
 import SearchBarIcon from "../../icons/Search.svg";
 import Logo from "../../icons/Logo.svg";
 import MobileLogo from "../../icons/LogoGlyphXSm.svg";
 import MobileMenuIcon from "../../icons/Hamburger.svg";
 import MobileSearchBarIcon from "../../icons/MobileSearch.svg";
-import DummyProfileIcon from "../../icons/DummyProfileIcon.png";
-import { useLeftNavStore, useSearchPopUpStore, useMobileSearchPopUpStore } from "../../store/store";
-import { useIsLoginStore, useUserInfoStore } from "../../store/loginstore";
-import BREAKPOINT from "../../breakpoint";
 import SearchPopUp from "./SearchPopUp";
 import MobileLeftNav from "./MobileLeftNav";
 import MobileSearchPopUp from "./MobileSearchBarAndPopUp";
+
+//로컬 모듈
+import { useLeftNavStore, useSearchPopUpStore, useMobileSearchPopUpStore } from "../../store/store";
+import { useIsLoginStore } from "../../store/loginstore";
+import BREAKPOINT from "../../breakpoint";
+
+//라이브러리 및 라이브러리 메소드
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
+import styled from "styled-components/macro";
 
 const HeaderComponent = styled.header`
   height: 50px;
@@ -249,9 +252,8 @@ const Header = () => {
   const navigate = useNavigate();
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
-  const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
+  const { handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
-  // const { userInfo, setUserInfo } = useUserInfoStore();
   const { pathname } = useLocation();
   const [searchInput, setSearchInput] = useState(query);
 
@@ -264,7 +266,6 @@ const Header = () => {
   }
 
   const logoutHandler = () => {
-    // setUserInfo();
     sessionStorage.clear();
     setIsLogin(false);
     window.location.reload();
@@ -290,19 +291,19 @@ const Header = () => {
         <HeaderContainer>
           <MobileLeftButtonContainer>
             <MobileMenuButton onClick={handleLeftNav}>
-              <img src={MobileMenuIcon} />
+              <img src={MobileMenuIcon} alt="mobile menu icon" />
             </MobileMenuButton>
             <MobileHomeButton onClick={() => navigate("/")}>
-              <img src={MobileLogo} />
+              <img src={MobileLogo} alt="mobile logo" />
             </MobileHomeButton>
           </MobileLeftButtonContainer>
           <ButtonArea>
             <HomeButton onClick={() => navigate("/")}>
-              <img src={Logo} />
+              <img src={Logo} alt="logo" />
             </HomeButton>
           </ButtonArea>
           <SearchBar className={showPopUp ? "input-actived" : null}>
-            <img src={SearchBarIcon} />
+            <img src={SearchBarIcon} alt="searchbar Icon" />
             <SearchBarInput
               placeholder="Search..."
               onFocus={handlePopUp}
@@ -316,7 +317,7 @@ const Header = () => {
             {isLogin ? (
               <LoggedInButtonContainer>
                 <MobileSearchBarButton onClick={handleMobilePopUp}>
-                  <img src={MobileSearchBarIcon} />
+                  <img src={MobileSearchBarIcon} alt="mobile searchbar Icon" />
                 </MobileSearchBarButton>
                 <ProfileButtonAria>
                   <button
@@ -329,7 +330,12 @@ const Header = () => {
                       navigate(`/profile/${id}/${username}`);
                     }}
                   >
-                    <img src={JSON.parse(sessionStorage.getItem("userInfoStorage")).image} width="24px" height="24px" />
+                    <img
+                      src={JSON.parse(sessionStorage.getItem("userInfoStorage")).image}
+                      width="24px"
+                      height="24px"
+                      alt="user profile"
+                    />
                   </button>
                 </ProfileButtonAria>
                 <LoginOutButton onClick={logoutHandler}>Log out</LoginOutButton>
@@ -337,7 +343,7 @@ const Header = () => {
             ) : (
               <LoggedOutButtonContainer>
                 <MobileSearchBarButton onClick={handleMobilePopUp}>
-                  <img src={MobileSearchBarIcon} />
+                  <img src={MobileSearchBarIcon} alt="mobile searchbar icon" />
                 </MobileSearchBarButton>
                 <LoginOutButton
                   css={`
