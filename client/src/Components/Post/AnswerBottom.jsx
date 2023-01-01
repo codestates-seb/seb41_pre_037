@@ -3,6 +3,8 @@ import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "../../Components/Post/ShareSheet";
 import { useShareSheetStore } from "../../store/store";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -60,6 +62,42 @@ const AuthorProfileLinker = styled.a`
 
 export default function AnswerBottom({ answerData }) {
   const { handleShareSheet } = useShareSheetStore((state) => state);
+  const queryClient = useQueryClient();
+
+  //api 구현하시면 한 번 더 점검하고 테스트해보기
+  const deleteAnswerData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+      Connection: "keep-alive",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.delete(`${process.env.REACT_APP_SERVER_URI}answers/${answerData.answerId}`, { headers });
+  };
+
+  const deleteAnswerOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const deleteAnswerOnError = (err) => {
+    console.log(err);
+  };
+
+  const { mutate: deleteAnswer } = useMutation({
+    mutationFn: deleteAnswerData,
+    onSuccess: deleteAnswerOnsuccess,
+    onError: deleteAnswerOnError,
+  });
+
+  const handleDeleteAnswerClick = () => {
+    deleteAnswer();
+  };
+
   return (
     <AnswerBottomContainer>
       <div
@@ -74,7 +112,7 @@ export default function AnswerBottom({ answerData }) {
           `}
         >
           {/* <ShareLinker onClick={handleShareSheet}>Share</ShareLinker> */}
-          <DeleteButton>Delete</DeleteButton>
+          <DeleteButton onClick={handleDeleteAnswerClick}>Delete</DeleteButton>
         </div>
 
         {/* <ShareSheet /> */}

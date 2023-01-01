@@ -4,6 +4,9 @@ import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "./ShareSheet";
 import { useState } from "react";
 import { useShareSheetStore } from "../../store/store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -61,6 +64,42 @@ const AuthorProfileLinker = styled.a`
 
 export default function QuestionBottom({ postData }) {
   const [handleShareSheet, setHandleShareSheet] = useState(false);
+  const navigate = useNavigate();
+
+  const deleteQuestionData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+      Connection: "keep-alive",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.delete(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}`, { headers });
+  };
+
+  const deleteQuetionOnsuccess = () => {
+    window.alert("successfuly deleted questions!");
+    navigate("/");
+  };
+
+  const deleteQuestionOnError = (err) => {
+    console.log(err);
+  };
+
+  const { mutate: deleteQuestion } = useMutation({
+    mutationFn: deleteQuestionData,
+    onSuccess: deleteQuetionOnsuccess,
+    onError: deleteQuestionOnError,
+  });
+
+  const handleDeleteQuestionClick = () => {
+    deleteQuestion();
+  };
+
   const shareSheetHandler = (e) => {
     setHandleShareSheet(!handleShareSheet);
   };
@@ -81,7 +120,7 @@ export default function QuestionBottom({ postData }) {
         >
           <ShareLinker onClick={shareSheetHandler}>Share</ShareLinker>
           <ShareSheet handleShareSheet={handleShareSheet} />
-          <DeleteButton>Delete</DeleteButton>
+          <DeleteButton onClick={handleDeleteQuestionClick}>Delete</DeleteButton>
         </div>
         <ShareSheet />
       </div>
