@@ -93,7 +93,6 @@ export default function QuestionBottom({ postData }) {
       setIsLogin(false);
       sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
       window.alert("You can only delete a post you wrote.");
     }
   };
@@ -111,7 +110,6 @@ export default function QuestionBottom({ postData }) {
   const shareSheetHandler = (e) => {
     setHandleShareSheet(!handleShareSheet);
   };
-  console.log(handleShareSheet);
 
   return (
     <AnswerBottomContainer>

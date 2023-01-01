@@ -141,7 +141,6 @@ export default function PostAnswer({ postData }) {
 
   const postAnswerOnError = (err) => {
     if (err.response.status === 401) {
-      console.log(err);
       setIsLogin(false);
       sessionStorage.clear();
     }

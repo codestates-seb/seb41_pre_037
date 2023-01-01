@@ -90,7 +90,6 @@ export default function AnswerItem({ answerData }) {
       setIsLogin(false);
       sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
       window.alert("You have already voted");
     }
   };
@@ -134,7 +133,6 @@ export default function AnswerItem({ answerData }) {
       setIsLogin(false);
       sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
       window.alert("You have already voted.");
     }
   };

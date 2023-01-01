@@ -285,8 +285,6 @@ export default function ProfileDefault() {
     onError: fetchDataOnError,
   });
 
-  console.log(data);
-
   return (
     <>
       <Header />

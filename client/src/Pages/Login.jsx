@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { React, useState, useRef } from "react";
+import { React, useState } from "react";
 import styled from "styled-components/macro";
 import Header from "../Components/Header/Header";
 import BREAKPOINT from "../breakpoint";

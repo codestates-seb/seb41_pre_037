@@ -140,8 +140,6 @@ export default function Post() {
     window.scrollTo({ left: 0, top: 0 });
   }, []);
 
-  console.log(post);
-
   return (
     <>
       <Header />

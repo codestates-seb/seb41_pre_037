@@ -164,7 +164,6 @@ export default function Question({ postData }) {
       setIsLogin(false);
       sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
       window.alert("You have already voted.");
     }
   };

@@ -19,17 +19,16 @@ import { useState } from "react";
 import styled from "styled-components/macro";
 
 const HeaderComponent = styled.header`
-  height: 50px;
-  width: 100vw;
-  display: flex;
-  position: sticky;
-  top: 0;
-  left: 0;
   align-items: center;
   box-sizing: border-box;
   background-color: rgb(248, 249, 249);
   border-top: 3px solid rgb(244, 130, 36);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  height: 50px;
+  left: 0;
+  position: sticky;
+  width: 100vw;
   z-index: 999;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
@@ -38,11 +37,11 @@ const HeaderComponent = styled.header`
 `;
 
 const HeaderContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: space-evenly;
+  width: 100%;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     justify-content: space-between;
@@ -50,11 +49,11 @@ const HeaderContainer = styled.div`
 `;
 
 const ButtonArea = styled.div`
-  width: 30%;
-  height: 100%;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: center;
+  width: 30%;
 
   > button {
     cursor: pointer;
@@ -67,10 +66,10 @@ const ButtonArea = styled.div`
 
 const HomeButton = styled.button`
   all: unset;
-  width: 166px;
+  box-sizing: border-box;
   height: 100%;
   padding: 8px;
-  box-sizing: border-box;
+  width: 166px;
 
   &:hover {
     background-color: rgb(228, 230, 232);
@@ -97,12 +96,11 @@ const MobileLeftButtonContainer = styled.div`
 
 const MobileHomeButton = styled.button`
   all: unset;
-  height: 47px;
-  width: 47px;
-
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 47px;
   justify-content: center;
+  width: 47px;
 
   &:hover {
     background-color: rgb(228, 230, 232);
@@ -114,12 +112,11 @@ const MobileHomeButton = styled.button`
 
 const MobileMenuButton = styled.button`
   all: unset;
-  height: 47px;
-  width: 47px;
-
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 47px;
   justify-content: center;
+  width: 47px;
 
   &:hover {
     background-color: rgb(228, 230, 232);
@@ -130,15 +127,15 @@ const MobileMenuButton = styled.button`
 `;
 
 const SearchBar = styled.div`
-  display: flex;
   align-items: center;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(187, 191, 195);
+  box-sizing: border-box;
   border-radius: 3px;
-  width: 40%;
+  display: flex;
   height: 32px;
   padding-left: 1%;
-  box-sizing: border-box;
+  width: 40%;
 
   &.input-actived {
     box-shadow: 0 0 5px 4px rgba(95, 180, 255, 0.4);
@@ -151,18 +148,17 @@ const SearchBar = styled.div`
 
 const SearchBarInput = styled.input`
   all: unset;
-  padding-left: 1%;
   font-size: 14px;
+  padding-left: 1%;
 `;
 
 const MobileSearchBarButton = styled.button`
   all: unset;
-  height: 47px;
-  width: 47px;
-
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 47px;
   justify-content: center;
+  width: 47px;
 
   &:hover {
     background-color: rgb(228, 230, 232);
@@ -173,10 +169,9 @@ const MobileSearchBarButton = styled.button`
 `;
 
 const LoggedOutButtonContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
-
   padding: 10px;
 
   > button {
@@ -189,8 +184,6 @@ const LoggedOutButtonContainer = styled.div`
 
 const LoginOutButton = styled.button`
   all: unset;
-  width: 60px;
-  height: 32px;
   background-color: rgb(225, 236, 244);
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
   border: 1px solid rgb(57, 115, 157);
@@ -198,7 +191,9 @@ const LoginOutButton = styled.button`
   color: rgb(57, 115, 157);
   font-size: 14px;
   font-weight: 400;
+  height: 32px;
   text-align: center;
+  width: 60px;
 
   &:hover {
     background-color: rgb(185, 210, 232);
@@ -207,8 +202,8 @@ const LoginOutButton = styled.button`
 
 const SignUpButton = styled(LoginOutButton)`
   background-color: rgb(10, 149, 255);
-  width: 65px;
   color: rgb(255, 255, 255);
+  width: 65px;
 
   &:hover {
     background-color: rgb(49, 114, 198);
@@ -216,8 +211,8 @@ const SignUpButton = styled(LoginOutButton)`
 `;
 
 const LoggedInButtonContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-around;
 
   > button {
@@ -229,12 +224,11 @@ const LoggedInButtonContainer = styled.div`
 `;
 
 const ProfileButtonAria = styled.div`
-  height: 47px;
-  width: 47px;
-
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 47px;
   justify-content: center;
+  width: 47px;
 
   > button {
     cursor: pointer;
@@ -247,15 +241,15 @@ const ProfileButtonAria = styled.div`
 
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get("q");
-
-  const navigate = useNavigate();
   const { showPopUp, handlePopUp } = useSearchPopUpStore((state) => state);
   const { handleLeftNav } = useLeftNavStore((state) => state);
   const { handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const { pathname } = useLocation();
+
+  const query = searchParams.get("q");
   const [searchInput, setSearchInput] = useState(query);
+  const navigate = useNavigate();
 
   let username = "";
   let id = "";
@@ -282,8 +276,6 @@ const Header = () => {
       }
     }
   };
-
-  console.log(id);
 
   return (
     <>
