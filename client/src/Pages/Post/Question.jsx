@@ -1,16 +1,13 @@
 import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
-import ArrowUpIcon from "../../icons/ArrowUpLg.svg";
-import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
-import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import ShareSheet from "../../Components/Post/ShareSheet";
-import { useShareSheetStore } from "../../store/store";
+import { useIsLoginStore } from "../../store/loginstore";
 import QuestionBottom from "../../Components/Post/QuestionBottom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -60,55 +57,6 @@ const QuestionTopContainer = styled.div`
   min-height: 150px;
 `;
 
-const AuthorInfoContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  background-color: #d9e9f7;
-  padding: 7px;
-  min-width: 200px;
-  min-height: 65px;
-`;
-
-const AuthorProfileImageArea = styled.div`
-  width: 32px;
-  height: 32px;
-  background-color: green;
-`;
-
-const AuthorProfileLinker = styled.a`
-  all: unset;
-  font-size: 14px;
-  margin-left: 10px;
-  color: #2880d1;
-  cursor: pointer;
-
-  &:hover {
-    color: #4293f8;
-  }
-`;
-
-const QuestionBottomContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-top: 10px;
-  justify-content: space-between;
-`;
-
-const ShareLinker = styled.a`
-  color: #525960;
-
-  &:hover {
-    cursor: pointer;
-    color: #7f8a95;
-  }
-`;
-
-const DeleteButton = styled.p`
-  color: #a00000;
-  margin-left: 10px;
-`;
-
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -140,17 +88,127 @@ const Tag = styled.div`
 `;
 
 export default function Question({ postData }) {
+  const queryClient = useQueryClient();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const navigate = useNavigate();
+
+  const postUpVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const REQUESTBODY = "upvote";
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}/vote/2`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postUpVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postUpVoteOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("You have already voted.");
+    }
+  };
+
+  const { mutate: postUpVote } = useMutation({
+    mutationFn: postUpVoteData,
+    onSuccess: postUpVoteOnsuccess,
+    onError: postUpVoteOnError,
+  });
+
+  const handlePostUpVoteClick = () => {
+    postUpVote();
+  };
+
+  const postDownVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const REQUESTBODY = "downvote";
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}/vote/3`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postDownVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postDownVoteOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      console.log(err);
+      window.alert("You have already voted.");
+    }
+  };
+
+  const { mutate: postDownVote } = useMutation({
+    mutationFn: postDownVoteData,
+    onSuccess: postDownVoteOnsuccess,
+    onError: postDownVoteOnError,
+  });
+
+  const handlePostDownVoteClick = () => {
+    postDownVote();
+  };
 
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
         <VotingComponent>
-          <VotingButton>
-            <img src={ArrowUpIcon} />
+          <VotingButton onClick={handlePostUpVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 25H34L18 9L2 25Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
           <VotingCounter>{postData && postData.questionVoteCount}</VotingCounter>
-          <VotingButton>
-            <img src={ArrowDownIcon} />
+          <VotingButton onClick={handlePostDownVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 11H34L18 27L2 11Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
         </VotingComponent>
       </VotingComponentConatiner>

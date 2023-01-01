@@ -133,6 +133,7 @@ export default function Post() {
     queryFn: fetchPost,
     keepPreviousData: true,
     onSuccess: fetchPostOnSuccess,
+    notifyOnChangeProps: "tracked",
   });
 
   useEffect(() => {

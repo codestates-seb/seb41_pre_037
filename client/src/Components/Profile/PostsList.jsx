@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import PostListItem from "./PostListItem";
 
 const ItemCard = styled.div`

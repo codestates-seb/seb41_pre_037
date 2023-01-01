@@ -7,7 +7,7 @@ import Logo from "../icons/LogoGlyphMd.svg";
 import AlertCircle from "../icons/AlertCircle.svg";
 import Google from "../icons/Google.png";
 import { useNavigate } from "react-router-dom";
-import { useInputStore, useErrorMessageStore, useIsLoginStore, useUserInfoStore } from "../store/loginstore";
+import { useErrorMessageStore, useIsLoginStore } from "../store/loginstore";
 import axios from "axios";
 
 const Background = styled.div`
@@ -159,13 +159,9 @@ const SocialLoginText = styled.p`
 
 const Login = () => {
   const navigate = useNavigate();
-  const usernameInput = useRef();
-  const passwordInput = useRef();
 
-  const { inputs, setInputs } = useInputStore((state) => state);
   const { errorMessage, setErrorMessage } = useErrorMessageStore();
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
-  const { userInfo, setUserInfo } = useUserInfoStore();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -192,7 +188,6 @@ const Login = () => {
       .then((response) => {
         const accessToken = response.headers.get("Authorization").split(" ")[1];
         sessionStorage.setItem("accesstoken", accessToken);
-        // axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accesstoken");
         sessionStorage.setItem("userInfoStorage", JSON.stringify(response.data.data));
         setIsLogin(true);
         navigate("/");
@@ -205,6 +200,11 @@ const Login = () => {
         }
       });
   };
+
+  //요청이 실패하면 헤더 버튼이 로그아웃 상태로 바뀌는 것이 더 자연스러울 것 같아 isLogin(false)는 넣지 않았음
+  //zustand에 있는 userinfostore는 사용하지 않음 (바로 세션 스토리지에 유저 정보 넣고 필요한 곳마다 꺼내서 사용)
+
+  //30분 지나면 세션스토리지에 저장된 정보(토큰, 유저 정보)가 자동으로 날아가게 하려고 했으나, 그렇게 하면 header에서 받아야 할 프로필 이미지 정보까지 날아가서 사이트가 터지게 됨
 
   return (
     <>
@@ -241,7 +241,7 @@ const Login = () => {
                   <LoginInput
                     className={errorMessage ? "error" : null}
                     name="username"
-                    value={username}
+                    value={username || ""}
                     onChange={(e) => {
                       setUsername(e.target.value);
                     }}
@@ -266,7 +266,7 @@ const Login = () => {
                     className={errorMessage ? "error" : null}
                     type="password"
                     name="password"
-                    value={password}
+                    value={password || ""}
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}

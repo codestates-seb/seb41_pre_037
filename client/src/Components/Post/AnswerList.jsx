@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import AnswerItem from "./AnswerItem";
 
 const AnswerListContainer = styled.div`

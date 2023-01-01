@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import ShareSheet from "./ShareSheet";
 import { useState } from "react";
-import { useShareSheetStore } from "../../store/store";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useIsLoginStore } from "../../store/loginstore";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -61,6 +63,51 @@ const AuthorProfileLinker = styled.a`
 
 export default function QuestionBottom({ postData }) {
   const [handleShareSheet, setHandleShareSheet] = useState(false);
+  const navigate = useNavigate();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+
+  const deleteQuestionData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+      Connection: "keep-alive",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.delete(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}`, { headers });
+  };
+
+  const deleteQuetionOnsuccess = () => {
+    window.alert("successfuly deleted!");
+    navigate("/");
+  };
+
+  const deleteQuestionOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before deleting a post.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      console.log(err);
+      window.alert("You can only delete a post you wrote.");
+    }
+  };
+
+  const { mutate: deleteQuestion } = useMutation({
+    mutationFn: deleteQuestionData,
+    onSuccess: deleteQuetionOnsuccess,
+    onError: deleteQuestionOnError,
+  });
+
+  const handleDeleteQuestionClick = () => {
+    deleteQuestion();
+  };
+
   const shareSheetHandler = (e) => {
     setHandleShareSheet(!handleShareSheet);
   };
@@ -81,7 +128,7 @@ export default function QuestionBottom({ postData }) {
         >
           <ShareLinker onClick={shareSheetHandler}>Share</ShareLinker>
           <ShareSheet handleShareSheet={handleShareSheet} />
-          <DeleteButton>Delete</DeleteButton>
+          <DeleteButton onClick={handleDeleteQuestionClick}>Delete</DeleteButton>
         </div>
         <ShareSheet />
       </div>

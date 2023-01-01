@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
-import ShareSheet from "../../Components/Post/ShareSheet";
-import { useShareSheetStore } from "../../store/store";
+import { useIsLoginStore } from "../../store/loginstore";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const AnswerBottomContainer = styled.div`
   display: flex;
@@ -10,15 +11,6 @@ const AnswerBottomContainer = styled.div`
   padding-top: 20px;
   justify-content: space-between;
   align-items: flex-start;
-`;
-
-const ShareLinker = styled.a`
-  color: #525960;
-
-  &:hover {
-    cursor: pointer;
-    color: #7f8a95;
-  }
 `;
 
 const DeleteButton = styled.span`
@@ -59,7 +51,51 @@ const AuthorProfileLinker = styled.a`
 `;
 
 export default function AnswerBottom({ answerData }) {
-  const { handleShareSheet } = useShareSheetStore((state) => state);
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const deleteAnswerData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+      Connection: "keep-alive",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.delete(`${process.env.REACT_APP_SERVER_URI}answers/${answerData.answerId}`, { headers });
+  };
+
+  const deleteAnswerOnsuccess = () => {
+    window.alert("successfully deleted!");
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const deleteAnswerOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before deleting a answer.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("You can only delete a answer you wrote.");
+    }
+  };
+
+  const { mutate: deleteAnswer } = useMutation({
+    mutationFn: deleteAnswerData,
+    onSuccess: deleteAnswerOnsuccess,
+    onError: deleteAnswerOnError,
+  });
+
+  const handleDeleteAnswerClick = () => {
+    deleteAnswer();
+  };
+
   return (
     <AnswerBottomContainer>
       <div
@@ -73,11 +109,8 @@ export default function AnswerBottom({ answerData }) {
             align-items: center;
           `}
         >
-          {/* <ShareLinker onClick={handleShareSheet}>Share</ShareLinker> */}
-          <DeleteButton>Delete</DeleteButton>
+          <DeleteButton onClick={handleDeleteAnswerClick}>Delete</DeleteButton>
         </div>
-
-        {/* <ShareSheet /> */}
       </div>
       <AuthorInfoContainer>
         <AuthorProfileImage src={answerData && answerData.image} />

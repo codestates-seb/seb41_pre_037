@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
 import QuestionIcon from "../../icons/Question.svg";
-import AnswerIcon from "../../icons/Answer.svg";
 
 const ListItemContainer = styled.div`
   width: 100%;

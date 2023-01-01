@@ -8,7 +8,7 @@ import BREAKPOINT from "../../breakpoint";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useIsLoginStore, useUserInfoStore } from "../../store/loginstore";
+import { useIsLoginStore } from "../../store/loginstore";
 
 const PostBottomContainer = styled.div`
   display: flex;
@@ -112,11 +112,9 @@ const BottomNoticeLinker = styled.a`
 export default function PostAnswer({ postData }) {
   const navigate = useNavigate();
   const [answerInput, setAnswerInput] = useState();
-  const [errorMessage, setErrorMessage] = useState();
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
-
-  const { userInfo, setUserInfo } = useUserInfoStore();
   const params = useParams();
+  const queryClient = useQueryClient();
 
   const postAnswerData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
@@ -129,17 +127,34 @@ export default function PostAnswer({ postData }) {
 
     axios.defaults.withCredentials = true;
 
-    return axios
-      .post(`${process.env.REACT_APP_SERVER_URI}answers/${params.id}`, { answerContent: answerInput }, { headers })
-      .then(window.location.reload())
-      .catch((err) => {
-        if (err.response.status === 401) {
-          setUserInfo(null);
-          setIsLogin(false);
-          sessionStorage.clear();
-          setErrorMessage("Please login first before writing a answer.");
-        }
-      });
+    return axios.post(
+      `${process.env.REACT_APP_SERVER_URI}answers/${params.id}`,
+      { answerContent: answerInput },
+      { headers }
+    );
+  };
+
+  const postAnswerOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+    setAnswerInput("");
+  };
+
+  const postAnswerOnError = (err) => {
+    if (err.response.status === 401) {
+      console.log(err);
+      setIsLogin(false);
+      sessionStorage.clear();
+    }
+  };
+
+  const { mutate: postAnswer } = useMutation({
+    mutationFn: postAnswerData,
+    onSuccess: postAnswerOnsuccess,
+    onError: postAnswerOnError,
+  });
+
+  const handlePostAnswerClick = () => {
+    postAnswer();
   };
 
   return (
@@ -156,8 +171,8 @@ export default function PostAnswer({ postData }) {
           }}
         />
       </AnswerEditorContainer>
-      <PostAnswerButton onClick={postAnswerData}>Post Your Answer</PostAnswerButton>
-      <ErrorMessage>{errorMessage}</ErrorMessage>
+      <PostAnswerButton onClick={handlePostAnswerClick}>Post Your Answer</PostAnswerButton>
+      {isLogin ? null : <ErrorMessage>Please log in first before writing a answer.</ErrorMessage>}
       <BottomNotice>
         Browse other questions tagged
         <TagsContainer>

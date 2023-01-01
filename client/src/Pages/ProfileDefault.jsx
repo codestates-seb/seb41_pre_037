@@ -14,6 +14,7 @@ import PostsList from "../Components/Profile/PostsList";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useIsLoginStore } from "../store/loginstore";
 
 const Container = styled.div`
   display: flex;
@@ -253,14 +254,27 @@ const Aboutdescription = styled.span`
 export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const params = useParams();
+  const token = sessionStorage.getItem("accesstoken");
 
+  //토큰으로 해당 유저를 식별할 수 있게 막혀있지 않음
+  //토큰이 존재할 때만(로그인한 상태일 때만) 요청 보낼 수 있게 해둠
   const fetchData = () => {
-    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
+    if (token) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
+    }
   };
 
   const fetchDataOnSuccess = (response) => {
     response.data.data && setData(response.data.data);
+  };
+
+  //로그인된 상태이지만, 30분이 지나서 토큰이 유효하지 않을 때는 고려하지 않음. (유저 프로필 페이지까지는 볼 수 있게)
+  //아래는 유저 프로필 페이지에서 로그아웃했을 때에 대한 에러 처리
+  const fetchDataOnError = (err) => {
+    window.alert("Please log in first.");
+    navigate("/login");
   };
 
   const { isLoading } = useQuery({
@@ -268,6 +282,7 @@ export default function ProfileDefault() {
     queryFn: fetchData,
     keepPreviousData: true,
     onSuccess: fetchDataOnSuccess,
+    onError: fetchDataOnError,
   });
 
   console.log(data);
