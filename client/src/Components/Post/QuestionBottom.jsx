@@ -87,7 +87,13 @@ export default function QuestionBottom({ postData }) {
   };
 
   const deleteQuestionOnError = (err) => {
-    console.log(err);
+    if (err.response.status === 401) {
+      console.log(err);
+      window.alert("Please login first before deleting a post.");
+    } else if (err.response.status === 405) {
+      console.log(err);
+      window.alert("You can only delete a post you wrote.");
+    }
   };
 
   const { mutate: deleteQuestion } = useMutation({

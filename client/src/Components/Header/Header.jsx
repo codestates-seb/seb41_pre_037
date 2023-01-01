@@ -306,7 +306,7 @@ const Header = () => {
             <SearchBarInput
               placeholder="Search..."
               onFocus={handlePopUp}
-              value={searchInput}
+              value={searchInput || ""}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyUp={searchBarInputKeyUpHandler}
             />

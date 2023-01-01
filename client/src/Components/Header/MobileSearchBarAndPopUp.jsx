@@ -5,7 +5,6 @@ import SearchBarIcon from "../../icons/Search.svg";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-
 const SearchPopUpBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -99,13 +98,13 @@ const Button = styled.button`
 
 const MobileSearchPopUp = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const { pathname } = useLocation;
 
-  const searchBarInputKeyUpHandler = e => {
+  const searchBarInputKeyUpHandler = (e) => {
     if (e.key === "Enter") {
-      if(pathname === '/search') {
+      if (pathname === "/search") {
         navigate(`/search?q=${searchInput}`);
         setSearchInput(searchInput);
       } else {
@@ -113,7 +112,7 @@ const MobileSearchPopUp = () => {
         setSearchInput(searchInput);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -121,11 +120,13 @@ const MobileSearchPopUp = () => {
         <SearchPopUpBackdrop onClick={handleMobilePopUp}>
           <SearchBar className={showMobilePopUp ? "input-actived" : null} onClick={(e) => e.stopPropagation()}>
             <img src={SearchBarIcon} />
-            <SearchBarInput placeholder="Search..." 
-            onClick={(e) => e.stopPropagation()} 
-            value={searchInput}
-            onChange={e => setSearchInput(e.target.value)}
-            onKeyUp={searchBarInputKeyUpHandler}/>
+            <SearchBarInput
+              placeholder="Search..."
+              onClick={(e) => e.stopPropagation()}
+              value={searchInput || ""}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyUp={searchBarInputKeyUpHandler}
+            />
           </SearchBar>
           <SearchPopUpView>
             <SearchPopUpInnerContainer
@@ -141,7 +142,13 @@ const MobileSearchPopUp = () => {
               </SearchPopUpTextContainer>
             </SearchPopUpInnerContainer>
             <SearchPopUpInnerContainer>
-              <Button onClick={() => {navigate('/askquestions')}}>Ask a question</Button>
+              <Button
+                onClick={() => {
+                  navigate("/askquestions");
+                }}
+              >
+                Ask a question
+              </Button>
             </SearchPopUpInnerContainer>
           </SearchPopUpView>
         </SearchPopUpBackdrop>
