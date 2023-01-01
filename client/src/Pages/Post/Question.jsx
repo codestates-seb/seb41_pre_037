@@ -167,8 +167,13 @@ export default function Question({ postData }) {
   };
 
   const postUpVoteOnError = (err) => {
-    console.log(err);
-    window.alert("You have already voted");
+    if (err.response.status === 401) {
+      console.log(err);
+      window.alert("Please login first before voting.");
+    } else if (err.response.status === 405) {
+      console.log(err);
+      window.alert("You have already voted");
+    }
   };
 
   const { mutate: postUpVote } = useMutation({
@@ -204,8 +209,13 @@ export default function Question({ postData }) {
   };
 
   const postDownVoteOnError = (err) => {
-    console.log(err);
-    window.alert("You have already voted");
+    if (err.response.status === 401) {
+      console.log(err);
+      window.alert("Please login first before voting.");
+    } else if (err.response.status === 405) {
+      console.log(err);
+      window.alert("You have already voted");
+    }
   };
 
   const { mutate: postDownVote } = useMutation({
