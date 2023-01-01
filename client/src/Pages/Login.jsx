@@ -248,7 +248,7 @@ const Login = () => {
                   <LoginInput
                     className={errorMessage ? "error" : null}
                     name="username"
-                    value={username}
+                    value={username || ""}
                     onChange={(e) => {
                       setUsername(e.target.value);
                     }}
@@ -273,7 +273,7 @@ const Login = () => {
                     className={errorMessage ? "error" : null}
                     type="password"
                     name="password"
-                    value={password}
+                    value={password || ""}
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
