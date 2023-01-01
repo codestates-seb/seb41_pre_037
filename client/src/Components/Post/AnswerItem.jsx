@@ -1,18 +1,18 @@
+import AnswerBottom from "./AnswerBottom";
+import { useIsLoginStore } from "../../store/loginstore";
+import "react-quill/dist/quill.bubble.css";
 import React from "react";
 import styled from "styled-components/macro";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.bubble.css";
-import AnswerBottom from "./AnswerBottom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useIsLoginStore } from "../../store/loginstore";
 
 const AnswerItemContainer = styled.div`
-  display: flex;
-  width: 100%;
   border-bottom: 1px solid #e3e3e3;
+  display: flex;
   padding: 16px 0 16px 0;
+  width: 100%;
 `;
 
 const AnswerItemInnerContainer = styled.div`
@@ -28,28 +28,28 @@ const VotingComponentConatiner = styled.div`
 `;
 
 const VotingComponent = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   height: max-content;
 `;
 
 const VotingButton = styled.button`
+  align-items: center;
   all: unset;
   cursor: pointer;
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 const VotingCounter = styled.div`
-  display: flex;
-  width: 100%;
-  height: 28px;
   align-items: center;
-  justify-content: center;
-  font-size: large;
   color: #6a737c;
+  display: flex;
+  font-size: large;
+  height: 28px;
+  justify-content: center;
+  width: 100%;
 `;
 
 const AnswerTopContainer = styled.div`

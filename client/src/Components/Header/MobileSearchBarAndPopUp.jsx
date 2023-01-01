@@ -117,7 +117,7 @@ const MobileSearchPopUp = () => {
       {showMobilePopUp === true ? (
         <SearchPopUpBackdrop onClick={handleMobilePopUp}>
           <SearchBar className={showMobilePopUp ? "input-actived" : null} onClick={(e) => e.stopPropagation()}>
-            <img src={SearchBarIcon} />
+            <img src={SearchBarIcon} alt="searchbar icon" />
             <SearchBarInput
               placeholder="Search..."
               onClick={(e) => e.stopPropagation()}

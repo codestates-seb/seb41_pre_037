@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { React, useState } from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../breakpoint";
@@ -10,7 +9,6 @@ import EditIcon from "../icons/PencilLg.svg";
 import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
-import PostsList from "../Components/Profile/PostsList";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -382,7 +380,6 @@ export default function ProfileDefault() {
                   <ItemLabel>All posts</ItemLabel>
                   <div>View all questions and answers</div>
                   <EmptyPostBox />
-                  {/* <PostsList /> */}
                 </BottomItemContainer>
               </BottomRightContainer>
             </ProfileBottomContaner>

@@ -1,17 +1,17 @@
+import BREAKPOINT from "../../breakpoint";
 import React from "react";
 import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 
 const TagContainer = styled.div`
-  width: max-content;
-  padding: 5px 8px;
-  height: 15px;
+  background-color: #e1ecf4;
   border: 1px #e1ecf4;
   border-radius: 5px;
-  background-color: #e1ecf4;
   color: #39739d;
   font-size: small;
+  height: 15px;
   margin-right: 5px;
+  padding: 5px 8px;
+  width: max-content;
 
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: inline;
