@@ -9,6 +9,8 @@ import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import AnswerBottom from "./AnswerBottom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const AnswerItemContainer = styled.div`
   display: flex;
@@ -58,38 +60,112 @@ const AnswerTopContainer = styled.div`
   min-height: 150px;
 `;
 
-const markdown = `<script>
-export let audio;
-
-let isPaused = true;
-
-const onClick = () => {
-    if (!audio) return;
-
-    isPaused = !isPaused;
-    if (isPaused) {
-        audio.pause();
-    } else {
-        audio.play();
-    }
-};
-</script>
-
-<button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
-`;
-
 export default function AnswerItem({ answerData }) {
-  console.log(answerData);
+  const queryClient = useQueryClient();
+
+  const postUpVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const REQUESTBODY = "upvote";
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}answers/${answerData.answerId}/vote/2`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postUpVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postUpVoteOnError = (err) => {
+    console.log(err);
+    window.alert("You have already voted");
+  };
+
+  const { mutate: postUpVote } = useMutation({
+    mutationFn: postUpVoteData,
+    onSuccess: postUpVoteOnsuccess,
+    onError: postUpVoteOnError,
+  });
+
+  const handlePostUpVoteClick = () => {
+    postUpVote();
+  };
+
+  const postDownVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const REQUESTBODY = "downvote";
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}answers/${answerData.answerId}/vote/3`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postDownVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postDownVoteOnError = (err) => {
+    console.log(err);
+    window.alert("You have already voted");
+  };
+
+  const { mutate: postDownVote } = useMutation({
+    mutationFn: postDownVoteData,
+    onSuccess: postDownVoteOnsuccess,
+    onError: postDownVoteOnError,
+  });
+
+  const handlePostDownVoteClick = () => {
+    postDownVote();
+  };
   return (
     <AnswerItemContainer>
       <VotingComponentConatiner>
         <VotingComponent>
-          <VotingButton>
-            <img src={ArrowUpIcon} />
+          <VotingButton onClick={handlePostUpVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 25H34L18 9L2 25Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
           <VotingCounter>{answerData.answerVoteCount}</VotingCounter>
-          <VotingButton>
-            <img src={ArrowDownIcon} />
+          <VotingButton onClick={handlePostDownVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 11H34L18 27L2 11Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
         </VotingComponent>
       </VotingComponentConatiner>

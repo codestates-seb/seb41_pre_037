@@ -157,17 +157,12 @@ const SocialLoginText = styled.p`
   padding-top: 5px;
 `;
 
-//30분 지나면 세션스토리지 자동으로 날아가게..?
-
 const Login = () => {
   const navigate = useNavigate();
-  const usernameInput = useRef();
-  const passwordInput = useRef();
 
-  const { inputs, setInputs } = useInputStore((state) => state);
   const { errorMessage, setErrorMessage } = useErrorMessageStore();
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
-  const { userInfo, setUserInfo } = useUserInfoStore();
+  // const { userInfo, setUserInfo } = useUserInfoStore();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -207,6 +202,16 @@ const Login = () => {
         }
       });
   };
+
+  //30분 지나면 세션스토리지에 저장된 정보(토큰, 유저 정보)가 자동으로 날아감 -> 토큰이 필요한 요청을 보낼 수 없게 됨
+  //요청이 실패하면 헤더 버튼이 로그아웃 상태로 바뀌는 것이 더 자연스러울 것 같아 isLogin(false)는 넣지 않았음
+  //근데 나 zustand에 있는 userinfostore을 안 쓰는 거 같은데,,
+
+  const loginLimitHandler = () => {
+    sessionStorage.clear();
+  };
+
+  setTimeout(loginLimitHandler, 1800000);
 
   return (
     <>

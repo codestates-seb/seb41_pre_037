@@ -16,6 +16,7 @@ const useIsLoginStore = create((set) => ({
   setIsLogin: (loginstate) => set(() => ({ isLogin: loginstate })),
 }));
 
+//useUserInfoStore 안 씀
 const useUserInfoStore = create((set) => ({
   userInfo: "",
   setUserInfo: (data) => set(() => ({ userInfo: data })),
