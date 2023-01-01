@@ -64,4 +64,12 @@ public class AnswerController {
         return new ResponseEntity<>(new DataResponseDto(answerMapper.answerToAnswerVoteResponseDto(answer)),HttpStatus.OK);
     }
 
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
+                                                          @Positive @PathVariable("answer-id") Long answerId){
+        answerService.deleteAnswer(answerId, memberId);
+
+        return new ResponseEntity<>(new DataResponseDto("answer delete complete !!"),HttpStatus.NO_CONTENT);
+    }
+
 }
