@@ -50,26 +50,15 @@ public class MemberController {
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberLoginResponseDto(member)), HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}/{username}")
-    public ResponseEntity getMemberProfile(@LoginMemberId @PathVariable("member-id") Long memberId,
-                                           @PathVariable(value = "username", required = true) String username) {
+    @GetMapping("/{member-id}/{email}")
+    public ResponseEntity getMemberProfile(@PathVariable("member-id") Long memberId,
+                                           @PathVariable(value = "email", required = true) String email) {
 
-        Member member = memberService.findMember(memberId, username);
-        List<Question> questions = member.getQuestionList();
+        Member member = memberService.findMember(memberId, email);
         String str = memberTimeStamp.timestamp(member);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
                 HttpStatus.OK);
     }
-
-//    @GetMapping("/{member-id}")
-//    public ResponseEntity getMemberProfile(@LoginMemberId @PathVariable("member-id") Long memberId) {
-//
-//        Member member = memberService.findMember(memberId);
-//        List<Question> questions = member.getQuestionList();
-//        String str = memberTimeStamp.timestamp(member);
-//        return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member, str)),
-//                HttpStatus.OK);
-//    }
 
     @GetMapping("/edit/{member-id}")
     public ResponseEntity getMemberEdit(@Positive @PathVariable("member-id") Long memberId) {
@@ -87,7 +76,7 @@ public class MemberController {
                 HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity findUsers(@Positive @RequestParam(defaultValue = "1", required = false) int page,
                                     @RequestParam(defaultValue = "", required = false) String search) {
         Page<Member> pageUsers = memberService.findMembers(search, page - 1, 16);

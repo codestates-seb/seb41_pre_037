@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.domain.member.dto;
 
+import com.example.stackoverflowclone.domain.answer.dto.AnswerByMemberDto;
 import com.example.stackoverflowclone.domain.question.dto.QuestionByMemberDto;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,5 @@ public class MemberProfileResponseDto {
     private String fullname;
     private long totalMyQuestions;
     private long totalMyAnswers;
-    private List<QuestionByMemberDto> questions;
+    private List<MemberProfilePostsResponseDto> profilePosts;
 }

@@ -69,8 +69,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(Long memberId, String username){
-        return findVerifiedMember(memberId, username);
+    public Member findMember(Long memberId, String email){
+        return findVerifiedMember(memberId, email);
     }
 
     @Transactional(readOnly = true)
@@ -81,8 +81,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findVerifiedMember(long memberId, String username) {
-        Optional<Member> optionalMember = memberRepository.findAllByMemberIdAndUsername(memberId, username);
+    public Member findVerifiedMember(long memberId, String email) {
+        Optional<Member> optionalMember = memberRepository.findAllByMemberIdAndEmail(memberId, email);
         return optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
@@ -121,7 +121,7 @@ public class MemberService {
     }
 
     public Page<Member> findMembers(String memberName, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("memberId").descending());
         return memberRepository.findAllByUsernameContainsIgnoreCase(memberName, pageable);
     }
 
