@@ -8,6 +8,7 @@ import SearchBarIcon from "../icons/Search.svg";
 
 //로컬 모듈
 import BREAKPOINT from "../breakpoint"
+import useDebounce from "../utils/useDebounce"
 
 // 라이브러리 및 라이브러리 메소드
 import { useState, useEffect } from "react"
@@ -110,9 +111,11 @@ export default function Tags() {
   // React States
   const [usersData, setUsersData] = useState('');
   const [pageInfo, setPageInfo] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
   // Other Hooks
   const [searchParams, setSearchParams] = useSearchParams();
+  const debouncedSearchInput = useDebounce(searchInput, 300);
   
   // Variables & Methods
   const page = searchParams.get('page');
@@ -132,8 +135,26 @@ export default function Tags() {
     }
   }
 
+  const fetchSearchUsers = () => {
+    if(!debouncedSearchInput) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users`);
+    }
+
+    if(!!page) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users?search=${debouncedSearchInput}&page=${page}`);
+    }
+    else {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}users?search=${debouncedSearchInput}`);
+    }
+  }
+
   // Ajax OnSuccess
-  const fetchUsersOnSuccess = (data) => {
+  const fetchUsersOnSuccess = data => {
+    setUsersData(data.data.data);
+    setPageInfo(data.data.pageInfo);
+  }
+
+  const fetchSearchUsersOnSuccess = data => {
     setUsersData(data.data.data);
     setPageInfo(data.data.pageInfo);
   }
@@ -142,8 +163,21 @@ export default function Tags() {
   const {isLoading, refetch} = useQuery({
     queryKey: ['fetchUsers', page], 
     queryFn: fetchUsers, 
-    keepPreviousData: true, 
+    keepPreviousData: true,
+    enabled: !debouncedSearchInput, 
     onSuccess: fetchUsersOnSuccess});
+
+  const {isSearchLoading} = useQuery({
+    queryKey : ['fetchSearchUsers', debouncedSearchInput, page],
+    queryFn: fetchSearchUsers,
+    keepPreviousData: true,
+    enabled: !!debouncedSearchInput,
+    onSuccess:fetchSearchUsersOnSuccess})
+
+  // Event Handlers 
+  const searchBarOnChangeHandler = e => {
+    setSearchInput(e.target.value);
+  }
 
   return (
     <>
@@ -156,12 +190,14 @@ export default function Tags() {
           <SearchBar>
             <img src={SearchBarIcon} alt="icon"/>
             <SearchBarInput 
-            placeholder="Filter by users" 
+            placeholder="Filter by users"
+            value={searchInput}
+            onChange={searchBarOnChangeHandler}
             />
           </SearchBar>
         </MainbarTitleContainer>
         <MainbarUsersContainer>
-          {isLoading 
+          {isLoading || isSearchLoading
           ? <div>loading ...</div>
           : usersData && usersData.map((user) => {
             return <User data={user} key={user.memberId}/>

@@ -4,9 +4,11 @@ import Header from "../Components/Header/Header"
 import LeftNav from "../Components/LeftNav/LeftNav"
 import Pagination from "../Components/Pagination/Pagination"
 import Tag from "../Components/Tag/Tag"
+import SearchBarIcon from "../icons/Search.svg";
 
 // 로컬 모듈
 import BREAKPOINT from "../breakpoint";
+import useDebounce from "../utils/useDebounce"
 
 // 라이브러리 및 라이브러리 메소드
 import { useState,  useEffect } from "react"
@@ -49,6 +51,38 @@ const MainbarTitle = styled.h1`
   }
 `;
 
+const SearchBar = styled.div`
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(187, 191, 195);
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  height: 35px;
+  padding-left: 1%;
+  margin-bottom: 20px;
+  width: max-content;
+
+  &:focus-within{
+    border: 1px solid rgba(0, 103, 194, 0.4);
+    box-shadow: 0 0 0 4px rgba(144, 203, 255, 0.4);
+  }
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    width: 300px;
+  }
+`
+
+const SearchBarInput = styled.input`
+  all: unset;
+  font-size: 12px;
+  padding-left: 5px;
+
+  &::placeholder {
+    color : #d2d2d2;
+  }
+`
+
 const MainbarTitleDetail = styled.p`
   font-size: 16px;
   margin: 0;
@@ -66,7 +100,7 @@ const MainbarTagsContainer = styled.ul`
   justify-content: space-between;
   list-style: none;
   margin: 0;
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 0;
   row-gap: 10px;
   width: 100%;
@@ -94,9 +128,11 @@ export default function Tags() {
   // React States
   const [tagsData, setTagsData] = useState('');
   const [pageInfo, setPageInfo] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
   // Other Hooks
   const [searchParams, setSearchParams] = useSearchParams();
+  const debouncedSearchInput = useDebounce(searchInput, 300);
   
   // Variables & Methods
   const page = searchParams.get('page');
@@ -116,19 +152,50 @@ export default function Tags() {
     }
   }
 
+  const fetchSearchTags = () => {
+    if(!debouncedSearchInput) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags`);
+    }
+
+    if(!!page) {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags?search=${debouncedSearchInput}&page=${page}`);
+    }
+    else {
+      return axios.get(`${process.env.REACT_APP_SERVER_URI}tags?search=${debouncedSearchInput}`);
+    }
+  }
+
   // Ajax OnSuccess
   const fetchTagsOnSuccess = (response) => {
     setTagsData(response.data.data);
     setPageInfo(response.data.pageInfo);
   }
 
+  const fetchSearchTagsOnSuccess = data => {
+    setTagsData(data.data.data);
+    setPageInfo(data.data.pageInfo);
+  }
+
   // Ajax Tanstack Query
   const {isLoading, refetch} = useQuery({
     queryKey: ['fetchTags', page], 
     queryFn: fetchTags, 
-    keepPreviousData: true, 
+    keepPreviousData: true,
+    enabled: !debouncedSearchInput, 
     onSuccess: fetchTagsOnSuccess});
+  
+  const {isSearchLoading} = useQuery({
+    queryKey : ['fetchSearchUsers', debouncedSearchInput, page],
+    queryFn: fetchSearchTags,
+    keepPreviousData: true,
+    enabled: !!debouncedSearchInput,
+    onSuccess:fetchSearchTagsOnSuccess})
 
+  // Event Handlers
+  const searchBarOnChangeHandler = e => {
+    setSearchInput(e.target.value);
+  }
+  
   return (
     <>
     <Header/>
@@ -137,10 +204,18 @@ export default function Tags() {
       <MainbarContainer>
         <MainbarTitleContainer>
           <MainbarTitle>Tags</MainbarTitle>
+          <SearchBar>
+            <img src={SearchBarIcon} alt="icon"/>
+            <SearchBarInput 
+            placeholder="Filter by users"
+            value={searchInput}
+            onChange={searchBarOnChangeHandler}
+            />
+          </SearchBar>
           <MainbarTitleDetail>A tag is a keyword or label that categorizes your question with other, similar questions. <br/>Using the right tags makes it easier for others to find and answer your question.</MainbarTitleDetail>
         </MainbarTitleContainer>
         <MainbarTagsContainer>
-          {isLoading 
+          {isLoading || isSearchLoading
           ? <div>Loading...</div> 
           : tagsData && tagsData.map((tag) => {
             return <Tag data={tag} key={tag.tagId}/>
