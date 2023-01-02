@@ -1,144 +1,177 @@
-import styled from "styled-components/macro"
-import BREAKPOINT from "../../breakpoint"
-import { useNavigate } from "react-router-dom"
+//로컬 모듈
+import BREAKPOINT from "../../breakpoint";
+import dateCalc from "../../utils/dateCalc";
 
+// 라이브러리 및 라이브러리 메소드
+import styled from "styled-components/macro";
+import { useNavigate } from "react-router-dom";
+import { convert } from "html-to-text";
+
+// Styled Component (html tree 계층 순) (CSS 속성은 a-z 순)
 const QuestionContainer = styled.div`
-  display: flex;
-  max-width: 900px;
-  float: right;
-  /* min-width: 300px; */
-  height: max-content;
   border: 1px solid #c5c5c5;
-  border-width: ${props => props.isLast? '1px 0 1px 0' : '1px 0 0 0'};
+  border-width: ${(props) => (props.isLast ? "1px 0 1px 0" : "1px 0 0 0")};
+  display: flex;
+  float: right;
+  height: max-content;
+  max-width: 900px;
   padding: 16px;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
-   flex-direction: column;
+    flex-direction: column;
   }
-`
+`;
 
 const QuestionRightSideContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
-   width: 95%;
+    width: 95%;
   }
-`
+`;
 
 const QuestionLeftSideContainer = styled.div`
+  align-items: end;
   display: flex;
   flex-direction: column;
-  align-items: end;
-  width: 15%;
   margin-right: 20px;
+  width: 15%;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
-   width: 95%;
-   flex-direction: row;
+    flex-direction: row;
+    width: 95%;
   }
-`
+`;
+
 const QuestionInfo = styled.p`
+  color: ${(props) => (props.isVote ? `black` : `gray`)};
   font-size: 13px;
   margin: 0;
   margin-bottom: 8px;
-  color: ${props => props.isVote ? `black` : `gray`};
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTRIGHTSIDEBAR}px) {
+    font-size: small;
     margin-right: 10px;
     margin-bottom: 3px;
-    font-size: small;
   }
-`
+`;
 
 const QuestionTitle = styled.a`
+  color: #0074cc;
   font-size: large;
   font-weight: 500;
-  color: #0074cc;
+
   &:hover {
     color: #49a5f0;
     cursor: pointer;
   }
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: medium;
   }
-`
+`;
+
 const QuestionPreview = styled.div`
   display: flex;
   font-size: 15px;
   margin-top: 10px;
-  /* min-width: 420px; */
   text-overflow: ellipsis;
+
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     font-size: small;
   }
-`
+`;
 
 const QuestionFooter = styled.div`
   display: flex;
-  width: 100%;
-  justify-items: stretch;
   justify-content: space-between;
+  justify-items: stretch;
   margin-top: 7px;
-`
+  width: 100%;
+`;
 
 const Tag = styled.div`
-  width: max-content;
-  padding: 5px 8px;
-  height: 15px;
-  border: 1px #E1ECf4;
+  background-color: #e1ecf4;
+  border: 1px #e1ecf4;
   border-radius: 5px;
-  background-color: #E1ECF4;
-  color: #39739D;
+  color: #39739d;
   font-size: small;
-`
+  height: 15px;
+  margin-right: 5px;
+  padding: 5px 8px;
+  width: max-content;
+`;
 
 const Profile = styled.div`
   display: flex;
   height: max-content;
   margin-left: auto;
-`
+`;
 
 const ProfileImg = styled.div`
   display: flex;
-  width: 15px;
   height: 15px;
   padding-bottom: 5px;
   margin-right: 5px;
-`
-const ProfileName = styled.a`
-  padding-top: 2px;
-  font-size: small;
-  color: #39739D;
-  text-decoration: none;
-  margin-right: 5px;
-`
-const ProfileLog = styled.p`
-  font-size: small;
-  padding-top: 2px;
-  margin: 0;
-  color: #4c4c4c;
-`
+  width: 15px;
+`;
 
-export default function Question({isLast}) {
+const ProfileName = styled.a`
+  color: #39739d;
+  font-size: small;
+  padding-top: 2px;
+  margin-right: 5px;
+  text-decoration: none;
+`;
+
+const ProfileLog = styled.p`
+  color: #4c4c4c;
+  font-size: small;
+  margin: 0;
+  padding-top: 2px;
+`;
+
+// Main Component
+export default function Question({ data, isLast }) {
+  // Other Hooks
   const navigate = useNavigate();
+
+  // Variables & Methods
+  const date = dateCalc(data.questionCreatedAt);
 
   return (
     <QuestionContainer isLast={isLast}>
       <QuestionLeftSideContainer>
-        <QuestionInfo isVote={true}>0 votes</QuestionInfo>
-        <QuestionInfo isVote={false}>0 answers</QuestionInfo>
-        <QuestionInfo isVote={false}>0 votes</QuestionInfo>
+        <QuestionInfo isVote={true}>{`${data.questionVoteCount} votes`}</QuestionInfo>
+        <QuestionInfo isVote={false}>{`${data.questionAnswerCount} answers`}</QuestionInfo>
+        <QuestionInfo isVote={false}>{`${data.questionViewCount} views`}</QuestionInfo>
       </QuestionLeftSideContainer>
       <QuestionRightSideContainer>
-        <QuestionTitle onClick={() => {navigate('/post/postid')}}>What is Graphdriver of Docker?</QuestionTitle>
-        <QuestionPreview>I couldn't find a newest information about built in graphdriver of docker. Not plugin. I could only find Michael Crosby's blog, written on Nov 16, 2017. I want more detailed information. My ...</QuestionPreview>
+        <QuestionTitle onClick={() => { navigate(`/post/${data.questionId}/${data.questionTitle.replaceAll(" ", "-")}`) }}>
+          {`${data.questionTitle}`}
+        </QuestionTitle>
+        <QuestionPreview>
+          {convert(data.questionProblemBody, { wordwrap: 130 })}
+        </QuestionPreview>
         <QuestionFooter>
-          <Tag>docker</Tag>
+          {data.tags.map((tag) => {
+            return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+          })}
           <Profile>
-            <ProfileImg><img css={`border-radius: 5px;`} alt="img" src="https://lh3.googleusercontent.com/a/AEdFTp4KuAxaIP9SXvUCyy4wiVwwcDbXJJogWJGjyV3j=k-s32"></img></ProfileImg>
-            <ProfileName>김근영</ProfileName>
-            <ProfileLog>asked 1 min ago</ProfileLog>
+            <ProfileImg>
+              <img css={`border-radius: 5px;`} alt="img" src={data.image}></img>
+            </ProfileImg>
+            <ProfileName>
+              {`${data.username}`}
+            </ProfileName>
+            <ProfileLog>
+              {`asked ${date}`}
+            </ProfileLog>
           </Profile>
         </QuestionFooter>
       </QuestionRightSideContainer>
     </QuestionContainer>
-  )
+  );
 }

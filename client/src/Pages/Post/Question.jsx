@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
-import ArrowUpIcon from "../../icons/ArrowUpLg.svg";
-import ArrowDownIcon from "../../icons/ArrowDownLg.svg";
-import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { defaultStyle } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import ShareSheet from "./ShareSheet";
+import { useIsLoginStore } from "../../store/loginstore";
+import QuestionBottom from "../../Components/Post/QuestionBottom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PostTopContainer = styled.div`
   display: flex;
@@ -53,50 +53,8 @@ const VotingCounter = styled.div`
   color: #6a737c;
 `;
 
-const QuestionTopContainer = styled.div``;
-
-const AuthorInfoContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  background-color: #d9e9f7;
-  padding: 7px;
-  min-width: 200px;
-  min-height: 65px;
-`;
-
-const AuthorProfileImageArea = styled.div`
-  width: 32px;
-  height: 32px;
-  background-color: green;
-`;
-
-const AuthorProfileLinker = styled.a`
-  all: unset;
-  font-size: 14px;
-  margin-left: 10px;
-  color: #2880d1;
-  cursor: pointer;
-
-  &:hover {
-    color: #4293f8;
-  }
-`;
-
-const QuestionBottomContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-top: 10px;
-  justify-content: space-between;
-`;
-
-const ShareLinker = styled.a`
-  color: #525960;
-
-  &:hover {
-    cursor: pointer;
-    color: #7f8a95;
-  }
+const QuestionTopContainer = styled.div`
+  min-height: 150px;
 `;
 
 const TagsContainer = styled.div`
@@ -105,6 +63,11 @@ const TagsContainer = styled.div`
   width: max-content;
   height: max-content;
   padding: 20px 5px 20px 0;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    width: 100%;
+    display: inline;
+  }
 `;
 
 const Tag = styled.div`
@@ -117,63 +80,149 @@ const Tag = styled.div`
   color: #39739d;
   font-size: small;
   margin-right: 5px;
+
+  @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
+    display: inline;
+    padding: 5px;
+  }
 `;
 
-const markdown = `<script>
-export let audio;
+export default function Question({ postData }) {
+  const queryClient = useQueryClient();
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const navigate = useNavigate();
 
-let isPaused = true;
+  const postUpVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
 
-const onClick = () => {
-    if (!audio) return;
+    const REQUESTBODY = "upvote";
 
-    isPaused = !isPaused;
-    if (isPaused) {
-        audio.pause();
-    } else {
-        audio.play();
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}/vote/2`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postUpVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postUpVoteOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("You have already voted.");
     }
-};
-</script>
+  };
 
-<button onclick={onClick}>{#if isPaused} Play {:else} Pause {/if}</button>
-`;
+  const { mutate: postUpVote } = useMutation({
+    mutationFn: postUpVoteData,
+    onSuccess: postUpVoteOnsuccess,
+    onError: postUpVoteOnError,
+  });
 
-export default function Question() {
+  const handlePostUpVoteClick = () => {
+    postUpVote();
+  };
+
+  const postDownVoteData = () => {
+    const accessToken = sessionStorage.getItem("accesstoken");
+
+    const REQUESTBODY = "downvote";
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    axios.defaults.withCredentials = true;
+
+    return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/${postData.questionId}/vote/3`, REQUESTBODY, {
+      headers,
+    });
+  };
+
+  const postDownVoteOnsuccess = () => {
+    queryClient.invalidateQueries("fetchPost");
+  };
+
+  const postDownVoteOnError = (err) => {
+    if (err.response.status === 401) {
+      window.alert("Please log in first before voting.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("You have already voted.");
+    }
+  };
+
+  const { mutate: postDownVote } = useMutation({
+    mutationFn: postDownVoteData,
+    onSuccess: postDownVoteOnsuccess,
+    onError: postDownVoteOnError,
+  });
+
+  const handlePostDownVoteClick = () => {
+    postDownVote();
+  };
+
   return (
     <PostTopContainer>
       <VotingComponentConatiner>
         <VotingComponent>
-          <VotingButton>
-            <img src={ArrowUpIcon} />
+          <VotingButton onClick={handlePostUpVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 25H34L18 9L2 25Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
-          <VotingCounter>0</VotingCounter>
-          <VotingButton>
-            <img src={ArrowDownIcon} />
+          <VotingCounter>{postData && postData.questionVoteCount}</VotingCounter>
+          <VotingButton onClick={handlePostDownVoteClick}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 11H34L18 27L2 11Z"
+                fill="#BABFC3"
+                css={`
+                  &:active {
+                    fill: #f48224;
+                  }
+                `}
+              />
+            </svg>
           </VotingButton>
         </VotingComponent>
       </VotingComponentConatiner>
       <PostTopInnerContainer>
         <QuestionTopContainer>
-          <SyntaxHighlighter language="javascript" style={defaultStyle}>
-            {markdown}
-          </SyntaxHighlighter>
+          <ReactQuill theme="bubble" value={postData && postData.questionProblemBody} readOnly={true} />
+          <ReactQuill theme="bubble" value={postData && postData.questionTryOrExpectingBody} readOnly={true} />
         </QuestionTopContainer>
         <TagsContainer>
-          <Tag>javascript</Tag>
-          <Tag>fetch-api</Tag>
-          <Tag>netlify</Tag>
-          <Tag>api-key</Tag>
-          <Tag>netlify-function</Tag>
+          {postData &&
+            postData.tag.map((tag) => {
+              return <Tag key={tag.tagId}>{tag.tagName}</Tag>;
+            })}
         </TagsContainer>
-        <QuestionBottomContainer>
-          <ShareLinker>Share</ShareLinker>
-          <ShareSheet />
-          <AuthorInfoContainer>
-            <AuthorProfileImageArea />
-            <AuthorProfileLinker>joenpc npcsolution</AuthorProfileLinker>
-          </AuthorInfoContainer>
-        </QuestionBottomContainer>
+        <QuestionBottom postData={postData && postData} />
       </PostTopInnerContainer>
     </PostTopContainer>
   );

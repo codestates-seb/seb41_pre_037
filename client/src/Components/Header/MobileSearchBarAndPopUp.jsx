@@ -1,31 +1,31 @@
-import styled from "styled-components/macro";
-import { useMobileSearchPopUpStore } from "../../store/store";
 import SearchBarIcon from "../../icons/Search.svg";
-
-import { useNavigate } from "react-router-dom";
+import { useMobileSearchPopUpStore } from "../../store/store";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import styled from "styled-components/macro";
 
 const SearchPopUpBackdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100%;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
 `;
 
 const SearchBar = styled.div`
-  display: flex;
   align-items: center;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(187, 191, 195);
   border-radius: 3px;
-  width: 90vw;
+  box-sizing: border-box;
+  display: flex;
   height: 32px;
   margin-top: 60px;
   padding-left: 1%;
-  box-sizing: border-box;
+  width: 90vw;
 
   &.input-actived {
     box-shadow: 0 0 5px 4px rgba(95, 180, 255, 0.4);
@@ -34,51 +34,49 @@ const SearchBar = styled.div`
 
 const SearchBarInput = styled.input`
   all: unset;
-  padding-left: 1%;
   font-size: 14px;
+  padding-left: 1%;
 `;
 
 const SearchPopUpView = styled.div`
-  border-radius: 3px;
   background-color: #ffffff;
-  height: 100px;
-  width: 90vw;
-  margin-top: 10px;
+  border-radius: 3px;
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  height: 100px;
+  margin-top: 10px;
+  width: 90vw;
 `;
 
 const SearchType = styled.span`
-  text-align: left;
   font-size: medium;
   font-weight: 500;
   margin-left: 5px;
+  text-align: left;
 `;
 
 const SearchDescription = styled.span`
-  text-align: left;
   font-size: small;
   margin-left: 5px;
+  text-align: left;
 `;
 
 const SearchPopUpTextContainer = styled.div`
+  align-items: center;
   display: flex;
   width: 50%;
-  align-items: center;
 `;
 
 const SearchPopUpInnerContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 50%;
   align-items: center;
+  display: flex;
+  height: 50%;
+  width: 100%;
 `;
 
 const Button = styled.button`
   all: unset;
-  width: 100px;
-  height: 25px;
   background-color: rgb(225, 236, 244);
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
   border: 1px solid rgb(57, 115, 157);
@@ -86,9 +84,10 @@ const Button = styled.button`
   color: rgb(57, 115, 157);
   font-size: small;
   font-weight: 400;
-  text-align: center;
-
+  height: 25px;
   margin-left: 2%;
+  text-align: center;
+  width: 100px;
 
   &:hover {
     background-color: rgb(185, 210, 232);
@@ -97,16 +96,35 @@ const Button = styled.button`
 
 const MobileSearchPopUp = () => {
   const { showMobilePopUp, handleMobilePopUp } = useMobileSearchPopUpStore((state) => state);
-
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
+  const { pathname } = useLocation;
+
+  const searchBarInputKeyUpHandler = (e) => {
+    if (e.key === "Enter") {
+      if (pathname === "/search") {
+        navigate(`/search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      } else {
+        navigate(`./search?q=${searchInput}`);
+        setSearchInput(searchInput);
+      }
+    }
+  };
 
   return (
     <>
       {showMobilePopUp === true ? (
         <SearchPopUpBackdrop onClick={handleMobilePopUp}>
           <SearchBar className={showMobilePopUp ? "input-actived" : null} onClick={(e) => e.stopPropagation()}>
-            <img src={SearchBarIcon} />
-            <SearchBarInput placeholder="Search..." onClick={(e) => e.stopPropagation()} />
+            <img src={SearchBarIcon} alt="searchbar icon" />
+            <SearchBarInput
+              placeholder="Search..."
+              onClick={(e) => e.stopPropagation()}
+              value={searchInput || ""}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyUp={searchBarInputKeyUpHandler}
+            />
           </SearchBar>
           <SearchPopUpView>
             <SearchPopUpInnerContainer
@@ -122,7 +140,13 @@ const MobileSearchPopUp = () => {
               </SearchPopUpTextContainer>
             </SearchPopUpInnerContainer>
             <SearchPopUpInnerContainer>
-              <Button onClick={() => {navigate('/askquestions')}}>Ask a question</Button>
+              <Button
+                onClick={() => {
+                  navigate("/askquestions");
+                }}
+              >
+                Ask a question
+              </Button>
             </SearchPopUpInnerContainer>
           </SearchPopUpView>
         </SearchPopUpBackdrop>

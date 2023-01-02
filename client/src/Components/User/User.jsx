@@ -1,23 +1,19 @@
+// 라이브러리 및 라이브러리 메소드
 import styled from "styled-components/macro"
-import user1 from '../../usericons/user1.png'
-import user2 from '../../usericons/user2.png'
-import user3 from '../../usericons/user3.png'
-import user4 from '../../usericons/user4.png'
 
-import { useRef } from "react"
-const imgArr = [user1, user2, user3, user4];
-
-
+// Styled Component (html tree 계층 순) (CSS 속성은 a-z 순)
 const UserContainer = styled.div`
   display: flex;
-  width: max-content;
   height: max-content;
+  width: max-content;
 `
+
 const UserIMG = styled.div`
   display: flex;
-  width: 45px;
   height: 45px;
+  width: 45px;
 `
+
 const UserDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,23 +21,21 @@ const UserDetailContainer = styled.div`
 `
 
 const Username = styled.p`
-  margin: 0;
-  font-size: medium;
   color: #0074CC;
+  font-size: medium;
+  margin: 0;
 `
 
-export default function User() {
-  const imgSrc = useRef();
-  imgSrc.current = Math.floor(Math.random() * 4);
+export default function User({data}) {
 
   return (
     <UserContainer>
       <UserIMG>
-        <img src={imgArr[imgSrc.current]} alt="profile"></img>
+        <img src={data.image} alt="profile"></img>
       </UserIMG>
       <UserDetailContainer>
-        <Username>Ananimous User</Username>
-        <p css={`color: gray; margin: 0; font-size: small;`}>Seoul, Korea</p>
+        <Username>{data.username}</Username>
+        <p css={`color: gray; margin: 0; font-size: small;`}>{data.location}</p>
       </UserDetailContainer>
     </UserContainer>
   )

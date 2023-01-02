@@ -1,15 +1,15 @@
-import styled from "styled-components/macro";
-import { useSearchPopUpStore } from "../../store/store";
 import SearchPopUpComponent from "./SearchPopUpComponent";
+import { useSearchPopUpStore } from "../../store/store";
+import styled from "styled-components/macro";
 
 const SearchPopUpBackdrop = styled.div`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
   position: fixed;
   top: 0;
-  left: 0;
   width: 100vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
 `;
 
 const SearchPopUp = () => {
