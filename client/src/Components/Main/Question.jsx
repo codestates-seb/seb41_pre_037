@@ -1,5 +1,6 @@
 //로컬 모듈
 import BREAKPOINT from "../../breakpoint";
+import dateCalc from "../../utils/dateCalc";
 
 // 라이브러리 및 라이브러리 메소드
 import styled from "styled-components/macro";
@@ -138,20 +139,7 @@ export default function Question({ data, isLast }) {
   const navigate = useNavigate();
 
   // Variables & Methods
-  const dateCalc = () => {
-    const now = new Date(Date.now());
-    const createdAt = new Date(data.questionCreatedAt);
-    const timeDiff = new Date(now - createdAt);
-    if (timeDiff.getDate() >= 365) {
-      return `asked ${Math.floor(timeDiff.getDate() / 365)} years ago`;
-    } 
-    else if (timeDiff.getDate() > 1) {
-      return `asked ${timeDiff.getDate()} days ago`;
-    } 
-    else {
-      return `asked ${timeDiff.getHours()} hours ago`;
-    }
-  };
+  const date = dateCalc(data.questionCreatedAt);
 
   return (
     <QuestionContainer isLast={isLast}>
@@ -179,7 +167,7 @@ export default function Question({ data, isLast }) {
               {`${data.username}`}
             </ProfileName>
             <ProfileLog>
-              {dateCalc()}
+              {date}
             </ProfileLog>
           </Profile>
         </QuestionFooter>
