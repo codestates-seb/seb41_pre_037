@@ -30,7 +30,6 @@ public class QuestionVoteService {
         } else if(questionVote.getStatus().toString().equals("DOWN")) {
             questionVote.setStatus(VoteStatus.NONE);
         }
-//        question.getQuestionVotes().add(questionVote);
         question.setQuestionVoteCount(question.getQuestionVoteCount() + 1);
     }
 
@@ -44,7 +43,6 @@ public class QuestionVoteService {
         } else if(questionVote.getStatus().toString().equals("UP")) {
             questionVote.setStatus(VoteStatus.NONE);
         }
-//        question.getQuestionVotes().add(questionVote);
         question.setQuestionVoteCount(question.getQuestionVoteCount() - 1);
     }
 
