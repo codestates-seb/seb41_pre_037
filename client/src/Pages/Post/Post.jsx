@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import dateCalc from "../../utils/dateCalc";
 
 const Container = styled.div`
   display: flex;
@@ -119,6 +120,7 @@ export default function Post() {
   const navigate = useNavigate();
   const [post, setPost] = useState();
   const params = useParams();
+  const askedDate = dateCalc(post && post.questionCreatedAt);
 
   const fetchPost = () => {
     return axios.get(`${process.env.REACT_APP_SERVER_URI}questions/${params.id}/${params.title}`);
@@ -169,7 +171,7 @@ export default function Post() {
                 >
                   Asked
                 </span>
-                <span>{post && post.questionCreatedAt}</span>
+                <span>{askedDate}</span>
               </PostHeaderBottom>
             </PostHeader>
             <div
