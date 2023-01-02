@@ -1,6 +1,3 @@
-import { React, useState } from "react";
-import styled from "styled-components/macro";
-import BREAKPOINT from "../breakpoint";
 import Header from "../Components/Header/Header";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Footer from "../Components/Footer/Footer";
@@ -9,6 +6,10 @@ import EditIcon from "../icons/PencilLg.svg";
 import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
+import PostsList from "../Components/Profile/PostsList";
+import BREAKPOINT from "../breakpoint";
+import { React, useState } from "react";
+import styled from "styled-components/macro";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -379,7 +380,8 @@ export default function ProfileDefault() {
                 <BottomItemContainer>
                   <ItemLabel>All posts</ItemLabel>
                   <div>View all questions and answers</div>
-                  <EmptyPostBox />
+                  <PostsList postsListData={data} />
+                  {/* <EmptyPostBox /> */}
                 </BottomItemContainer>
               </BottomRightContainer>
             </ProfileBottomContaner>
