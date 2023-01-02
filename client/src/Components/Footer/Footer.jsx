@@ -136,7 +136,7 @@ const Footer = () => {
               <li>Data</li>
             </ul>
           </li>
-          <li className="snsCopyright">
+          <div className="snsCopyright">
             <div className="snsContainer">
               <ul>
                 <li>Blog</li>
@@ -151,7 +151,7 @@ const Footer = () => {
               <li>user contributions licensed under CC BY-SA. </li>
               <li>rev 2022.12.21.43127</li>
             </div>
-          </li>
+          </div>
         </ul>
       </FooterComponent>
     </>

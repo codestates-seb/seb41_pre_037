@@ -167,7 +167,7 @@ export default function Question({ data, isLast }) {
               {`${data.username}`}
             </ProfileName>
             <ProfileLog>
-              {date}
+              {`asked ${date}`}
             </ProfileLog>
           </Profile>
         </QuestionFooter>
