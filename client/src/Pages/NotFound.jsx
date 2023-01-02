@@ -10,7 +10,6 @@ const ErrorContainer = styled.div`
     display: flex;
     width: 100%;
     height: 100vh;
-    max-width: 1260px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -45,8 +44,8 @@ const ErrorContainer = styled.div`
     }
 
     .fourZeroFour {
-      font-size: 150px;
-      margin-bottom: 30px;
+      font-size: 100px;
+      margin: 0;
             
     }
   }

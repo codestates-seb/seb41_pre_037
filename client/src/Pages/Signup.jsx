@@ -324,7 +324,7 @@ export default function Signup() {
     navigate('/login');
   }
 
-  // Ajax React Query
+  // Ajax Tanstack Query
   const {mutate:createUser} = useMutation({mutationKey:['postSignupData'], mutationFn:postSignupData, onSuccess: createUserOnSuccess});
 
   // Event Handlers
