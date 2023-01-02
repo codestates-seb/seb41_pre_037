@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components/macro";
 import BREAKPOINT from "../../breakpoint";
-import QuestionIcon from "../../icons/Question.svg";
+import AnswerIcon from "../../icons/Answer.svg";
+import dateCalc from "../../utils/dateCalc";
 
 const ListItemContainer = styled.div`
   width: 100%;
@@ -64,16 +66,17 @@ const CreatedInfo = styled.div`
   }
 `;
 
-export default function PostListItem() {
+export default function AnswerListItem({ answersListData }) {
+  const date = dateCalc(answersListData && answersListData.answerCreatedAt);
   return (
     <>
       <ListItemContainer>
         <ItemLeftContainer>
-          <img src={QuestionIcon} />
-          <NumberLabel>44</NumberLabel>
-          <Linker>Rearranging variable_names</Linker>
+          <img src={AnswerIcon} alt="answer icon" />
+          <NumberLabel>{answersListData.answerVoteCount}</NumberLabel>
+          <Linker>{answersListData.answerTitle}</Linker>
         </ItemLeftContainer>
-        <CreatedInfo>Jan 30, 2014</CreatedInfo>
+        <CreatedInfo>{`answerd at ${date}`}</CreatedInfo>
       </ListItemContainer>
     </>
   );

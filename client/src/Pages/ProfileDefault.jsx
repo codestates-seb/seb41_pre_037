@@ -13,6 +13,8 @@ import styled from "styled-components/macro";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import dateCalc from "../utils/dateCalc";
+import { useIsLoginStore } from "../store/loginstore";
 
 const Container = styled.div`
   display: flex;
@@ -253,25 +255,36 @@ export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
   const params = useParams();
-  const token = sessionStorage.getItem("accesstoken");
+  const signupDate = dateCalc(data && data.profileCreatedAt);
+  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
 
-  //토큰으로 해당 유저를 식별할 수 있게 막혀있지 않음
-  //토큰이 존재할 때만(로그인한 상태일 때만) 요청 보낼 수 있게 해둠
   const fetchData = () => {
-    if (token) {
-      return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`);
-    }
+    const accessToken = sessionStorage.getItem("accesstoken");
+    axios.defaults.withCredentials = true;
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "Application/json",
+      Accept: "*/*",
+    };
+
+    return axios.get(`${process.env.REACT_APP_SERVER_URI}users/${params.id}/${params.username}`, { headers });
   };
 
   const fetchDataOnSuccess = (response) => {
     response.data.data && setData(response.data.data);
   };
 
-  //로그인된 상태이지만, 30분이 지나서 토큰이 유효하지 않을 때는 고려하지 않음. (유저 프로필 페이지까지는 볼 수 있게)
-  //아래는 유저 프로필 페이지에서 로그아웃했을 때에 대한 에러 처리
   const fetchDataOnError = (err) => {
-    window.alert("Please log in first.");
-    navigate("/login");
+    if (err.response.status === 401) {
+      window.alert("Please log in first.");
+      navigate("/login");
+      setIsLogin(false);
+      sessionStorage.clear();
+    } else if (err.response.status === 405) {
+      window.alert("wrong approach!");
+      navigate("/");
+    }
   };
 
   const { isLoading } = useQuery({
@@ -280,6 +293,7 @@ export default function ProfileDefault() {
     keepPreviousData: true,
     onSuccess: fetchDataOnSuccess,
     onError: fetchDataOnError,
+    retry: false,
   });
 
   return (
@@ -297,7 +311,7 @@ export default function ProfileDefault() {
                 <HeaderInfoContainer>
                   <UserDisplayName>{data && data.username}</UserDisplayName>
                   <HeaderInfoBottomContainer>
-                    <img src={CakeIcon} alt="cake icon" /> {data && data.profileCreatedAt}
+                    <img src={CakeIcon} alt="cake icon" /> {signupDate}
                   </HeaderInfoBottomContainer>
                 </HeaderInfoContainer>
               </HeaderLeftContainer>
@@ -330,11 +344,11 @@ export default function ProfileDefault() {
                   <ItemLabel>Stats</ItemLabel>
                   <ItemCard>
                     <StatsItemContainer>
-                      <StatsCountItem>{data && data.answers}</StatsCountItem>
+                      <StatsCountItem>{data && data.totalMyAnswers}</StatsCountItem>
                       <StatsCountLabel>answers</StatsCountLabel>
                     </StatsItemContainer>
                     <StatsItemContainer>
-                      <StatsCountItem>{data && data.questions}</StatsCountItem>
+                      <StatsCountItem>{data && data.totalMyQuestions}</StatsCountItem>
                       <StatsCountLabel>questions</StatsCountLabel>
                     </StatsItemContainer>
                   </ItemCard>
@@ -380,7 +394,7 @@ export default function ProfileDefault() {
                 <BottomItemContainer>
                   <ItemLabel>All posts</ItemLabel>
                   <div>View all questions and answers</div>
-                  <PostsList postsListData={data} />
+                  <PostsList postsListData={data && data.profilePosts} />
                   {/* <EmptyPostBox /> */}
                 </BottomItemContainer>
               </BottomRightContainer>
