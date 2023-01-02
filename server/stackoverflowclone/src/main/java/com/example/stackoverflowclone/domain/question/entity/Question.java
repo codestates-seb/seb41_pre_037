@@ -3,6 +3,7 @@ package com.example.stackoverflowclone.domain.question.entity;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
 import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -52,13 +53,18 @@ public class Question extends Auditable {
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL) // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
+    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
     private List<QuestionTag> questionTagList = new ArrayList<>();
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
+
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<QuestionVote> questionVotes = new ArrayList<>();
 
     public void addMember(Member member) {
         this.member = member;
