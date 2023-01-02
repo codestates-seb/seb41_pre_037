@@ -8,6 +8,7 @@ import com.example.stackoverflowclone.domain.member.entity.Member;
 
 import com.example.stackoverflowclone.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,8 +64,13 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findByMember(Long memberId){
+    public Member findMember(Long memberId){
         return findVerifiedMember(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public Member findMember(Long memberId, String username){
+        return findVerifiedMember(memberId, username);
     }
 
     @Transactional(readOnly = true)
@@ -73,9 +79,17 @@ public class MemberService {
         return optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
+    @Transactional(readOnly = true)
+    public Member findVerifiedMember(long memberId, String username) {
+        Optional<Member> optionalMember = memberRepository.findAllByMemberIdAndUsername(memberId, username);
+        return optionalMember.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
     @Transactional
     public Member updateMember(Member member){
-        Member findMember = findVerifiedMember(member.getMemberId());
+        Member findMember = findVerifiedMember(member.getMemberId(), member.getUsername());
         Optional.ofNullable(member.getUsername())
                 .ifPresent(name -> findMember.setUsername(name));
         Optional.ofNullable(member.getLocation())
@@ -101,8 +115,14 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberId);
         memberRepository.delete(findMember);
     }
+
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
+    }
+
+    public Page<Member> findMembers(String memberName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return memberRepository.findAllByUsernameContainsIgnoreCase(memberName, pageable);
     }
 
     public ProfileImage createProfileImage(Member member){
@@ -117,4 +137,7 @@ public class MemberService {
         member.setImage(profileImage.getUrl());
         return profileImage;
     }
+
+
+
 }

@@ -35,7 +35,7 @@ public class AnswerController {
                                                         @Positive @PathVariable("question-id") Long questionId,
                                                         @RequestBody @Valid AnswerPostDto answerPostDto){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Question question = questionService.findQuestion(questionId);
         Answer answer = answerMapper.answerPostDtoToAnswer(answerPostDto, question, member);
         Answer saveAnswer = answerService.postAnswer(answer);
@@ -46,7 +46,7 @@ public class AnswerController {
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
                                                           @Positive @PathVariable("answer-id") Long answerId){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
         answerVoteService.increaseVote(member, answer);
 //        String str = answerService.timestamp(answer); //TODO: 시간로직 변경하기, 여기가 아닌가?
@@ -57,7 +57,7 @@ public class AnswerController {
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
                                                             @Positive @PathVariable("answer-id") Long answerId){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
         answerVoteService.decreaseVote(member, answer);
 

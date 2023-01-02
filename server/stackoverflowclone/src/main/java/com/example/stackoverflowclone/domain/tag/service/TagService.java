@@ -8,6 +8,7 @@ import com.example.stackoverflowclone.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import com.example.stackoverflowclone.domain.question.dto.QuestionPostDto;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
@@ -33,11 +34,15 @@ public class TagService {
                 .collect(Collectors.toList());
     }
 
-
     public Page<Tag> findTags(int page, int size) {
-        return tagRepository.findAll(PageRequest.of(page, size, Sort.by("tagId").descending()));
+        Pageable pageable = PageRequest.of(page, size, Sort.by("tagId").descending());
+        return tagRepository.findAll(pageable);
     }
 
+    public Page<Tag> findTags(String tagName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("tagId").descending());
+        return tagRepository.findAllByTagNameContainingIgnoreCase(tagName, pageable);
+    }
 
     public List<Tag> findTags(QuestionPostDto questionPostDto){
         return questionPostDto.getTag().stream()

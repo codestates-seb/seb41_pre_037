@@ -1,6 +1,8 @@
 package com.example.stackoverflowclone.domain.member.mapper;
+
 import com.example.stackoverflowclone.domain.member.dto.*;
 import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.domain.question.dto.QuestionByMemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,25 +14,26 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberMapper {
-    public Member memberPostToMember(MemberPostDto memberPostDto){
-        if (memberPostDto == null){
+    public Member memberPostToMember(MemberPostDto memberPostDto) {
+        if (memberPostDto == null) {
             return null;
         }
-      return Member.builder()
-              .username(memberPostDto.getUsername())
-              .email(memberPostDto.getEmail())
-              .password(memberPostDto.getPassword())
-              .location("")
-              .title("")
-              .aboutMe("")
-              .image("")
-              .websiteLink("")
-              .twitterLink("")
-              .githubLink("")
-              .fullname("")
-              .build();
+        return Member.builder()
+                .username(memberPostDto.getUsername())
+                .email(memberPostDto.getEmail())
+                .password(memberPostDto.getPassword())
+                .location("")
+                .title("")
+                .aboutMe("")
+                .image("")
+                .websiteLink("")
+                .twitterLink("")
+                .githubLink("")
+                .fullname("")
+                .build();
     }
-    public Member memberPatchToMember(MemberEditDto memberEditDto){
+
+    public Member memberPatchToMember(MemberEditDto memberEditDto) {
 
         return Member.builder()
                 .memberId(memberEditDto.getMemberId())
@@ -45,8 +48,9 @@ public class MemberMapper {
                 .fullname(memberEditDto.getFullname())
                 .build();
     }
-    public MemberPostResponseDto memberToMemberResponse(Member member){
-        if (member == null){
+
+    public MemberPostResponseDto memberToMemberResponse(Member member) {
+        if (member == null) {
             return null;
         }
 
@@ -56,7 +60,8 @@ public class MemberMapper {
                 .email(member.getEmail())
                 .build();
     }
-    public MemberProfileResponseDto memberTomemberProfileResponse( Member member,String str){
+
+    public MemberProfileResponseDto memberToMemberProfileResponse(Member member, String str) {
         return MemberProfileResponseDto.builder()
                 .memberId(member.getMemberId())
                 .profileCreatedAt(str)
@@ -70,10 +75,22 @@ public class MemberMapper {
                 .twitterLink(member.getTwitterLink())
                 .githubLink(member.getGithubLink())
                 .fullname(member.getFullname())
-                .questions((long)member.getQuestionList().size())
-                .answers((long)member.getAnswersList().size())
+                .totalMyQuestions(member.getQuestionList().size())
+                .totalMyAnswers(member.getAnswersList().size())
+                .questions(member.getQuestionList().stream()
+                        .map(
+                                question -> {
+                                    return QuestionByMemberDto.builder()
+                                            .questionId(question.getQuestionId())
+                                            .questionTitle(question.getQuestionTitle())
+                                            .questionCreatedAt(question.getCreatedAt())
+                                            .questionVoteCount(question.getQuestionVoteCount())
+                                            .build();
+                                }).collect(Collectors.toList())
+                )
                 .build();
     }
+
     public List<MemberToUserPageResponseDto> memberUserToResponseDto(List<Member> members) {
         if (members == null) {
             return null;
@@ -91,7 +108,7 @@ public class MemberMapper {
                 .collect(Collectors.toList());
     }
 
-    public MemberLoginResponseDto memberToMemberLoginResponseDto(Member member){
+    public MemberLoginResponseDto memberToMemberLoginResponseDto(Member member) {
         return MemberLoginResponseDto.builder()
                 .memberId(member.getMemberId())
                 .email(member.getEmail())
