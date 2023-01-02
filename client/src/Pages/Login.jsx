@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { React, useState } from "react";
 import styled from "styled-components/macro";
 import Header from "../Components/Header/Header";
@@ -216,6 +215,7 @@ const Login = () => {
             css={`
               margin-bottom: 30px;
             `}
+            alt="logo"
           />
           <SocialLoginContainer>
             <GoogleLogin href={`${process.env.REACT_APP_SERVER_URI}oauth2/authorization/google`}>
@@ -236,6 +236,7 @@ const Login = () => {
                         right: 0;
                         margin-right: 10px;
                       `}
+                      alt="alert circle"
                     />
                   ) : null}
                   <LoginInput
@@ -260,6 +261,7 @@ const Login = () => {
                         right: 0;
                         margin-right: 10px;
                       `}
+                      alt="alert circle"
                     />
                   ) : null}
                   <LoginInput

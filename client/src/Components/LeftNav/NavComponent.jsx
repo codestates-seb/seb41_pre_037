@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import "../../index.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StickyLeftNavContainer = styled.nav`
   height: 160px;
@@ -24,6 +24,8 @@ const LeftNavMenu = styled.li`
   color: rgb(81, 81, 81);
   display: flex;
   font-size: small;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
   height: 34px;
   width: 164px;
 
@@ -49,18 +51,21 @@ const LeftNavMenuPublic = styled.li`
   color: rgb(81, 81, 81);
   display: flex;
   font-size: small;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
   height: 34px;
   width: 164px;
 `;
 
 const NavComponent = () => {
   const navigate = useNavigate();
+  const curruntPath = useLocation().pathname;
 
   return (
     <StickyLeftNavContainer>
       <LeftNavMenuContainer>
         <LeftNavMenu
-          className="current-page"
+          className={curruntPath === "/" ? "current-page" : null}
           css={`
             padding-left: 10px;
           `}
@@ -88,6 +93,7 @@ const NavComponent = () => {
           </span>
         </LeftNavMenuPublic>
         <LeftNavMenu
+          className={curruntPath === "/tags" ? "current-page" : null}
           css={`
             padding-left: 30px;
           `}
@@ -96,6 +102,7 @@ const NavComponent = () => {
           <span>Tags</span>
         </LeftNavMenu>
         <LeftNavMenu
+          className={curruntPath === "/users" ? "current-page" : null}
           css={`
             padding-left: 30px;
           `}

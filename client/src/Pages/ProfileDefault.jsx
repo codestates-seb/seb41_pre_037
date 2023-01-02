@@ -12,7 +12,6 @@ import EmptyPostBox from "../Components/Profile/EmptyPostBox";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { useIsLoginStore } from "../store/loginstore";
 
 const Container = styled.div`
   display: flex;
@@ -252,7 +251,6 @@ const Aboutdescription = styled.span`
 export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
-  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const params = useParams();
   const token = sessionStorage.getItem("accesstoken");
 
@@ -298,7 +296,7 @@ export default function ProfileDefault() {
                 <HeaderInfoContainer>
                   <UserDisplayName>{data && data.username}</UserDisplayName>
                   <HeaderInfoBottomContainer>
-                    <img src={CakeIcon} /> {data && data.profileCreatedAt}
+                    <img src={CakeIcon} alt="cake icon" /> {data && data.profileCreatedAt}
                   </HeaderInfoBottomContainer>
                 </HeaderInfoContainer>
               </HeaderLeftContainer>
@@ -309,6 +307,7 @@ export default function ProfileDefault() {
                     css={`
                       margin-right: 3px;
                     `}
+                    alt="edit icon"
                   />
                   Edit profile
                 </ProfileHeaderButton>
@@ -318,6 +317,7 @@ export default function ProfileDefault() {
                     css={`
                       margin-right: 3px;
                     `}
+                    alt="clear icon"
                   />
                   Delete profile
                 </ProfileHeaderButton>
@@ -347,7 +347,7 @@ export default function ProfileDefault() {
                   >
                     <CommunitiesInnerContainer>
                       <div>
-                        <img src={SmallLogo} />
+                        <img src={SmallLogo} alt="small logo" />
                         <Linker onClick={() => navigate("/")}>Stack Overflow</Linker>
                       </div>
                       1
