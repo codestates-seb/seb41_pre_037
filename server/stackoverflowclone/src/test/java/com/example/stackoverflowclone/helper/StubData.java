@@ -8,6 +8,7 @@ import com.example.stackoverflowclone.domain.question.mapper.QuestionMapper;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import org.springframework.http.HttpMethod;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -101,7 +102,7 @@ public class StubData {
             List<QuestionFindAnswerDto> list = new ArrayList<>();
             QuestionFindAnswerDto questionFindAnswerDto = QuestionFindAnswerDto.builder()
                     .answerId(1L)
-                    .answerCreatedAt("1 min ago")
+                    .answerCreatedAt(LocalDateTime.now())
                     .answerContent("답변 내용입니다.")
                     .answerVoteCount(15L)
                     .memberId(1L)
@@ -119,8 +120,8 @@ public class StubData {
                     .username("이재혁")
                     .image("https://")
                     .questionTitle("질문 제목 입니다.")
-                    .questionCreatedAt("1 min ago")
-                    .questionModifiedAt("1 min ago")
+                    .questionCreatedAt(LocalDateTime.now())
+                    .questionModifiedAt(LocalDateTime.now())
                     .questionVoteCount(200L)
                     .questionViewCount(350L)
                     .questionProblemBody("질문 내용1 입니다.")

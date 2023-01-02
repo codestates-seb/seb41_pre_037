@@ -63,10 +63,10 @@ public class MemberMapper {
                 .build();
     }
 
-    public MemberProfileResponseDto memberToMemberProfileResponse(Member member, String str) {
+    public MemberProfileResponseDto memberToMemberProfileResponse(Member member) {
         return MemberProfileResponseDto.builder()
                 .memberId(member.getMemberId())
-                .profileCreatedAt(str)
+                .profileCreatedAt(member.getCreatedAt())
                 .username(member.getUsername())
                 .email(member.getEmail())
                 .location(member.getLocation())

@@ -42,8 +42,6 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
     private final QuestionVoteService questionVoteService;
-    private final QuestionTimeStamp questionTimeStamp;
-    private final AnswerTimeStamp answerTimeStamp;
 
     @PostMapping("/ask/post")
     public ResponseEntity<DataResponseDto> createQuestion(@LoginMemberId Long memberId,
@@ -88,12 +86,9 @@ public class QuestionController {
         List<QuestionTag> questionTagList = question.getQuestionTagList();
         List<Tag> tagList = tagService.findTags(questionTagList);
         List<Answer> answers = question.getAnswers();
-        String astr = answerTimeStamp.timestamp(answers);
-        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers, astr);
+        List<QuestionFindAnswerDto> questionFindAnswerDto = questionMapper.answersToQuestionFindAnswerDto(answers);
         Member member = question.getMember();
-        String str = questionTimeStamp.timestamp(question);
-        String modified = questionTimeStamp.timestampmodified(question);
-        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto, str, modified)), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponseDto(questionMapper.questionInfoToQuestionFindResponseDto(question, member, tagList, questionFindAnswerDto)), HttpStatus.OK);
     }
 
     @GetMapping()

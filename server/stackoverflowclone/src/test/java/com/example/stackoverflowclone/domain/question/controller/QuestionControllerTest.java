@@ -80,12 +80,6 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
     @MockBean
     private  QuestionVoteService questionVoteService;
 
-    @MockBean
-    private QuestionTimeStamp questionTimeStamp;
-
-    @MockBean
-    private AnswerTimeStamp answerTimeStamp;
-
     @Test
     @DisplayName("애노테이션 API : 커스텀 어너테이션 테스트")
     @WithMockCustomUser
@@ -166,10 +160,8 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(question);
         given(tagService.findTags(Mockito.anyList())).willReturn(tagList);
-        given(questionMapper.answersToQuestionFindAnswerDto(Mockito.anyList(),Mockito.anyString())).willReturn(questionFindAnswerDto);
-        given(questionTimeStamp.timestamp(Mockito.any())).willReturn("1 min ago");
-        given(questionTimeStamp.timestampmodified(Mockito.any())).willReturn("1 min ago");
-        given(questionMapper.questionInfoToQuestionFindResponseDto(Mockito.any(),Mockito.any(),Mockito.anyList(),Mockito.anyList(),Mockito.anyString(),Mockito.anyString()))
+        given(questionMapper.answersToQuestionFindAnswerDto(Mockito.anyList())).willReturn(questionFindAnswerDto);
+        given(questionMapper.questionInfoToQuestionFindResponseDto(Mockito.any(),Mockito.any(),Mockito.anyList(),Mockito.anyList()))
                 .willReturn(questionFindResponseDto);
 
         ResultActions actions = mockMvc.perform(getRequestBuilder(getUriFindQuestion(),1L,"제목입니다"));
@@ -181,8 +173,8 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
                 .andExpect(jsonPath("$.data.username").value(questionFindResponseDto.getUsername()))
                 .andExpect(jsonPath("$.data.image").value(questionFindResponseDto.getImage()))
                 .andExpect(jsonPath("$.data.questionTitle").value(questionFindResponseDto.getQuestionTitle()))
-                .andExpect(jsonPath("$.data.questionCreatedAt").value(questionFindResponseDto.getQuestionCreatedAt()))
-                .andExpect(jsonPath("$.data.questionModifiedAt").value(questionFindResponseDto.getQuestionModifiedAt()))
+                .andExpect(jsonPath("$.data.questionCreatedAt").exists())
+                .andExpect(jsonPath("$.data.questionModifiedAt").exists())
                 .andExpect(jsonPath("$.data.questionVoteCount").value(questionFindResponseDto.getQuestionVoteCount()))
                 .andExpect(jsonPath("$.data.questionViewCount").value(questionFindResponseDto.getQuestionViewCount()))
                 .andExpect(jsonPath("$.data.questionProblemBody").value(questionFindResponseDto.getQuestionProblemBody()))
@@ -192,7 +184,7 @@ public class QuestionControllerTest implements QuestionControllerTestHelper {
                 .andExpect(jsonPath("$.data.tag.[0].tagBody").value(questionFindResponseDto.getTag().get(0).getTagBody()))
                 .andExpect(jsonPath("$.data.tag.[0].tagUrl").value(questionFindResponseDto.getTag().get(0).getTagUrl()))
                 .andExpect(jsonPath("$.data.answers.[0].answerId").value(questionFindResponseDto.getAnswers().get(0).getAnswerId()))
-                .andExpect(jsonPath("$.data.answers.[0].answerCreatedAt").value(questionFindResponseDto.getAnswers().get(0).getAnswerCreatedAt()))
+                .andExpect(jsonPath("$.data.answers.[0].answerCreatedAt").exists())
                 .andExpect(jsonPath("$.data.answers.[0].answerContent").value(questionFindResponseDto.getAnswers().get(0).getAnswerContent()))
                 .andExpect(jsonPath("$.data.answers.[0].answerVoteCount").value(questionFindResponseDto.getAnswers().get(0).getAnswerVoteCount()))
                 .andExpect(jsonPath("$.data.answers.[0].memberId").value(questionFindResponseDto.getAnswers().get(0).getMemberId()))

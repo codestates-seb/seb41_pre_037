@@ -61,7 +61,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers,String str,String modified) {
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers) {
 
         if (question == null || member == null || tagList == null || answers == null) {
             return null;
@@ -73,8 +73,8 @@ public class QuestionMapper {
                 .username(member.getUsername())
                 .image(member.getImage())
                 .questionTitle(question.getQuestionTitle())
-                .questionCreatedAt(str)
-                .questionModifiedAt(modified)
+                .questionCreatedAt(question.getCreatedAt())
+                .questionModifiedAt(question.getModifiedAt())
                 .questionVoteCount(question.getQuestionVoteCount())
                 .questionViewCount(question.getQuestionViewCount())
                 .questionProblemBody(question.getQuestionProblemBody())
@@ -84,7 +84,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers,String astr) {
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers) {
 
         if (answers == null) {
             return null;
@@ -94,7 +94,7 @@ public class QuestionMapper {
                 .map(answer -> {
                     return QuestionFindAnswerDto.builder()
                             .answerId(answer.getAnswerId())
-                            .answerCreatedAt(astr) // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                            .answerCreatedAt(answer.getCreatedAt())
                             .answerContent(answer.getAnswerContent())
                             .answerVoteCount(answer.getAnswerVoteCount())
                             .memberId(answer.getMember().getMemberId())
