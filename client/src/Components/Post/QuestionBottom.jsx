@@ -1,26 +1,26 @@
+import ShareSheet from "./ShareSheet";
+import { useIsLoginStore } from "../../store/loginstore";
 import React from "react";
 import styled from "styled-components/macro";
-import ShareSheet from "./ShareSheet";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useIsLoginStore } from "../../store/loginstore";
 
 const AnswerBottomContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-top: 20px;
-  justify-content: space-between;
   align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  width: 100%;
 `;
 
 const ShareLinker = styled.a`
   color: #525960;
 
   &:hover {
-    cursor: pointer;
     color: #7f8a95;
+    cursor: pointer;
   }
 `;
 
@@ -29,32 +29,32 @@ const DeleteButton = styled.span`
   margin-left: 10px;
 
   &:hover {
-    cursor: pointer;
     color: #c50000;
+    cursor: pointer;
   }
 `;
 
 const AuthorInfoContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
   align-items: center;
   background-color: #d9e9f7;
+  box-sizing: border-box;
+  display: flex;
   padding: 7px;
-  min-width: 200px;
   min-height: 65px;
+  min-width: 200px;
 `;
 
 const AuthorProfileImage = styled.img`
-  width: 32px;
   height: 32px;
+  width: 32px;
 `;
 
 const AuthorProfileLinker = styled.a`
   all: unset;
-  font-size: 14px;
-  margin-left: 10px;
   color: #2880d1;
   cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
 
   &:hover {
     color: #4293f8;
@@ -63,8 +63,8 @@ const AuthorProfileLinker = styled.a`
 
 export default function QuestionBottom({ postData }) {
   const [handleShareSheet, setHandleShareSheet] = useState(false);
-  const navigate = useNavigate();
   const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
+  const navigate = useNavigate();
 
   const deleteQuestionData = () => {
     const accessToken = sessionStorage.getItem("accesstoken");
@@ -93,7 +93,6 @@ export default function QuestionBottom({ postData }) {
       setIsLogin(false);
       sessionStorage.clear();
     } else if (err.response.status === 405) {
-      console.log(err);
       window.alert("You can only delete a post you wrote.");
     }
   };
@@ -111,7 +110,6 @@ export default function QuestionBottom({ postData }) {
   const shareSheetHandler = (e) => {
     setHandleShareSheet(!handleShareSheet);
   };
-  console.log(handleShareSheet);
 
   return (
     <AnswerBottomContainer>

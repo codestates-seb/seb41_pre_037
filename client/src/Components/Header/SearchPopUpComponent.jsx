@@ -1,48 +1,45 @@
 import styled from "styled-components/macro";
-
 import { useNavigate } from "react-router-dom";
 
 const SearchPopUpView = styled.div`
   border-radius: 3px;
   background-color: #ffffff;
-  height: 100px;
-  width: 40vw;
-  margin-top: 55px;
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
+  height: 100px;
+  margin-top: 55px;
+  width: 40vw;
 `;
 
 const SearchType = styled.span`
-  text-align: left;
   font-size: medium;
   font-weight: 500;
   margin-left: 5px;
+  text-align: left;
 `;
 
 const SearchDescription = styled.span`
-  text-align: left;
   font-size: small;
   margin-left: 5px;
+  text-align: left;
 `;
 
 const SearchPopUpTextContainer = styled.div`
+  align-items: center;
   display: flex;
   width: 50%;
-  align-items: center;
 `;
 
 const SearchPopUpInnerContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 50%;
   align-items: center;
+  display: flex;
+  height: 50%;
+  width: 100%;
 `;
 
 const Button = styled.button`
   all: unset;
-  width: 100px;
-  height: 25px;
   background-color: rgb(225, 236, 244);
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
   border: 1px solid rgb(57, 115, 157);
@@ -50,13 +47,14 @@ const Button = styled.button`
   color: rgb(57, 115, 157);
   font-size: small;
   font-weight: 400;
-  text-align: center;
-
+  height: 25px;
   margin-left: 2%;
+  text-align: center;
+  width: 100px;
 
   &:hover {
-    cursor: pointer;
     background-color: rgb(185, 210, 232);
+    cursor: pointer;
   }
 `;
 

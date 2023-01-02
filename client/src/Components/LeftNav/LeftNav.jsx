@@ -1,16 +1,15 @@
-import styled from "styled-components/macro";
-import BREAKPOINT from "../../breakpoint";
 import NavComponent from "./NavComponent";
+import BREAKPOINT from "../../breakpoint";
+import styled from "styled-components/macro";
 
 const Container = styled.div`
-  width: 164px;
-  padding-top: 24px;
-  min-height: 100%;
-  display: flex;
-  position: sticky;
-  flex-direction: column;
   border-right: 1px solid rgb(181, 181, 181);
-
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding-top: 24px;
+  position: sticky;
+  width: 164px;
   z-index: 1;
   @media screen and (max-width: ${BREAKPOINT.BREAKPOINTMOBILE}px) {
     display: none;

@@ -1,33 +1,34 @@
+import EmptyPostBackground from "../../icons/EmptyPostBackground.png";
 import React from "react";
 import styled from "styled-components/macro";
-import EmptyPostBackground from "../../icons/EmptyPostBackground.png";
 
 const ItemCard = styled.div`
-  display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 400px;
-  padding: 12px;
+  background-color: #f8f9f9;
   border: 1px solid #b5b5b5;
   border-radius: 5px;
   box-sizing: border-box;
-  background-color: #f8f9f9;
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  padding: 12px;
+  width: 100%;
 `;
 
 const InnerContainer = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: max-content;
   height: max-content;
+  width: max-content;
 `;
 
 const Linker = styled.a`
   color: #0074cc;
-  font-size: 15px;
   display: inline;
+  font-size: 15px;
   margin: 0 5px 0 5px;
+
   &:hover {
     color: #49a5f0;
     cursor: pointer;
@@ -36,8 +37,8 @@ const Linker = styled.a`
 
 const Description = styled.span`
   color: #6a737c;
-  font-size: 15px;
   display: inline;
+  font-size: 15px;
 `;
 
 export default function EmptyPostBox() {
@@ -45,7 +46,7 @@ export default function EmptyPostBox() {
     <>
       <ItemCard>
         <InnerContainer>
-          <img src={EmptyPostBackground} width="196px" height="196px" />
+          <img src={EmptyPostBackground} width="196px" height="196px" alt="empty post background" />
           <p
             css={`
               align-items: center;

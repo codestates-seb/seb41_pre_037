@@ -1,16 +1,16 @@
-import React from "react";
 import styled from "styled-components/macro";
 import { useIsLoginStore } from "../../store/loginstore";
+import React from "react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 const AnswerBottomContainer = styled.div`
-  display: flex;
-  width: 100%;
-  padding-top: 20px;
-  justify-content: space-between;
   align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  width: 100%;
 `;
 
 const DeleteButton = styled.span`
@@ -18,32 +18,32 @@ const DeleteButton = styled.span`
   margin-left: 10px;
 
   &:hover {
-    cursor: pointer;
     color: #c50000;
+    cursor: pointer;
   }
 `;
 
 const AuthorInfoContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
   align-items: center;
   background-color: ${(props) => props.color || "#ffffff"};
+  box-sizing: border-box;
+  display: flex;
   padding: 7px;
-  min-width: 200px;
   min-height: 65px;
+  min-width: 200px;
 `;
 
 const AuthorProfileImage = styled.img`
-  width: 32px;
   height: 32px;
+  width: 32px;
 `;
 
 const AuthorProfileLinker = styled.a`
   all: unset;
-  font-size: 14px;
-  margin-left: 10px;
   color: #2880d1;
   cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
 
   &:hover {
     color: #4293f8;

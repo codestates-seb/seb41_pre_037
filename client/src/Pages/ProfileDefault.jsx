@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-import { React, useState } from "react";
-import styled from "styled-components/macro";
-import BREAKPOINT from "../breakpoint";
 import Header from "../Components/Header/Header";
 import LeftNav from "../Components/LeftNav/LeftNav";
 import Footer from "../Components/Footer/Footer";
@@ -11,10 +7,12 @@ import CakeIcon from "../icons/Cake.svg";
 import SmallLogo from "../icons/LogoGlyphXxs.svg";
 import EmptyPostBox from "../Components/Profile/EmptyPostBox";
 import PostsList from "../Components/Profile/PostsList";
+import BREAKPOINT from "../breakpoint";
+import { React, useState } from "react";
+import styled from "styled-components/macro";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { useIsLoginStore } from "../store/loginstore";
 
 const Container = styled.div`
   display: flex;
@@ -254,7 +252,6 @@ const Aboutdescription = styled.span`
 export default function ProfileDefault() {
   const navigate = useNavigate();
   const [data, setData] = useState();
-  const { isLogin, setIsLogin } = useIsLoginStore((state) => state);
   const params = useParams();
   const token = sessionStorage.getItem("accesstoken");
 
@@ -285,8 +282,6 @@ export default function ProfileDefault() {
     onError: fetchDataOnError,
   });
 
-  console.log(data);
-
   return (
     <>
       <Header />
@@ -302,7 +297,7 @@ export default function ProfileDefault() {
                 <HeaderInfoContainer>
                   <UserDisplayName>{data && data.username}</UserDisplayName>
                   <HeaderInfoBottomContainer>
-                    <img src={CakeIcon} /> {data && data.profileCreatedAt}
+                    <img src={CakeIcon} alt="cake icon" /> {data && data.profileCreatedAt}
                   </HeaderInfoBottomContainer>
                 </HeaderInfoContainer>
               </HeaderLeftContainer>
@@ -313,6 +308,7 @@ export default function ProfileDefault() {
                     css={`
                       margin-right: 3px;
                     `}
+                    alt="edit icon"
                   />
                   Edit profile
                 </ProfileHeaderButton>
@@ -322,6 +318,7 @@ export default function ProfileDefault() {
                     css={`
                       margin-right: 3px;
                     `}
+                    alt="clear icon"
                   />
                   Delete profile
                 </ProfileHeaderButton>
@@ -351,7 +348,7 @@ export default function ProfileDefault() {
                   >
                     <CommunitiesInnerContainer>
                       <div>
-                        <img src={SmallLogo} />
+                        <img src={SmallLogo} alt="small logo" />
                         <Linker onClick={() => navigate("/")}>Stack Overflow</Linker>
                       </div>
                       1
@@ -383,8 +380,8 @@ export default function ProfileDefault() {
                 <BottomItemContainer>
                   <ItemLabel>All posts</ItemLabel>
                   <div>View all questions and answers</div>
-                  <EmptyPostBox />
-                  {/* <PostsList /> */}
+                  <PostsList postsListData={data} />
+                  {/* <EmptyPostBox /> */}
                 </BottomItemContainer>
               </BottomRightContainer>
             </ProfileBottomContaner>

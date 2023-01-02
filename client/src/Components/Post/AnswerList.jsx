@@ -1,17 +1,17 @@
+import AnswerItem from "./AnswerItem";
 import React from "react";
 import styled from "styled-components/macro";
-import AnswerItem from "./AnswerItem";
 
 const AnswerListContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
 `;
 
 const AnswerListInnerContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
 `;
 
 const AnswerListHeader = styled.h2`

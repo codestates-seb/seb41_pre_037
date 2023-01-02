@@ -1,21 +1,21 @@
-import styled from "styled-components/macro";
-import { useLeftNavStore } from "../../store/store";
 import NavComponent from "../LeftNav/NavComponent";
+import { useLeftNavStore } from "../../store/store";
+import styled from "styled-components/macro";
 
 const MobileLeftNavBackdrop = styled.div`
+  display: flex;
+  height: 100%;
+  left: 0;
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  display: flex;
 `;
 
 const MobileLeftNavView = styled.div`
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
   height: 134px;
   left: 0;
   margin-top: 50px;
-  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.2);
 `;
 
 const MobileLeftNav = () => {
