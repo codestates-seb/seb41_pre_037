@@ -421,17 +421,25 @@ export default function AskQuestions() {
     return axios.post(`${process.env.REACT_APP_SERVER_URI}questions/ask/post`, data, { headers });
   }
 
-  // Ajax OnSuccess
+  // Ajax OnSuccess / onError
   const createQuestionOnSuccess = () => {
     window.alert('successfuly posted questions!');
     navigate('/');
+  }
+
+  const createQuestionsOnError = error => {
+    window.alert('Posting failed. Your login session may have seen expired. please retry login and post');
+    sessionStorage.clear();
+    navigate('/login');
   }
 
   // Ajax Tanstack Query
   const {mutate:createQuestion} = useMutation({
     mutationKey:['createQuestion'], 
     mutationFn: postQuestionData, 
-    onSuccess: createQuestionOnSuccess})
+    onSuccess: createQuestionOnSuccess,
+    onError: createQuestionsOnError,
+  })
 
   // Event Handlers
   const titleOnChangeHandler = e => {
