@@ -1,0 +1,43 @@
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/stackover?serverTimezone=Asia/Seoul # 포트넘버, 스키마이름
+    username: ${MYSQL_ID} # 유저네임
+    password: ${MYSQL_PASSWORD} # 비밀번호
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath*:db/h2/data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none  # If deploy server, have to change please
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+    defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${G_CLIENT_ID} # 구글 API콘솔로 발급받은 ID
+            clientSecret: ${G_CLIENT_SECRET} # 구글 API콘솔로 발급받은 SECRET
+            scope:
+              - email
+              - profile
+          github:
+            clientId: ${H_CLIENT_ID}
+            clientSecret: ${H_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}" # (== http://localhost:8080/login/oauth2/code/github)
+            authorization-grant-type: authorization_code
+            client-name: GitHub
+            scope:
+              - user
+              - repo
+jwt:
+  secret-key: ${JWT_SECRET_KEY}  # 환경 변수로 설정했음
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420

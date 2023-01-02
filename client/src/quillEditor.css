@@ -1,0 +1,10 @@
+.ql-toolbar.ql-snow {
+  max-height: 50px;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.ql-snow .ql-formats {
+  display: flex;
+}
