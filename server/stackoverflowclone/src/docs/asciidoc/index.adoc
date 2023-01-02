@@ -1,0 +1,61 @@
+= StackOverFlow Application
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+***
+== QuestionController
+=== 질문 등록
+.curl-request
+include::{snippets}/post-question/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-question/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-question/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-question/response-fields.adoc[]
+
+
+=== 질문 조회
+.curl-request
+include::{snippets}/get-findquestion/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-findquestion/http-request.adoc[]
+
+.request-fields
+include::{snippets}/get-findquestion/request-fields.adoc[]
+
+.path-parameters
+include::{snippets}/get-findquestion/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-findquestion/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-findquestion/response-fields.adoc[]
+
+
+
+// === 게시글 삭제
+// .curl-request
+// include::{snippets}/delete-question/curl-request.adoc[]
+//
+// .http-request
+// include::{snippets}/delete-question/http-request.adoc[]
+//
+// .path-parameters
+// include::{snippets}/delete-question/path-parameters.adoc[]
+//
+// .http-response
+// include::{snippets}/delete-question/http-response.adoc[]
+
+
+
+***
+image::https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg[spring]

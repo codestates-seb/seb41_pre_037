@@ -1,10 +1,9 @@
 package com.example.stackoverflowclone.domain.question.dto;
 
-import com.example.stackoverflowclone.domain.answer.entity.Answer;
-import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,12 +14,12 @@ public class QuestionFindResponseDto {
     private String username;
     private String image;
     private String questionTitle;
-    private String questionCreatedAt;
-    private String questionModifiedAt;
+    private LocalDateTime questionCreatedAt;
+    private LocalDateTime questionModifiedAt;
     private Long questionVoteCount;
     private Long questionViewCount;
     private String questionProblemBody;
     private String questionTryOrExpectingBody;
-    private List<Tag> tag;
+    private List<QuestionTagResponseDto> tag;
     private List<QuestionFindAnswerDto> answers;
 }

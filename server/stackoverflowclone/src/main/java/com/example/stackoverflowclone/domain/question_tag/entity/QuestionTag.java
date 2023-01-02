@@ -1,7 +1,6 @@
 package com.example.stackoverflowclone.domain.question_tag.entity;
 
 import com.example.stackoverflowclone.domain.question.entity.Question;
-import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
 import lombok.*;
 
@@ -14,14 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 //@ToString(exclude = {"question"})
-public class QuestionTag extends Auditable {
-
+public class QuestionTag{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_tag_id")
     private Long questionTagId;
-
-    private int questionCountWithOneTag;
 
     @ManyToOne
     @JoinColumn(name = "question_id")

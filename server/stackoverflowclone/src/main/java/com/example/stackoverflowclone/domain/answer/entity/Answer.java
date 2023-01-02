@@ -1,14 +1,16 @@
 package com.example.stackoverflowclone.domain.answer.entity;
 
+import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
+import com.example.stackoverflowclone.domain.vote.entity.AnswerVote;
 import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -39,6 +41,12 @@ public class Answer extends Auditable {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.REMOVE)
+    private List<AnswerVote> answerVotes = new ArrayList<>();
+
 
     public Answer(String answerContent) {
         this.answerContent = answerContent;

@@ -3,12 +3,11 @@ package com.example.stackoverflowclone.domain.question.entity;
 
 import com.example.stackoverflowclone.domain.answer.entity.Answer;
 import com.example.stackoverflowclone.domain.member.entity.Member;
+import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
 import com.example.stackoverflowclone.global.audit.Auditable;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -47,27 +46,28 @@ public class Question extends Auditable {
     @Column(name = "question_vote_count")
     private long questionVoteCount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question",cascade = CascadeType.PERSIST) // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
+    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
     private List<QuestionTag> questionTagList = new ArrayList<>();
 
     @JsonIgnore
     @Builder.Default
-    @OneToMany(mappedBy = "question") // TODO : 게시글 삭제시 CascadeType.REMOVE 테스트 필요
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
 
-    public Question(Long questionId, String questionTitle, String questionProblemBody, String questionTryOrExpectingBody, long questionViewCount, long questionVoteCount) { // 지우기
-        this.questionId = questionId;
-        this.questionTitle = questionTitle;
-        this.questionProblemBody = questionProblemBody;
-        this.questionTryOrExpectingBody = questionTryOrExpectingBody;
-        this.questionViewCount = questionViewCount;
-        this.questionVoteCount = questionVoteCount;
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<QuestionVote> questionVotes = new ArrayList<>();
+
+    public void addMember(Member member) {
+        this.member = member;
     }
 
     public void addQuestionTagList(QuestionTag questionTag) {

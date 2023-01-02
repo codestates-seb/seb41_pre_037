@@ -1,21 +1,21 @@
 package com.example.stackoverflowclone.global.security.auth.handler;
 
 
+import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
 import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.member.service.MemberService;
+import com.example.stackoverflowclone.global.response.DataResponseDto;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.global.security.auth.utils.CustomAuthorityUtils;
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,11 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
-* OAuth2 인증후 Frontend 애플리케이션 쪽으로 JWT 전송하는 역할
-* SimpleUrlAuthenticationSuccessHandler을 상속받으면 리다이렉트를 손쉽게 할 수 있음
-* getRedirectStrategy().sendRedirect(); --> 리다이렉트 메서드
-* */
 
 @Slf4j
 @AllArgsConstructor
@@ -41,17 +36,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // 인증된 객체로 부터 Resource Owner의 이메일 주소를 얻을 수 있다.
-        log.info("# Redirect to Frontend");
+        // log.info("# Redirect to Frontend");
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String name = (String) oAuth2User.getAttributes().get("name");
         String email = (String) oAuth2User.getAttributes().get("email");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
-        log.info("# getPrincipal : " + oAuth2User);
-        log.info("# name : "+ name);
-        log.info("# email : "+ email);
-        log.info("# picture : "+ picture);
+        // log.info("# getPrincipal : " + oAuth2User);
+        // log.info("# name : "+ name);
+        // log.info("# email : "+ email);
+        // log.info("# picture : "+ picture);
 
         // email을 토대로 Member 객체 만들어서 DB에 저장
         Member member = buildOAuth2Member(name, email, picture);
@@ -90,12 +84,15 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refreshToken = delegateRefreshToken(member);
 
         // Token을 토대로 URI를 만들어서 String으로 변환
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI(request, accessToken, refreshToken).toString();
 
         // 헤더에 전송해보기
         String headerValue = "Bearer "+ accessToken;
         response.setHeader("Authorization",headerValue); // Header에 등록
         response.setHeader("Refresh",refreshToken); // Header에 등록
+        // response.setHeader("Access-Control-Allow-Credentials:", "true");
+        // response.setHeader("Access-Control-Allow-Origin", "*");
+        // response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
         // 만든 URI로 리다이렉트 보냄
         getRedirectStrategy().sendRedirect(request,response,uri);
@@ -120,17 +117,22 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
     }
 
-    private URI createURI(String accessToken, String refreshToken){
+    private URI createURI(HttpServletRequest request, String accessToken, String refreshToken){
+        // 리다이렉트시 JWT를 URI로 보내는 방법
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
 
+        String serverName = request.getServerName();
+        // log.info("# serverName = {}",serverName);
+
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-//                .port(80) // 기본 포트가 80이기 때문에 괜찮다
-                .path("/receive-token.html")
+                .host(serverName)
+                //.host("localhost")
+                .port(80) // 기본 포트가 80이기 때문에 괜찮다
+                .path("/token")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

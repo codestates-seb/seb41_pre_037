@@ -1,5 +1,6 @@
 package com.example.stackoverflowclone.global.security.auth.filter;
 
+import com.example.stackoverflowclone.domain.member.mapper.MemberMapper;
 import com.example.stackoverflowclone.global.security.auth.dto.LoginDto;
 import com.example.stackoverflowclone.global.security.auth.jwt.JwtTokenizer;
 import com.example.stackoverflowclone.domain.member.dto.MemberLoginResponseDto;
@@ -43,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();
 
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class); // ServletInputSteam을 LoginDto 클래스 객체로 역직렬화 (즉, JSON 객체꺼냄)
-        log.info("확인하고 싶은 메서드 (attemptAuthentication) : loginDto.getUsername()={}, login.getPassword()={}",loginDto.getUsername(),loginDto.getPassword());
+        // log.info("# attemptAuthentication : loginDto.getUsername()={}, login.getPassword()={}",loginDto.getUsername(),loginDto.getPassword());
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         return authenticationManager.authenticate(authenticationToken);
@@ -60,16 +61,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization",headerValue);
         response.setHeader("Refresh",refreshToken);
 
-        log.info("accessToken = {}",headerValue);
-        log.info("refreshToken = {}",refreshToken);
+        // log.info("accessToken = {}",headerValue);
+        // log.info("refreshToken = {}",refreshToken);
 
-        MemberLoginResponseDto loginResponseDto = MemberLoginResponseDto.builder()
-                .memberId(member.getMemberId())
-                .email(member.getEmail())
-                .image(member.getImage())
-                .build();
+        MemberMapper memberMapper = new MemberMapper();
+        MemberLoginResponseDto memberLoginResponseDto = memberMapper.memberToMemberLoginResponseDto(member);
 
-        String body = new Gson().toJson(new DataResponseDto<>(loginResponseDto));
+        String body = new Gson().toJson(new DataResponseDto<>(memberLoginResponseDto));
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(body);

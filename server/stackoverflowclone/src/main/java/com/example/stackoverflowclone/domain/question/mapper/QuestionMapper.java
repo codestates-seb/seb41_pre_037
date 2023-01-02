@@ -6,8 +6,6 @@ import com.example.stackoverflowclone.domain.question.dto.*;
 import com.example.stackoverflowclone.domain.question.entity.Question;
 import com.example.stackoverflowclone.domain.question_tag.entity.QuestionTag;
 import com.example.stackoverflowclone.domain.tag.entity.Tag;
-import com.example.stackoverflowclone.domain.vote.entity.QuestionVote;
-import com.example.stackoverflowclone.global.enums.VoteStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,9 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionMapper {
 
-    public Question postQuestionDtoToQuestion(QuestionPostDto questionPostDto, List<Tag> tagList, Member member){
+    public Question postQuestionDtoToQuestion(QuestionPostDto questionPostDto, List<Tag> tagList, Member member) {
 
-        if(questionPostDto == null || tagList == null || member == null) {
+        if (questionPostDto == null || tagList == null || member == null) {
             return null;
         }
 
@@ -31,13 +29,13 @@ public class QuestionMapper {
         question.setQuestionTitle(questionPostDto.getQuestionTitle());
         question.setQuestionProblemBody(questionPostDto.getQuestionProblemBody());
         question.setQuestionTryOrExpectingBody(questionPostDto.getQuestionTryOrExpectingBody());
-        question.setQuestionTagList(postQuestionDtoToQuestionTag(question,tagList));
+        question.setQuestionTagList(postQuestionDtoToQuestionTag(question, tagList));
         question.setMember(member);
         return question;
 
     }
 
-    public List<QuestionTag> postQuestionDtoToQuestionTag(Question question, List<Tag> tagList){
+    public List<QuestionTag> postQuestionDtoToQuestionTag(Question question, List<Tag> tagList) {
         return tagList.stream()
                 .map(tag -> {
                     return QuestionTag.builder()
@@ -48,9 +46,9 @@ public class QuestionMapper {
                 .collect(Collectors.toList());
     }
 
-    public QuestionPostResponseDto questionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList){
+    public QuestionPostResponseDto questionTagListToQuestionPostResponseDto(Question question, List<Tag> tagList) {
 
-        if(question == null || tagList == null){
+        if (question == null || tagList == null) {
             return null;
         }
 
@@ -59,13 +57,13 @@ public class QuestionMapper {
                 .questionTitle(question.getQuestionTitle())
                 .questionProblemBody(question.getQuestionProblemBody())
                 .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                .tag(tagList)
+                .tag(tagListToQuestionTagResponseDto(tagList))
                 .build();
     }
 
-    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers){
+    public QuestionFindResponseDto questionInfoToQuestionFindResponseDto(Question question, Member member, List<Tag> tagList, List<QuestionFindAnswerDto> answers) {
 
-        if(question == null || member == null || tagList == null || answers == null){
+        if (question == null || member == null || tagList == null || answers == null) {
             return null;
         }
 
@@ -75,20 +73,20 @@ public class QuestionMapper {
                 .username(member.getUsername())
                 .image(member.getImage())
                 .questionTitle(question.getQuestionTitle())
-                .questionCreatedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
-                .questionModifiedAt("1days") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                .questionCreatedAt(question.getCreatedAt())
+                .questionModifiedAt(question.getModifiedAt())
                 .questionVoteCount(question.getQuestionVoteCount())
                 .questionViewCount(question.getQuestionViewCount())
                 .questionProblemBody(question.getQuestionProblemBody())
                 .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                .tag(tagList)
+                .tag(tagListToQuestionTagResponseDto(tagList))
                 .answers(answers)
                 .build();
     }
 
-    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers){
+    public List<QuestionFindAnswerDto> answersToQuestionFindAnswerDto(List<Answer> answers) {
 
-        if(answers == null){
+        if (answers == null) {
             return null;
         }
 
@@ -96,7 +94,7 @@ public class QuestionMapper {
                 .map(answer -> {
                     return QuestionFindAnswerDto.builder()
                             .answerId(answer.getAnswerId())
-                            .answerCreatedAt("1 min ago") // TODO: 리펙토링 포인트 -> 날짜 계산하는 로직구현하여 계산된 값으로 변경필요
+                            .answerCreatedAt(answer.getCreatedAt())
                             .answerContent(answer.getAnswerContent())
                             .answerVoteCount(answer.getAnswerVoteCount())
                             .memberId(answer.getMember().getMemberId())
@@ -107,18 +105,21 @@ public class QuestionMapper {
                 .collect(Collectors.toList());
     }
 
-    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question){
+    public QuestionVoteResponseDto questionToQuestionVoteResponseDto(Question question) {
 
         return QuestionVoteResponseDto.builder()
                 .questionId(question.getQuestionId())
                 .questionVoteCount(question.getQuestionVoteCount())
                 .build();
     }
+//
+//    public QuestionHomeResponseDto questionToQuestionHomeResponseDto(QuestionTag questionTag) {
+//
+//    }
 
+    public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions) {
 
-    public List<QuestionHomeDto> questionInfoToQuestionHomeDto(List<Question> questions){
-
-        if(questions == null){
+        if (questions == null) {
             return null;
         }
 
@@ -137,10 +138,37 @@ public class QuestionMapper {
                             .questionAnswerCount(question.getAnswers().size())
                             .questionProblemBody(question.getQuestionProblemBody())
                             .questionTryOrExpectingBody(question.getQuestionTryOrExpectingBody())
-                            .tag(question.getQuestionTagList())
+                            .tags(questionTagToQuestionTagResponseDto(question.getQuestionTagList()))
                             .build();
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<QuestionTagResponseDto> questionTagToQuestionTagResponseDto(List<QuestionTag> questionTagList){
+        return questionTagList.stream()
+                .map(questionTag -> {
+                    return QuestionTagResponseDto.builder()
+                            .tagId(questionTag.getTag().getTagId())
+                            .tagName(questionTag.getTag().getTagName())
+                            .tagBody(questionTag.getTag().getTagBody())
+                            .tagUrl(questionTag.getTag().getTagUrl())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<QuestionTagResponseDto> tagListToQuestionTagResponseDto(List<Tag> tagList){
+        return tagList.stream()
+                .map(tag -> {
+                    return QuestionTagResponseDto.builder()
+                            .tagId(tag.getTagId())
+                            .tagName(tag.getTagName())
+                            .tagBody(tag.getTagBody())
+                            .tagUrl(tag.getTagUrl())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
 
 }

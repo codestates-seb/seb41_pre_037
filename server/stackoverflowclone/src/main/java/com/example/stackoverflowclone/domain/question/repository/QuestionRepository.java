@@ -1,13 +1,17 @@
 package com.example.stackoverflowclone.domain.question.repository;
 
-import com.example.stackoverflowclone.domain.member.entity.Member;
 import com.example.stackoverflowclone.domain.question.entity.Question;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-//    List<Question> findByMemberQuestion(Member member);
+    Page<Question> findAll(Pageable pageable);
+
+    Page<Question> findAllByQuestionTitleContainsIgnoreCaseOrQuestionProblemBodyContainsIgnoreCase(
+            String title, String bodyMain, Pageable pageable);
+
+    Page<Question> findAllByAnswersEmpty(Pageable pageable);
+
+    Page<Question> findAllByMemberMemberId(Long memberId, Pageable pageable);
 }

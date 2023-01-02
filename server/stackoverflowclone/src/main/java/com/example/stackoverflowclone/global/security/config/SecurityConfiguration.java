@@ -11,20 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,6 +26,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
+    private final CorsFilter corsFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,7 +34,7 @@ public class SecurityConfiguration {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .cors(Customizer.withDefaults()) // corsConfigurationSource라는 이름으로 등록된 Bean을 사용한다고 정의
+                // .cors(Customizer.withDefaults()) // corsConfigurationSource라는 이름으로 등록된 Bean을 사용한다고 정의
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 정책 추가 (JWT사용으로 STATELESS로 설정)
                 .and()
                 .formLogin().disable() // CSR 방식사용으로 formLogin 비활성화
@@ -54,7 +47,8 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/users/**").permitAll()
-                        .antMatchers(HttpMethod.GET, "/users/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/users").permitAll()
+                        .antMatchers(HttpMethod.GET, "/users/**").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/questions/**").hasRole("USER")
@@ -82,16 +76,16 @@ public class SecurityConfiguration {
 //        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //    }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 스크림트 기반의 HTTP 통신을 허용
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE")); // HTTP Method에 대한 HTTP 통신 허용
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // CorsConfigurationSource 구현체 생성
-        source.registerCorsConfiguration("/**", configuration); // 모든 URL에 정책 적용
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*")); // 스크림트 기반의 HTTP 통신을 허용
+//        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE")); // HTTP Method에 대한 HTTP 통신 허용
+//        configuration.addAllowedHeader("*");
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // CorsConfigurationSource 구현체 생성
+//        source.registerCorsConfiguration("/**", configuration); // 모든 URL에 정책 적용
+//        return source;
+//    }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer,HttpSecurity> {
         @Override
@@ -110,8 +104,10 @@ public class SecurityConfiguration {
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
             // Spring Security FilterChain에 추가
-            builder.addFilter(jwtAuthenticationFilter)  // 우리가만든 jwtAuthenticationFilter 필터추가
-//                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); //  jwtVerificationFilter 필터추가, 뒤에 클래스는 어느클래스 다음에 실행할지 설정
+            builder
+                    .addFilter(corsFilter)
+                    .addFilter(jwtAuthenticationFilter)  // 우리가만든 jwtAuthenticationFilter 필터추가
+                    // .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); //  jwtVerificationFilter 필터추가, 뒤에 클래스는 어느클래스 다음에 실행할지 설정
                     .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }

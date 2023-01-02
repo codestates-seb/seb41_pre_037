@@ -17,10 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
-@RequestMapping("/answers")
 @RequiredArgsConstructor
+@RequestMapping("/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -31,10 +32,10 @@ public class AnswerController {
 
     @PostMapping("/{question-id}")
     public ResponseEntity<DataResponseDto> createAnswer(@LoginMemberId Long memberId,
-                                                        @PathVariable("question-id") Long questionId,
+                                                        @Positive @PathVariable("question-id") Long questionId,
                                                         @RequestBody @Valid AnswerPostDto answerPostDto){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Question question = questionService.findQuestion(questionId);
         Answer answer = answerMapper.answerPostDtoToAnswer(answerPostDto, question, member);
         Answer saveAnswer = answerService.postAnswer(answer);
@@ -43,24 +44,32 @@ public class AnswerController {
 
     @PostMapping("/{answer-id}/vote/2")
     public ResponseEntity<DataResponseDto> questionUpVote(@LoginMemberId Long memberId,
-                                                          @PathVariable("answer-id") Long answerId){
+                                                          @Positive @PathVariable("answer-id") Long answerId){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
         answerVoteService.increaseVote(member, answer);
-
+//        String str = answerService.timestamp(answer); //TODO: 시간로직 변경하기, 여기가 아닌가?
         return new ResponseEntity<>(new DataResponseDto(answerMapper.answerToAnswerVoteResponseDto(answer)),HttpStatus.OK);
     }
 
     @PostMapping("/{answer-id}/vote/3")
     public ResponseEntity<DataResponseDto> questionDownVote(@LoginMemberId Long memberId,
-                                                            @PathVariable("answer-id") Long answerId){
+                                                            @Positive @PathVariable("answer-id") Long answerId){
 
-        Member member = memberService.findByMember(memberId);
+        Member member = memberService.findMember(memberId);
         Answer answer = answerService.findAnswer(answerId);
         answerVoteService.decreaseVote(member, answer);
 
         return new ResponseEntity<>(new DataResponseDto(answerMapper.answerToAnswerVoteResponseDto(answer)),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity<DataResponseDto> deleteQuestion(@LoginMemberId Long memberId,
+                                                          @Positive @PathVariable("answer-id") Long answerId){
+        answerService.deleteAnswer(answerId, memberId);
+
+        return new ResponseEntity<>(new DataResponseDto("answer delete complete !!"),HttpStatus.NO_CONTENT);
     }
 
 }

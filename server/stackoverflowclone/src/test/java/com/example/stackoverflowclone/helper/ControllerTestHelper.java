@@ -16,27 +16,39 @@ import java.util.stream.Stream;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 public interface ControllerTestHelper<T> {
+
+    default String getJws(){
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlcklkIjoxLCJzdWIiOiJkaGZpZjcxOEBnbWFpbC5jb20iLCJpYXQiOjE2NzIwNjQ5MzQsImV4cCI6MTY3MjA2NjczNH0.fqhdRcOLwendCyPv4o91LxlagYDA1muJzVo95Qeqfy4";
+    }
+
+    default String toJsonContent(T t) {
+        Gson gson = new Gson();
+        return gson.toJson(t);
+    }
+
     default RequestBuilder postRequestBuilder(String url,
                                               String content) {
         return  post(url)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
+                .content(content)
+                .header("Authorization", getJws())
+                .with(csrf());
     }
 
-    default RequestBuilder patchRequestBuilder(String url, long resourceId, String content) {
-        return patch(url, resourceId)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-
-    }
-
-    default RequestBuilder getRequestBuilder(String url, long resourceId) {
+    default RequestBuilder getRequestBuilder(String url, Long resourceId) {
         return get(url, resourceId)
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf());
+    }
+
+    default RequestBuilder getRequestBuilder(String url, Long resourceId, String resourceTitle) {
+        return get(url, resourceId, resourceTitle)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf());
     }
 
     default RequestBuilder getRequestBuilder(String url, MultiValueMap<String, String> queryParams) {
@@ -44,17 +56,20 @@ public interface ControllerTestHelper<T> {
                 .params(
                         queryParams
                 )
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf());
+    }
+
+    default RequestBuilder patchRequestBuilder(String url, long resourceId, String content) {
+        return patch(url, resourceId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+                .with(csrf());
     }
 
     default RequestBuilder deleteRequestBuilder(String url, long resourceId) {
         return delete(url, resourceId);
-    }
-
-    default String toJsonContent(T t) {
-        Gson gson = new Gson();
-        String content = gson.toJson(t);
-        return content;
     }
 
     default String getDataParentPath(DataResponseType dataResponseType) {

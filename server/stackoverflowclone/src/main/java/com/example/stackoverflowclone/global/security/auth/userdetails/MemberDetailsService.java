@@ -27,8 +27,8 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        log.info("회원 이메일 = {}, 회원 권한 = {}",findMember.getEmail(),findMember.getRoles());
-        log.info("암호화된 회원 비밀번호 = {}",findMember.getPassword());
+        // log.info("회원 이메일 = {}, 회원 권한 = {}",findMember.getEmail(),findMember.getRoles());
+        // log.info("암호화된 회원 비밀번호 = {}",findMember.getPassword());
         return new MemberDetails(findMember);
     }
 
@@ -50,10 +50,6 @@ public class MemberDetailsService implements UserDetailsService {
         public String getUsername() {
             return getEmail();
         }
-
-        // getPassword(); 가 오버라이딩 되어있지 않아도 되는 이유?
-        // Member 클래스에 getter로 구현되어있고
-        // 위에서 setPassword로 값을 넣어주고 있기 때문에
 
         @Override
         public boolean isAccountNonExpired() {

@@ -10,10 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -34,18 +31,6 @@ public class JwtTokenizer {
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
-
-    private final Environment environment;
-
-    @PostConstruct
-    public void init(){
-        log.info("application.yml parsing succeed ! "+secretKey);
-    }
-    public JwtTokenizer(Environment environment){
-        this.environment = environment;
-        String key = environment.getProperty("JWT_SECRET_KEY");
-        log.info("environment variable get succeed ! "+key);
-    }
 
     // secretKEy 인코딩하기
     public String encodeBase64SecretKey(String secretKey){

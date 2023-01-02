@@ -1,6 +1,7 @@
 package com.example.stackoverflowclone.domain.tag.controller;
 
 import com.example.stackoverflowclone.domain.member.controller.MemberController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @WebMvcTest(TagController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
