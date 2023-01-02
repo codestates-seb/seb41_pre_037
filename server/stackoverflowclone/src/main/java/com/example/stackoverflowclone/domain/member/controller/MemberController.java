@@ -48,9 +48,10 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}/{email}")
-    public ResponseEntity getMemberProfile(@PathVariable("member-id") Long memberId,
+    public ResponseEntity getMemberProfile(@LoginMemberId Long loginMemberId,
+                                           @PathVariable("member-id") Long memberId,
                                            @PathVariable(value = "email", required = true) String email) {
-
+        memberService.verifyLoginMember(loginMemberId,memberId);
         Member member = memberService.findMember(memberId, email);
         return new ResponseEntity<>(new DataResponseDto<>(mapper.memberToMemberProfileResponse(member)),
                 HttpStatus.OK);

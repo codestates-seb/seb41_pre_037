@@ -138,6 +138,10 @@ public class MemberService {
         return profileImage;
     }
 
-
+    public void verifyLoginMember(Long loginMemberId, Long memberId){
+        if(loginMemberId != memberId){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOW);
+        }
+    }
 
 }
