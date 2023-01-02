@@ -311,7 +311,8 @@ export default function ProfileDefault() {
                 <HeaderInfoContainer>
                   <UserDisplayName>{data && data.username}</UserDisplayName>
                   <HeaderInfoBottomContainer>
-                    <img src={CakeIcon} alt="cake icon" /> {signupDate}
+                    <img src={CakeIcon} alt="cake icon" />
+                    {`member for ${signupDate}`}
                   </HeaderInfoBottomContainer>
                 </HeaderInfoContainer>
               </HeaderLeftContainer>
