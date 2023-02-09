@@ -4,20 +4,20 @@ import lombok.Getter;
 
 public enum ProfileImage {
 
-    BASIC_IMAGE_ONE(1,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEUr8gxMDCgTW4JYqx69Xs0mn_SwDpFBlyHMyBH_O3WV18nObvFAO8Zi0Ehvu30mqPhSWlYEecVxvSJMGwGERS2fK1gQ=w1920-h921"),
-    BASIC_IMAGE_TWO(2,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gOtBngM6igLV_5Gi86DYVCKWPOuuBgzUxZiiu2DZVYZdi1T_CpI2-xBeHbODJMwMymHxzTtCtLwlbTsvuCZj1dbg5fWkw=w1920-h921"),
-    BASIC_IMAGE_THREE(3,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gOg7R_zu1d5ondnz2mF9Mfs5POsyaYwY0bpBfzQmTCA5iNpVhU3rycNjteK9RZKX0_dsQLXn1AGkA_MtfZJKeSJ03vOJg=w1000-h921"),
-    BASIC_IMAGE_FOUR(4,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPE5xpI0-lxEqtHYRm-avwUL1X2y8HUz_CtZoT2afckhm77Y_hZfo5N7xB6VP2bDxsiIT4DcFRwe8wSc5-y9BFHYfhe=w1000-h921"),
-    BASIC_IMAGE_FIVE(5,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPEZNW9ORtC6bMAw54VDZFQ3IaDPrGVWFKi18kERIrAxuE8N8MmbZhtol2Ujxvyrz21Ows7-0_4P8cz_sJlXYPvVu4z=w1920-h921"),
-    BASIC_IMAGE_SIX(6,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPl1BRcwUBJePKvZ9KXt9OmrtzuXJ0Vz5OS3BleIFoj--OcaQI8PCOIutsUO3m0ldLotm0Y8fOpsgI-yLGYwyxyZVue=w1000-h921"),
-    BASIC_IMAGE_SEVEN(7,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gOUcWn-HIk4JoOiMBxVqMc458drW7579JOqVcfR3Nq7eHs2WZV1URKdSy7iAEnrteP-19yw4B7xAAphkiPKu4fAez8j3g=w1000-h921"),
-    BASIC_IMAGE_EIGHT(8,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gMY6Ju7pO_FZp5hyfYdjKljdMAFlS5nCtbnvfJfXXqG52kH_WvYSqNsi7ClGgYVgmK8Gav_XdM_tCc5liRtQD8bZq4Ryg=w1920-h921"),
-    BASIC_IMAGE_NIGHT(9,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gP3vIemuwNCa2gLq8QFxJ0mvEUyH90NCzzCdEh6zkRFmQvF6_MHHo8N46VTTP58ovW3ikNSXN281NhTcbDaBfESUl6eUw=w1000-h921"),
-    BASIC_IMAGE_TEN(10,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gMzNhh9XTiXBHg_K4sHjKxhNVZTpihvtXFyGa_pR2L3j2ymHy6w9uDu5Pqmjo_-PPl40kIJENWVqGGfVE7-o1vMxMS0Zg=w1000-h921"),
-    BASIC_IMAGE_ELEVEN(11,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gOnvAfzDjdq54wfaQ3aQnYMNbfCsFwZVvyBIxEzKYw7LUtT7SnlxkIyZnkXyxrN2y8N5CuXVCLdNdloEMYYl7PPTBotWA=w1000-h921"),
-    BASIC_IMAGE_TWELVE(12,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gOeqDCgTYyD4_NlylK0EE-y1Fn0lj364mopuRJbuN4JvWP2eQGBJt6Ygv48nrlnHiuiq2Dkgz3ep7XILzUgT_lVAN1VpA=w1000-h921"),
-    BASIC_IMAGE_THIRTEEN(13,"https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gPKgEG4sHNVV90PQrE5jn37skBOV5Qp7M3czg2sShhPYx46ybBb0KhQ37mcxGl6H6E_1xVdAhna7aAJGi8qp1oYGCWMMw=w1000-h921"),
-    BASIC_IMAGE_FOURTEEN(14, "https://lh3.googleusercontent.com/u/0/drive-viewer/AFDK6gNXn3Qy3cjHid6lgXk6cT9J78rm98pYCgumlTWAHENmA_Q3ujH3MxEbMBYp_lHBLM8rpIU51BtZnzaIKi3CiEsrqcDKQA=w1000-h921");
+    BASIC_IMAGE_ONE(1,"https://user-images.githubusercontent.com/95069395/217765427-24fda748-3525-4d8a-abdb-88dc660020fc.png"),
+    BASIC_IMAGE_TWO(2,"https://user-images.githubusercontent.com/95069395/217765430-f9f54436-ae18-47ac-87c4-b0ea9369547a.png"),
+    BASIC_IMAGE_THREE(3,"https://user-images.githubusercontent.com/95069395/217765437-5eb0766a-139b-4d74-8ea7-f13fb511fb6b.png"),
+    BASIC_IMAGE_FOUR(4,"https://user-images.githubusercontent.com/95069395/217765442-ddf39075-30c9-45a1-9d55-806b35c9c991.png"),
+    BASIC_IMAGE_FIVE(5,"https://user-images.githubusercontent.com/95069395/217765447-d8b3c96e-42d2-4b4d-9660-df536e82a48e.png"),
+    BASIC_IMAGE_SIX(6,"https://user-images.githubusercontent.com/95069395/217765450-c1e29534-8974-45c3-ba3d-0d98dc3ac4c7.png"),
+    BASIC_IMAGE_SEVEN(7,"https://user-images.githubusercontent.com/95069395/217765456-26f2ac03-91a6-4b4d-a14c-ab6275d49022.png"),
+    BASIC_IMAGE_EIGHT(8,"https://user-images.githubusercontent.com/95069395/217765459-d95c0338-5ced-4689-9afb-61d917e0c4ad.png"),
+    BASIC_IMAGE_NIGHT(9,"https://user-images.githubusercontent.com/95069395/217765462-8b65713a-f436-405e-812d-c7b906bcb8e8.png"),
+    BASIC_IMAGE_TEN(10,"https://user-images.githubusercontent.com/95069395/217765465-83f95069-d4be-4418-a7ee-f569b235f665.png"),
+    BASIC_IMAGE_ELEVEN(11,"https://user-images.githubusercontent.com/95069395/217765469-2a34827e-f18c-4bca-aa49-ab3c698c46ce.png"),
+    BASIC_IMAGE_TWELVE(12,"https://user-images.githubusercontent.com/95069395/217765473-c7044900-f16b-407c-a27e-939c7c8a2e17.png"),
+    BASIC_IMAGE_THIRTEEN(13,"https://user-images.githubusercontent.com/95069395/217765476-31afe366-b1d2-4ee8-92f4-7d254a7616d2.png"),
+    BASIC_IMAGE_FOURTEEN(14, "https://user-images.githubusercontent.com/95069395/217765478-e9cbd679-d241-4a42-b285-f334b0b22241.png");
 
     @Getter
     int index;
